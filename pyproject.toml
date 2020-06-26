@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "eml_analyzer"
+version = "0.1.0"
+description = ""
+authors = ["Manabu Niseki <manabu.niseki@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiofiles = "^0.5.0"
+arrow = "^0.15.7"
+eml_parser = {extras = ["filemagic"], version = "^1.14.0"}
+fastapi = "^0.57.0"
+fastapi-utils = "^0.2.1"
+httpx = "^0.13.3"
+ioc-finder = "^3.0.0"
+loguru = "^0.5.0"
+oletools = "^0.55.1"
+pydantic = "^1.4"
+python-multipart = "^0.0.5"
+uvicorn = "^0.11.3"
+
+[tool.poetry.dev-dependencies]
+asynctest = "^0.13.0"
+autoflake = "^1.3.1"
+autopep8 = "^1.5.1"
+black = "^19.10b0"
+coveralls = "^2.0.0"
+flake8 = "^3.7.9"
+isort = "^4.3.21"
+mypy = "^0.770"
+pre-commit = "^2.2.0"
+pytest = "^5.4.1"
+pytest-asyncio = "^0.12.0"
+pytest-cov = "^2.8.1"
+pytest-mock = "^3.1.0"
+pytest-randomly = "^3.3.1"
+pytest-timeout = "^1.3.4"
+pyupgrade = "^2.6.1"
+respx = "^0.11.1"
+seed-isort-config = "^2.1.0"
+
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+known_third_party = ["arrow", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "olefile", "oletools", "pytest", "respx", "starlette"]
+line_length = 88
+multi_line_output = 3
+use_parentheses= true
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
