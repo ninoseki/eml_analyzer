@@ -55,7 +55,6 @@ class SpamAssassin:
         return reqfp.getvalue()
 
     def _parse_response(self, response: bytes):
-        print(response.decode())
         if response == b"":
             logger.info("[SPAM ASSASSIN] Empty response")
             return None

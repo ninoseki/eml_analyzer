@@ -1,19 +1,14 @@
-import pathlib
-
 import pytest
 import respx
 
 from app.services.emailrep import EmailRep
 
-path = pathlib.Path(__file__).parent / "../fixtures/emailrep.json"
-fixture = open(path).read()
-
 
 @pytest.mark.asyncio
 @respx.mock
-async def test_get():
+async def test_get(emailrep_response):
     respx.get(
-        "https://emailrep.io/bill@microsoft.com", content=fixture,
+        "https://emailrep.io/bill@microsoft.com", content=emailrep_response,
     )
     emailrep = EmailRep()
     res = await emailrep.get("bill@microsoft.com")

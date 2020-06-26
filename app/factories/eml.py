@@ -73,7 +73,6 @@ class EmlFactory:
     def _normalize_attachments(self):
         # change "attachment" to "attachments"
         attachments = self.parsed.get("attachment", [])
-        print(attachments)
         self.parsed["attachments"] = attachments
         if "attachment" in self.parsed:
             del self.parsed["attachment"]

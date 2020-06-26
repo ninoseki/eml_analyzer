@@ -1,10 +1,10 @@
 import pytest
 
-from tests.utils import read_eml
+from tests.conftest import read_eml
 
 
 @pytest.mark.asyncio
-async def test_analyze(client):
+async def test_analyze(client, emailrep_response):
     payload = {"eml_file": read_eml("sample.eml")}
     response = await client.post("/api/analyze/", json=payload)
 
@@ -14,7 +14,7 @@ async def test_analyze(client):
 
 
 @pytest.mark.asyncio
-async def test_analyze_file(client):
+async def test_analyze_file(client, emailrep_response):
     data = {"file": read_eml("sample.eml").encode()}
     response = await client.post("/api/analyze/file", data=data)
 

@@ -15,9 +15,9 @@ router = APIRouter()
     description="Parse an eml and return a parsed result",
     status_code=200,
 )
-def analyze(payload: Payload) -> Response:
+async def analyze(payload: Payload) -> Response:
     eml_file = payload.eml_file.encode()
-    return ResponseFactory.from_bytes(eml_file)
+    return await ResponseFactory.from_bytes(eml_file)
 
 
 @router.post(
@@ -28,5 +28,5 @@ def analyze(payload: Payload) -> Response:
     description="Parse an eml and return a parsed result",
     status_code=200,
 )
-def analyze_file(file: bytes = File(...)) -> Response:
-    return ResponseFactory.from_bytes(file)
+async def analyze_file(file: bytes = File(...)) -> Response:
+    return await ResponseFactory.from_bytes(file)

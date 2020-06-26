@@ -34,6 +34,12 @@ def encrypted_docx_eml() -> bytes:
 
 
 @pytest.fixture
+def emailrep_response() -> str:
+    path = Path(__file__).parent / "fixtures/emailrep.json"
+    return open(path).read()
+
+
+@pytest.fixture
 def client():
     app = create_app()
     return httpx.AsyncClient(app=app, base_url="http://testserver")
