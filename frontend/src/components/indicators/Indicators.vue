@@ -2,7 +2,7 @@
   <div>
     <div v-if="hasValues">
       <div class="indicator" v-for="value in values" v-bind:key="value">
-        <p>{{ value }}</p>
+        <p class="value">{{ value }}</p>
         <Links v-bind:type="type" v-bind:value="value" />
       </div>
     </div>
@@ -24,16 +24,19 @@ export default class Indicators extends Vue {
   @Prop() private values!: string[];
   @Prop() private type!: string;
 
-  private hasValues = this.getHasValues();
-
-  getHasValues(): boolean {
+  get hasValues(): boolean {
     return this.values.length > 0;
   }
 }
 </script>
 
 <style scoped>
-.indicator:nth-child(even) {
+.value {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.indicator:not(:first-child) {
   margin-top: 5px;
   margin-bottom: 5px;
   border-top: 1px solid lightgray;

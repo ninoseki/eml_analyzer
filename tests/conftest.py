@@ -2,11 +2,14 @@ from pathlib import Path
 
 import httpx
 import pytest
+from aiospamc.common import SpamcHeaders
+from aiospamc.header_values import SpamValue
+from aiospamc.responses import Response
 
 from app import create_app
 
 
-def read_eml(filename) -> str:
+def read_file(filename) -> str:
     parent = Path(__file__).parent.absolute()
     path = parent / f"fixtures/{filename}"
     with open(path) as f:
@@ -15,28 +18,35 @@ def read_eml(filename) -> str:
 
 @pytest.fixture
 def sample_eml() -> bytes:
-    return read_eml("sample.eml").encode()
+    return read_file("sample.eml").encode()
 
 
 @pytest.fixture
 def cc_eml() -> bytes:
-    return read_eml("cc.eml").encode()
+    return read_file("cc.eml").encode()
 
 
 @pytest.fixture
 def multipart_eml() -> bytes:
-    return read_eml("multipart.eml").encode()
+    return read_file("multipart.eml").encode()
 
 
 @pytest.fixture
 def encrypted_docx_eml() -> bytes:
-    return read_eml("encrypted_docx.eml").encode()
+    return read_file("encrypted_docx.eml").encode()
 
 
 @pytest.fixture
 def emailrep_response() -> str:
-    path = Path(__file__).parent / "fixtures/emailrep.json"
-    return open(path).read()
+    return read_file("emailrep.json")
+
+
+@pytest.fixture
+def spamassassin_response() -> Response:
+    body = read_file("sa.txt").encode()
+    headers = SpamcHeaders()
+    headers["Spam"] = SpamValue(value=True, score=40, threshold=20)
+    return Response(headers=headers, body=body)
 
 
 @pytest.fixture

@@ -2,6 +2,7 @@ import { sha256 } from "js-sha256";
 import URL from "url-parse";
 
 import { Link, LinkType } from "@/types";
+import { buildURL } from "@/utils/url_builder";
 
 class VirusTotal implements Link {
   public favicon: string;
@@ -28,7 +29,7 @@ export class VirusTotalForSHA256 extends VirusTotal {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/gui/file/${value}/detection`;
+    return buildURL(this.baseURL, `/gui/file/${value}/details`);
   }
 }
 
@@ -40,7 +41,7 @@ export class VirusTotalForURL extends VirusTotal {
 
   private normalizeURL(uri: string): string {
     const parsedUrl = new URL(uri);
-    if (parsedUrl.pathname === "/" && !uri.endsWith("/")) {
+    if (parsedUrl.pathname === "" && !uri.endsWith("/")) {
       return `${uri}/`;
     }
     return uri;
@@ -48,7 +49,7 @@ export class VirusTotalForURL extends VirusTotal {
 
   public href(value: string): string {
     const hash = sha256(this.normalizeURL(value));
-    return this.baseURL + `/gui/url/${hash}/detection`;
+    return buildURL(this.baseURL, `/gui/url/${hash}/details`);
   }
 }
 
@@ -59,7 +60,7 @@ export class VirusTotalForDomain extends VirusTotal {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/gui/domain/${value}/detection`;
+    return buildURL(this.baseURL, `/gui/domain/${value}/details`);
   }
 }
 
@@ -70,6 +71,6 @@ export class VirusTotalForIP extends VirusTotal {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/gui/ip-address/${value}/details`;
+    return buildURL(this.baseURL, `/gui/ip-address/${value}/details`);
   }
 }

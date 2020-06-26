@@ -1,6 +1,5 @@
 from typing import List
 
-from app.factories.emailrep import EmailRepVerdictFactory
 from app.factories.eml import EmlFactory
 from app.factories.oldid import OleIDVerdictFactory
 from app.factories.spamassassin import SpamAssassinVerdictFactory
@@ -16,8 +15,7 @@ class ResponseFactory:
         eml = EmlFactory.from_bytes(self.eml_file)
 
         verdicts: List[Verdict] = []
-        verdicts.append(await EmailRepVerdictFactory.from_email(eml.header.from_))
-        verdicts.append(SpamAssassinVerdictFactory.from_bytes(self.eml_file))
+        verdicts.append(await SpamAssassinVerdictFactory.from_bytes(self.eml_file))
         verdicts.append(OleIDVerdictFactory.from_attachments(eml.attachments))
 
         return Response(eml=eml, verdicts=verdicts)

@@ -1,13 +1,15 @@
+import pytest
+from asynctest import CoroutineMock
+
 from app.factories.spamassassin import SpamAssassinVerdictFactory
 
 
-def test_encrypted_docx(encrypted_docx_eml):
-    verdict = SpamAssassinVerdictFactory.from_bytes(encrypted_docx_eml)
-    assert verdict.malicious is False
-    assert len(verdict.details) > 0
+@pytest.mark.asyncio
+async def test_sample(sample_eml: bytes, spamassassin_response, mocker):
+    mock = CoroutineMock()
+    mock.return_value = spamassassin_response
+    mocker.patch("aiospamc.report", mock)
 
-
-def test_sample(sample_eml):
-    verdict = SpamAssassinVerdictFactory.from_bytes(sample_eml)
-    assert verdict.malicious is False
+    verdict = await SpamAssassinVerdictFactory.from_bytes(sample_eml)
+    assert verdict.malicious is True
     assert len(verdict.details) > 0

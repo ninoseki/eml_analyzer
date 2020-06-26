@@ -18,10 +18,9 @@ import { basicKeys, Header, HeaderItem, secuirtyKeys } from "@/types";
 export default class OtherHeaders extends Vue {
   @Prop() private header!: Header;
 
-  private otherHeaders: HeaderItem[] = this.getOtherHeaders();
   private title = "Other headers";
 
-  getOtherHeaders(): HeaderItem[] {
+  get otherHeaders(): HeaderItem[] {
     const header = this.header.header;
     const keys = Object.keys(header);
     const otherKeys = keys

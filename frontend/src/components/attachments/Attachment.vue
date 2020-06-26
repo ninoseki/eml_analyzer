@@ -44,9 +44,8 @@ export default class AttachmentComponent extends Vue {
   private header = `#${this.index + 1}`;
   private values = [this.attachment.hash.sha256];
   private sha256Type = "sha256";
-  private filesize = this.getFilesize();
 
-  getFilesize(): string {
+  get filesize(): string {
     return fileSize(this.attachment.size);
   }
 }

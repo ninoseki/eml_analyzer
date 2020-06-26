@@ -18,9 +18,7 @@ import { Header, HeaderItem } from "@/types";
 export default class XHeaders extends Vue {
   @Prop() private header!: Header;
 
-  private xHeaders: HeaderItem[] = this.getXHeaders();
-
-  getXHeaders(): HeaderItem[] {
+  get xHeaders(): HeaderItem[] {
     const header = this.header.header;
     const keys = Object.keys(header);
     const xKeys = keys.filter((key) => key.startsWith("x-"));

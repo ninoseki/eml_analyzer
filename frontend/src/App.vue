@@ -24,15 +24,11 @@ export default class App extends Vue {}
 
 <style>
 html {
-  background-color: #f2f9ff !important;
+  background-color: #fafafa !important;
 }
 
 .header {
   margin-bottom: 10px;
-}
-
-.header h2 {
-  color: #5892d0;
 }
 
 pre {

@@ -1,4 +1,5 @@
 import { Link, LinkType } from "@/types";
+import { buildURL } from "@/utils/url_builder";
 
 export class AnyRun implements Link {
   public baseURL: string;
@@ -14,6 +15,6 @@ export class AnyRun implements Link {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/submissions/#filehash:${value}`;
+    return buildURL(this.baseURL, `/submissions/#filehash:${value}`);
   }
 }

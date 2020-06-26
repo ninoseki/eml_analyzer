@@ -12,12 +12,14 @@
           <td>{{ header.subject }}</td>
         </tr>
         <tr>
-          <th>Date</th>
-          <td><DatetimeWithDiff v-bind:datetime="header.date" /></td>
+          <th>Date (UTC)</th>
+          <td><UTC v-bind:datetime="header.date" /></td>
         </tr>
         <tr>
           <th>From</th>
-          <td>{{ header.from }}</td>
+          <td>
+            <Indicators v-bind:type="emailType" v-bind:values="emails" />
+          </td>
         </tr>
         <tr>
           <th>To</th>
@@ -35,17 +37,22 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import DatetimeWithDiff from "@/components/ui/DatetimeWithDiff.vue";
+import Indicators from "@/components/indicators/Indicators.vue";
 import H3 from "@/components/ui/h3.vue";
+import UTC from "@/components/ui/UTC.vue";
 import { Header } from "@/types";
 
 @Component({
   components: {
-    DatetimeWithDiff,
+    Indicators,
+    UTC,
     H3,
   },
 })
 export default class BasicHeaders extends Vue {
   @Prop() private header!: Header;
+
+  private emailType = "email";
+  private emails = [this.header.from];
 }
 </script>

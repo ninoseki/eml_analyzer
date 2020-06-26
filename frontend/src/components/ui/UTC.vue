@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ datetimeInlocalFormat() }}</p>
+    <p>{{ utcDatetime }}</p>
   </div>
 </template>
 
@@ -9,14 +9,14 @@ import moment from "moment/moment";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class DatetimeWithDiff extends Vue {
+export default class UTC extends Vue {
   @Prop() private datetime!: string | undefined;
 
-  datetimeInlocalFormat(): string {
+  get utcDatetime(): string {
     if (this.datetime === undefined) {
       return "N/A";
     }
-    return moment.parseZone(this.datetime).local().format();
+    return moment.utc(this.datetime).format();
   }
 }
 </script>

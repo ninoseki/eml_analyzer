@@ -31,9 +31,7 @@ import { Body } from "@/types";
 export default class Bodies extends Vue {
   @Prop() private bodies!: Body[];
 
-  private hasBodies = this.getHasBodies();
-
-  getHasBodies(): boolean {
+  hasBodies(): boolean {
     return this.bodies.length > 0;
   }
 }

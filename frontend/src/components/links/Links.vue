@@ -25,9 +25,7 @@ export default class LinksComponent extends Vue {
   @Prop() private value!: string;
   @Prop() private type!: LinkType;
 
-  private selectedLinks: Link[] = this.getSelectedLinks();
-
-  getSelectedLinks(): Link[] {
+  get selectedLinks(): Link[] {
     if (this.type === undefined) {
       return Links;
     }

@@ -31,9 +31,7 @@ import { Attachment } from "@/types";
 export default class Attachments extends Vue {
   @Prop() private attachments!: Attachment[];
 
-  private hasAttachments = this.getHasAttachments();
-
-  getHasAttachments(): boolean {
+  get hasAttachments(): boolean {
     return this.attachments.length > 0;
   }
 }

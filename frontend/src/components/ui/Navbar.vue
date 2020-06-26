@@ -10,6 +10,14 @@
       <b-navbar-item>
         <a href="/docs" target="_blank" class="navbar-item">API</a>
       </b-navbar-item>
+      <b-navbar-item>
+        <a
+          href="https://github.com/ninoseki/eml_analyzer"
+          target="_blank"
+          class="navbar-item"
+          >GitHub</a
+        >
+      </b-navbar-item>
     </template>
   </b-navbar>
 </template>
@@ -23,6 +31,6 @@ export default class Navbar extends Vue {}
 
 <style>
 .navbar {
-  border-bottom: 1px solid #cce6ff;
+  border-bottom: 1px solid lightgray;
 }
 </style>

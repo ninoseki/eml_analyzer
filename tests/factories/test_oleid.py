@@ -23,4 +23,4 @@ def test_sample(sample_eml):
 
     verdict = OleIDVerdictFactory.from_attachments(attachments)
     assert verdict.malicious is False
-    assert len(verdict.details) == 0
+    assert len(verdict.details) == 1

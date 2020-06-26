@@ -9,7 +9,7 @@
           class="is-expanded"
           type="textarea"
           rows="20"
-          placeholder="Paste the EML file in here."
+          placeholder="Paste an EML file in here."
           v-model="emlFile"
         ></b-input>
       </b-field>

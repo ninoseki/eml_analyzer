@@ -19,6 +19,8 @@ oletools = "^0.55.1"
 pydantic = "^1.4"
 python-multipart = "^0.0.5"
 uvicorn = "^0.11.3"
+aiospamc = "^0.6.1"
+gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
@@ -44,7 +46,7 @@ seed-isort-config = "^2.1.0"
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["arrow", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "olefile", "oletools", "pytest", "respx", "starlette"]
+known_third_party = ["aiospamc", "arrow", "asynctest", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "olefile", "oletools", "pytest", "respx", "starlette"]
 line_length = 88
 multi_line_output = 3
 use_parentheses= true

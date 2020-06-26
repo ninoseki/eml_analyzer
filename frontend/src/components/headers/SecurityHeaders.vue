@@ -18,10 +18,9 @@ import { Header, HeaderItem, secuirtyKeys } from "@/types";
 export default class SecurityHeaders extends Vue {
   @Prop() private header!: Header;
 
-  private securityHeaders: HeaderItem[] = this.getSecurityHeaders();
   private title = "Security headers";
 
-  getSecurityHeaders(): HeaderItem[] {
+  get securityHeaders(): HeaderItem[] {
     const header = this.header.header;
 
     const items = secuirtyKeys.map((key) => {
@@ -29,10 +28,7 @@ export default class SecurityHeaders extends Vue {
         return { key: key, values: header[key] };
       }
     });
-
-    return (this.securityHeaders = items.filter(
-      (x): x is HeaderItem => x !== undefined
-    ));
+    return items.filter((x): x is HeaderItem => x !== undefined);
   }
 }
 </script>

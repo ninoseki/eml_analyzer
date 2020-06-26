@@ -1,4 +1,5 @@
 import { Link, LinkType } from "@/types";
+import { buildURL } from "@/utils/url_builder";
 
 export class HybridAnalysis implements Link {
   public baseURL: string;
@@ -15,6 +16,6 @@ export class HybridAnalysis implements Link {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/search?query=${value}`;
+    return buildURL(this.baseURL, "/search", { query: value });
   }
 }

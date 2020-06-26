@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <H2 v-bind:message="header" />
+    <H2>Verdicts</H2>
     <div v-if="hasVerdicts">
       <VerdictComponent
         v-for="verdict in verdicts"
@@ -30,10 +30,7 @@ import { Verdict } from "@/types";
 export default class Verdicts extends Vue {
   @Prop() private verdicts!: Verdict[];
 
-  private hasVerdicts = this.getHasVerdicts();
-  private header = `Verdicts`;
-
-  getHasVerdicts(): boolean {
+  get hasVerdicts(): boolean {
     return this.verdicts.length > 0;
   }
 }

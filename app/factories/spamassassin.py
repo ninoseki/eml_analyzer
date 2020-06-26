@@ -1,10 +1,14 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 from loguru import logger
 
+from app.core import settings
 from app.schemas.verdict import Detail, Verdict
 from app.services.spamassassin import SpamAssassin
+
+HOST = settings.SPAMASSASSIN_HOST
+PORT = settings.SPAMASSASSIN_PORT
 
 
 @dataclass
@@ -19,40 +23,29 @@ class SpamAssassinVerdictFactory:
         self.eml_file = eml_file
         self.name = "SpamAssassin"
 
-    def _get_spam_assassin_result(self) -> Result:
-        assassin = SpamAssassin(self.eml_file)
-        score = assassin.get_score()
-        malicious = assassin.is_spam()
-        report = assassin.get_report_json()
+    async def _get_spam_assassin_report(self):
+        assassin = SpamAssassin(host=HOST, port=PORT)
+        return await assassin.report(self.eml_file)
 
-        details: List[Detail] = []
-        for key, value in report.items():
-            partscore: float = value.get("partscore", 0.0)
-            full_description: str = value.get("description", "")
-            description = full_description.split(key)[-1].strip()
-            details.append(Detail(key=key, score=partscore, description=description))
-
-        return Result(details=details, score=score, malicious=malicious)
-
-    def to_model(self) -> Verdict:
-        result: Optional[Result] = None
-
+    async def to_model(self) -> Verdict:
         try:
-            result = self._get_spam_assassin_result()
+            report = await self._get_spam_assassin_report()
         except Exception as error:
             logger.error(error)
-
-        if result is None:
             return Verdict(name=self.name, malicious=False, details=[])
 
+        details: List[Detail] = []
+        details = [
+            Detail(key=detail.name, score=detail.score, description=detail.description)
+            for detail in report.details
+        ]
+        score = report.score
+        malicious = report.is_spam()
         return Verdict(
-            name=self.name,
-            malicious=result.malicious,
-            score=result.score,
-            details=result.details,
+            name=self.name, malicious=malicious, score=score, details=details,
         )
 
     @classmethod
-    def from_bytes(cls, eml_file: bytes) -> Verdict:
+    async def from_bytes(cls, eml_file: bytes) -> Verdict:
         obj = cls(eml_file)
-        return obj.to_model()
+        return await obj.to_model()

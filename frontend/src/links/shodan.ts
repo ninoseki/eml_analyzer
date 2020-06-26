@@ -1,4 +1,5 @@
 import { Link, LinkType } from "@/types";
+import { buildURL } from "@/utils/url_builder";
 
 export class Shodan implements Link {
   public baseURL: string;
@@ -7,13 +8,13 @@ export class Shodan implements Link {
   public type: LinkType;
 
   public constructor() {
-    this.baseURL = "https://shodan.io";
+    this.baseURL = "https://www.shodan.io";
     this.favicon = "https://www.google.com/s2/favicons?domain=shodan.io";
     this.name = "Shodan";
     this.type = "ip_address";
   }
 
   public href(value: string): string {
-    return this.baseURL + `/host/${value}`;
+    return buildURL(this.baseURL, `/host/${value}`);
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="verdict">
     <b-message
       v-bind:title="title"
       v-bind:type="type"
@@ -24,21 +24,25 @@ import { Verdict } from "@/types";
 export default class VerdictComponent extends Vue {
   @Prop() private verdict!: Verdict;
 
-  private title = this.getTitle();
-  private type = this.getType();
-  private hasDetails = this.getHasDetails();
   private closable = false;
 
-  getTitle(): string {
+  get title(): string {
     return `${this.verdict.name} (score: ${this.verdict.score || "N/A"})`;
   }
 
-  getType(): string {
+  get type(): string {
     return this.verdict.malicious ? "is-warning" : "is-success";
   }
 
-  getHasDetails(): boolean {
+  get hasDetails(): boolean {
     return this.verdict.details.length > 0;
   }
 }
 </script>
+
+<style scoped>
+.verdict {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+</style>

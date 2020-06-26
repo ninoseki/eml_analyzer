@@ -27,14 +27,7 @@ interface FlattenHeader {
 export default class FlattenHeaders extends Vue {
   @Prop() private headers!: HeaderItem[];
 
-  private flattenHeaders: FlattenHeader[] = this.getFlattenHeaders();
-  private hasFlattenHeaders = false;
-
-  updateHasFlattenHeaders() {
-    this.hasFlattenHeaders = this.flattenHeaders.length > 0;
-  }
-
-  getFlattenHeaders(): FlattenHeader[] {
+  get flattenHeaders(): FlattenHeader[] {
     const headers = [];
     let index = 0;
     for (const header of this.headers) {
@@ -52,8 +45,8 @@ export default class FlattenHeaders extends Vue {
     return headers;
   }
 
-  mounted() {
-    this.updateHasFlattenHeaders();
+  get hasFlattenHeaders(): boolean {
+    return this.flattenHeaders.length > 0;
   }
 }
 </script>

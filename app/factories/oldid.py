@@ -46,6 +46,13 @@ class OleIDVerdictFactory:
                 logger.error(error)
 
         malicious = len(details) > 0
+        if not malicious:
+            details.append(
+                Detail(
+                    key="benign",
+                    description="There is no suspicous OLE file in attachments.",
+                )
+            )
         return Verdict(name=self.name, malicious=malicious, details=details)
 
     @classmethod

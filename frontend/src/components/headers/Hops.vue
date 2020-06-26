@@ -16,8 +16,8 @@
           <b-table-column field="with" label="With">
             {{ props.row.received.with }}
           </b-table-column>
-          <b-table-column field="date" label="Date">
-            <DatetimeWithDiff v-bind:datetime="props.row.received.date" />
+          <b-table-column field="date" label="Date (UTC)">
+            <UTC v-bind:datetime="props.row.received.date" />
           </b-table-column>
           <b-table-column field="delay" label="Delay">
             {{ props.row.received.delay | secondsToHumanize }}
@@ -34,8 +34,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import DatetimeWithDiff from "@/components/ui/DatetimeWithDiff.vue";
 import H3 from "@/components/ui/h3.vue";
+import UTC from "@/components/ui/UTC.vue";
 import { Header, Received } from "@/types";
 
 interface ReceivedWithIndex {
@@ -45,17 +45,14 @@ interface ReceivedWithIndex {
 
 @Component({
   components: {
-    DatetimeWithDiff,
+    UTC,
     H3,
   },
 })
 export default class Hops extends Vue {
   @Prop() private header!: Header;
 
-  private receivedWithIndex: ReceivedWithIndex[] = [];
-  private hasReceivedWithIndex = false;
-
-  getReceivedWithIndex(): ReceivedWithIndex[] {
+  get receivedWithIndex(): ReceivedWithIndex[] {
     const received = this.header.received || [];
 
     const receivedWithIndex: ReceivedWithIndex[] = received.map(
@@ -67,13 +64,8 @@ export default class Hops extends Vue {
     return receivedWithIndex;
   }
 
-  getHasReceivedWithIndex(): boolean {
+  get hasReceivedWithIndex(): boolean {
     return this.receivedWithIndex.length > 0;
-  }
-
-  mounted() {
-    this.receivedWithIndex = this.getReceivedWithIndex();
-    this.hasReceivedWithIndex = this.getHasReceivedWithIndex();
   }
 }
 </script>

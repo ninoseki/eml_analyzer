@@ -9,7 +9,7 @@ export class EmailRep implements Link {
   public constructor() {
     this.baseURL = "https://emailrep.io";
     this.favicon = "https://www.google.com/s2/favicons?domain=emailrep.io";
-    this.name = "EmailRepo";
+    this.name = "EmailRep";
     this.type = "email";
   }
 

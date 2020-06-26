@@ -1,4 +1,5 @@
 import { Link, LinkType } from "@/types";
+import { buildURL } from "@/utils/url_builder";
 
 class Urlscan implements Link {
   public favicon: string;
@@ -25,7 +26,7 @@ export class UrlscanForDomain extends Urlscan {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/domain/${value}`;
+    return buildURL(this.baseURL, `/domain/${value}`);
   }
 }
 
@@ -36,6 +37,6 @@ export class UrlscanForIP extends Urlscan {
   }
 
   public href(value: string): string {
-    return this.baseURL + `/ip/${value}`;
+    return buildURL(this.baseURL, `/ip/${value}`);
   }
 }
