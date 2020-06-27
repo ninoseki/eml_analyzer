@@ -1,0 +1,15 @@
+Delivered-To: foo.bar@example.com
+Return-Path: <foo.bar@example.com>
+To: Foo Bar <foo.bar@example.com>, info@example.com
+Cc: foo@example.com, Bar <bar@example.com>
+From: =?UTF-8?Q?Foo_Bar?= <foo.bar@example.com>
+Subject: To and Cc headers
+Message-ID: <ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com>
+Date: Sat, 12 Oct 2019 20:09:08 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-ZohoMailClient: External

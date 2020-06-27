@@ -1,0 +1,40 @@
+# git
+.git
+
+# vscode
+.vscode
+
+# node
+**/node_modules
+node_modules
+
+# SQLite
+*.db
+
+# Environments
+.env
+.venv
+
+# python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
