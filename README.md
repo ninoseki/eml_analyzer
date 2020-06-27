@@ -19,8 +19,8 @@ EML analyzer is an application to analyze the EML file which can:
 ```bash
 git clone https://github.com/ninoseki/eml_analyzer.git
 cd eml_analyzer
-docker build . -t elm_analyzer
-docker run -i -d -p 8000:8000 elm_analyzer
+docker build . -t eml_analyzer
+docker run -i -d -p 8000:8000 eml_analyzer
 ```
 
 The application is running at: http://localhost:8000/ in your browser.
