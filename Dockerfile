@@ -26,11 +26,14 @@ RUN pip3 install poetry && poetry config virtualenvs.create false && poetry inst
 
 COPY supervisord.conf /etc/supervisord.conf
 
+# spamd envs
 ENV SPAMD_MAX_CHILDREN=1 \
-  SPAMD_PORT=783 \
+  SPAMD_PORT=7833 \
   SPAMD_RANGE="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.1/32"
 
-ENV PORT 8000
+# app envs
+ENV SPAMASSASSIN_PORT=7833 \
+  PORT=8000
 
 EXPOSE $PORT
 
