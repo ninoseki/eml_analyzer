@@ -22,4 +22,5 @@ matrix:
       node_js: 14
       install:
         - cd frontend && npm install
+        - cd ..
       before_script: cd frontend
