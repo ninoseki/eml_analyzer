@@ -1,5 +1,5 @@
 export interface Payload {
-  emlFile: string;
+  file: File | undefined;
 }
 
 export interface Hash {
@@ -42,10 +42,11 @@ export interface Body {
 export interface Received {
   by: string[];
   date: string;
-  for: string[];
+  for: string[] | undefined;
   from: string[] | undefined;
   src: string;
   with: string;
+  delay: number;
 }
 
 export interface Header {

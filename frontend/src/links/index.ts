@@ -4,6 +4,7 @@ import { AnyRun } from "./anyrun";
 import { Crtsh } from "./crtsh";
 import { EmailRep } from "./emailrep";
 import { HybridAnalysis } from "./hybridanalysis";
+import { SecurityTrails } from "./securitytrails";
 import { Shodan } from "./shodan";
 import { UrlscanForDomain, UrlscanForIP } from "./urlscan";
 import {
@@ -18,6 +19,7 @@ export const Links: Link[] = [
   new Crtsh(),
   new EmailRep(),
   new HybridAnalysis(),
+  new SecurityTrails(),
   new Shodan(),
   new UrlscanForDomain(),
   new UrlscanForIP(),

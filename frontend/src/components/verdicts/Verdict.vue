@@ -4,6 +4,7 @@
       v-bind:title="title"
       v-bind:type="type"
       v-bind:closable="closable"
+      has-icon
     >
       <div v-if="hasDetails">
         <li v-for="detail in verdict.details" v-bind:key="detail.description">

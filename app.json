@@ -1,6 +1,6 @@
 {
   "name": "EML analyzer",
-  "description": "A tool to analyze the EML file",
+  "description": "An application to analyze the EML file",
   "keywords": ["EML"],
   "website": "https://github.com/ninoseki/eml_analyzer",
   "repository": "https://github.com/ninoseki/eml_analyzer",

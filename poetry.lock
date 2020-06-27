@@ -48,6 +48,14 @@ version = "2.1.1"
 cached-property = "*"
 
 [[package]]
+category = "main"
+description = "Timeout context manager for asyncio programs"
+name = "async-timeout"
+optional = false
+python-versions = ">=3.5.3"
+version = "3.0.1"
+
+[[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
 name = "asynctest"
@@ -489,7 +497,7 @@ description = "Python package for finding and parsing indicators of compromise f
 name = "ioc-finder"
 optional = false
 python-versions = "*"
-version = "3.0.0"
+version = "3.1.0"
 
 [package.dependencies]
 click = "*"
@@ -1084,7 +1092,7 @@ version = "1.0.1"
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [metadata]
-content-hash = "71cb3bd78a7199d9bf439c723bd2559ec99b82efaf1f1aba5a93f0718f19b32d"
+content-hash = "6fecc1f3da30d08da3f31dc801885d05b832e7b88ad80d0602ce1c7bf485bca1"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1107,6 +1115,10 @@ arrow = [
 "aspy.refactor-imports" = [
     {file = "aspy.refactor_imports-2.1.1-py2.py3-none-any.whl", hash = "sha256:9df76bf19ef81620068b785a386740ab3c8939fcbdcebf20c4a4e0057230d782"},
     {file = "aspy.refactor_imports-2.1.1.tar.gz", hash = "sha256:eec8d1a73bedf64ffb8b589ad919a030c1fb14acf7d1ce0ab192f6eedae895c5"},
+]
+async-timeout = [
+    {file = "async-timeout-3.0.1.tar.gz", hash = "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f"},
+    {file = "async_timeout-3.0.1-py3-none-any.whl", hash = "sha256:4291ca197d287d274d0b6cb5d6f8f8f82d434ed288f962539ff18cc9012f9ea3"},
 ]
 asynctest = [
     {file = "asynctest-0.13.0-py3-none-any.whl", hash = "sha256:5da6118a7e6d6b54d83a8f7197769d046922a44d2a99c21382f0a6e4fadae676"},
@@ -1368,8 +1380,8 @@ ioc-fanger = [
     {file = "ioc_fanger-3.1.1.tar.gz", hash = "sha256:745c6ee935677916cd043c3d516ad0f5b6c6b9278456caa5755c3e7ecc905073"},
 ]
 ioc-finder = [
-    {file = "ioc_finder-3.0.0-py2.py3-none-any.whl", hash = "sha256:c99dde7ab9a8eeebc4a46f71b22a390b9caf4b8b3ac095ba217d9f38de243b0e"},
-    {file = "ioc_finder-3.0.0.tar.gz", hash = "sha256:9deeef99935d7396521db14b82c15cfbbbd152ad0b29108a15ed1830a7441538"},
+    {file = "ioc_finder-3.1.0-py2.py3-none-any.whl", hash = "sha256:bf99f769dc995961f5fe2ced584dc732b2bd29cfb5ff1b321a0a7f51192e1690"},
+    {file = "ioc_finder-3.1.0.tar.gz", hash = "sha256:330325271ce61c217aa259c9c5cb155eda62b6e15c576a0f0fb204086ce8e6d4"},
 ]
 isort = [
     {file = "isort-4.3.21-py2.py3-none-any.whl", hash = "sha256:6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"},

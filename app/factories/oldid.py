@@ -43,7 +43,7 @@ class OleIDVerdictFactory:
             try:
                 details.extend(self._parse_as_ole_file(attachment))
             except Exception as error:
-                logger.error(error)
+                logger.exception(error)
 
         malicious = len(details) > 0
         if not malicious:

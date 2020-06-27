@@ -28,7 +28,7 @@ export default class FlattenHeaders extends Vue {
   @Prop() private headers!: HeaderItem[];
 
   get flattenHeaders(): FlattenHeader[] {
-    const headers = [];
+    const headers: FlattenHeader[] = [];
     let index = 0;
     for (const header of this.headers) {
       const key = header.key;

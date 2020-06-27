@@ -33,3 +33,15 @@ def test_multipart(multipart_eml):
     first = eml.attachments[0]
     assert first.filename == "tired_boot.FJ010019.jpeg"
     assert first.hash_.md5 == "f561388f7446cedd5b8b480311744b3c"
+
+
+def test_encrypted_docx(encrypted_docx_eml):
+    eml = EmlFactory.from_bytes(encrypted_docx_eml)
+    assert eml.attachments is not None
+    assert len(eml.attachments) == 1
+
+    first = eml.attachments[0]
+    assert (
+        first.hash_.sha256
+        == "28df2d6dfa10dc85c8ebb5defffcb15c196dca7b26d4fd6859b9ec75ac60cf9e"
+    )

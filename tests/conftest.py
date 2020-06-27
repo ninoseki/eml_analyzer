@@ -16,6 +16,13 @@ def read_file(filename) -> str:
         return f.read()
 
 
+def read_file_as_binary(filename) -> bytes:
+    parent = Path(__file__).parent.absolute()
+    path = parent / f"fixtures/{filename}"
+    with open(path, "rb") as f:
+        return f.read()
+
+
 @pytest.fixture
 def sample_eml() -> bytes:
     return read_file("sample.eml").encode()
@@ -39,6 +46,16 @@ def encrypted_docx_eml() -> bytes:
 @pytest.fixture
 def emailrep_response() -> str:
     return read_file("emailrep.json")
+
+
+@pytest.fixture
+def encrypted_docx() -> bytes:
+    return read_file_as_binary("encrypted.docx")
+
+
+@pytest.fixture
+def xls_with_macro() -> bytes:
+    return read_file_as_binary("macro.xls")
 
 
 @pytest.fixture

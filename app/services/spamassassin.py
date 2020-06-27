@@ -3,6 +3,7 @@ from typing import List
 
 import aiospamc
 from aiospamc.common import SpamcHeaders
+from async_timeout import timeout
 
 
 @dataclass
@@ -18,7 +19,7 @@ class Report:
     details: List[Detail]
     level = 5.0
 
-    def is_spam(self, level=5.0) -> bool:
+    def is_spam(self, level: float = 5.0) -> bool:
         return self.score is None or self.score > level
 
 
@@ -74,12 +75,14 @@ class Parser:
 
 
 class SpamAssassin:
-    def __init__(self, host="127.0.0.1", port=783):
+    def __init__(self, host: str = "127.0.0.1", port: int = 783, timeout: int = 10):
         self.host = host
         self.port = port
+        self.timeout = timeout
 
     async def report(self, message: bytes) -> Report:
-        response = await aiospamc.report(message, host=self.host, port=self.port)
+        async with timeout(self.timeout):
+            response = await aiospamc.report(message, host=self.host, port=self.port)
 
         parser = Parser(headers=response.headers, body=response.body.decode())
         parser.parse()

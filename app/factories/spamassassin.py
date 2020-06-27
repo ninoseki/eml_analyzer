@@ -9,6 +9,7 @@ from app.services.spamassassin import SpamAssassin
 
 HOST = settings.SPAMASSASSIN_HOST
 PORT = settings.SPAMASSASSIN_PORT
+TIMEOUT = settings.SPAMASSASSIN_TIMEOUT
 
 
 @dataclass
@@ -24,14 +25,14 @@ class SpamAssassinVerdictFactory:
         self.name = "SpamAssassin"
 
     async def _get_spam_assassin_report(self):
-        assassin = SpamAssassin(host=HOST, port=PORT)
+        assassin = SpamAssassin(host=HOST, port=PORT, timeout=TIMEOUT)
         return await assassin.report(self.eml_file)
 
     async def to_model(self) -> Verdict:
         try:
             report = await self._get_spam_assassin_report()
         except Exception as error:
-            logger.error(error)
+            logger.exception(error)
             return Verdict(name=self.name, malicious=False, details=[])
 
         details: List[Detail] = []

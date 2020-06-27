@@ -1,18 +1,26 @@
 <template>
   <div>
     <div class="box">
-      <b-message type="is-info">
-        This app doesn't store any information you enter.
-      </b-message>
-      <b-field label="EML file">
-        <b-input
-          class="is-expanded"
-          type="textarea"
-          rows="20"
-          placeholder="Paste an EML file in here."
-          v-model="emlFile"
-        ></b-input>
-      </b-field>
+      <div class="upload-form">
+        <b-message type="is-info">
+          This app doesn't store any information you enter.
+        </b-message>
+        <b-field>
+          <b-upload v-model="emlFile" drag-drop expanded>
+            <section class="section">
+              <div class="content has-text-centered">
+                <p>
+                  <b-icon icon="upload" size="is-large"></b-icon>
+                </p>
+                <p>Drop the EML file here or click to upload</p>
+              </div>
+            </section>
+          </b-upload>
+        </b-field>
+        <div class="has-text-centered" v-if="emlFile">
+          <b-button>{{ emlFile.name }}</b-button>
+        </div>
+      </div>
 
       <div class="has-text-centered">
         <b-button
@@ -35,11 +43,11 @@ import { Component, Mixins } from "vue-mixin-decorator";
 
 import { ErrorDialogMixin } from "@/components/mixins/error_dialog";
 import ResponseComponent from "@/components/Response.vue";
-import { ErrorData, Payload, Response } from "@/types";
+import { ErrorData, Response } from "@/types";
 
 @Component({ components: { ResponseComponent } })
 export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
-  private emlFile = "";
+  private emlFile: File | null = null;
   private response: Response | undefined = undefined;
   private hasResponse = false;
 
@@ -48,15 +56,24 @@ export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
       container: this.$el,
     });
 
-    const payload: Payload = {
-      emlFile: this.emlFile,
-    };
+    const formData = new FormData();
+    if (this.emlFile !== null) {
+      formData.append("file", this.emlFile);
+    }
 
     this.response = undefined;
     this.hasResponse = false;
 
     try {
-      const response = await axios.post<Response>("/api/analyze/", payload);
+      const response = await axios.post<Response>(
+        "/api/analyze/file",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       loadingComponent.close();
 
@@ -72,3 +89,10 @@ export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
   }
 }
 </script>
+
+<style scoped>
+.upload-form {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+</style>

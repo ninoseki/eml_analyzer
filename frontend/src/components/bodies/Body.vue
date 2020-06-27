@@ -1,7 +1,7 @@
 <template>
   <div class="table-container">
     <H3>{{ header }}</H3>
-    <table class="table is-fullwidth">
+    <table class="table is-narrow is-fullwidth">
       <tbody>
         <tr>
           <th>Content-Type</th>
@@ -10,7 +10,10 @@
         <tr>
           <th>Content</th>
           <td>
-            <pre>{{ body.content }}</pre>
+            <Content
+              v-bind:content="body.content"
+              v-bind:contentType="body.contentType"
+            />
           </td>
         </tr>
         <tr>
@@ -48,12 +51,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import Content from "@/components/bodies/Content.vue";
 import Indicators from "@/components/indicators/Indicators.vue";
 import H3 from "@/components/ui/h3.vue";
 import { Body } from "@/types";
 
 @Component({
-  components: { Indicators, H3 },
+  components: { Content, Indicators, H3 },
 })
 export default class BodyComponent extends Vue {
   @Prop() private body!: Body;

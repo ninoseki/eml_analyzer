@@ -15,3 +15,4 @@ LOG_BACKTRACE: bool = config("LOG_BACKTRACE", cast=bool, default=True)
 
 SPAMASSASSIN_HOST: str = config("SPAMASSASSIN_HOST", cast=str, default="127.0.0.1")
 SPAMASSASSIN_PORT: int = config("SPAMASSASSIN_PORT", cast=int, default=783)
+SPAMASSASSIN_TIMEOUT: int = config("SPAMASSASSIN_TIMEOUT", cast=int, default=10)

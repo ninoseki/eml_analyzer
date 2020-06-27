@@ -26,7 +26,7 @@ class Attachment(APIModel):
 
 
 class Body(APIModel):
-    content_type: Optional[str]
+    content_type: Optional[str] = None
     hash_: str
     content_header: Dict[str, List[Union[str, int]]]
     content: str
@@ -42,8 +42,8 @@ class Body(APIModel):
 class Received(APIModel):
     by: List[str]
     date: datetime
-    for_: Optional[List[str]]
-    from_: Optional[List[str]]
+    for_: Optional[List[str]] = None
+    from_: Optional[List[str]] = None
     src: str
     with_: str
     delay: int
@@ -53,18 +53,18 @@ class Received(APIModel):
 
 
 class Header(APIModel):
-    message_id: Optional[str]
+    message_id: Optional[str] = None
     subject: str
-    defect: Optional[List[str]]
+    defect: Optional[List[str]] = None
     from_: str
     to: List[str]
-    cc: Optional[List[str]]
+    cc: Optional[List[str]] = None
     date: Optional[datetime]
-    received_email: Optional[List[str]]
-    received_foremail: Optional[List[str]]
-    received_domain: Optional[List[str]]
-    received_ip: Optional[List[str]]
-    received_src: Optional[str]
+    received_email: Optional[List[str]] = None
+    received_foremail: Optional[List[str]] = None
+    received_domain: Optional[List[str]] = None
+    received_ip: Optional[List[str]] = None
+    received_src: Optional[str] = None
     received: List[Received]
     header: Dict[str, List[Union[str, int]]]
 
