@@ -17,6 +17,8 @@ matrix:
         # create dummy directories
         - mkdir -p frontend/dist/static
       script: pytest -v --cov=app --cov-report=term-missing
+      after_success:
+        - coveralls
 
     - language: node_js
       node_js: 14
