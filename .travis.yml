@@ -20,4 +20,6 @@ matrix:
 
     - language: node_js
       node_js: 14
+      install:
+        - cd frontend && npm install
       before_script: cd frontend
