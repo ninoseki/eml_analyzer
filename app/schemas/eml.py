@@ -15,7 +15,7 @@ class Attachment(APIModel):
     raw: str
     filename: str
     size: int
-    extension: str
+    extension: Optional[str]
     hash_: Hash
     mime_type: str
     mime_type_short: str

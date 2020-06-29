@@ -21,7 +21,7 @@ interface Dictionary {
 export interface Attachment {
   filename: string;
   size: number;
-  extension: string;
+  extension: string | undefined;
   hash: Hash;
   mimeType: string;
   mimeTypeShort: string;
