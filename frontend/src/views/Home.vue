@@ -2,8 +2,13 @@
   <div>
     <div class="box">
       <div class="upload-form">
-        <b-message type="is-info">
-          This app doesn't store any information you enter.
+        <b-message type="is-info" class="content">
+          <VueMarkdown>
+            - EML(`.eml`) and MSG(`.msg`) formats are supported.
+          </VueMarkdown>
+          <VueMarkdown
+            >- This app doesn't store any information you enter.
+          </VueMarkdown>
         </b-message>
         <b-field>
           <b-upload v-model="emlFile" drag-drop expanded>
@@ -12,7 +17,7 @@
                 <p>
                   <b-icon icon="upload" size="is-large"></b-icon>
                 </p>
-                <p>Drop the EML file here or click to upload</p>
+                <p>Drop the EML/MSG file here or click to upload</p>
               </div>
             </section>
           </b-upload>
@@ -39,13 +44,14 @@
 
 <script lang="ts">
 import axios from "axios";
+import VueMarkdown from "vue-markdown";
 import { Component, Mixins } from "vue-mixin-decorator";
 
 import { ErrorDialogMixin } from "@/components/mixins/error_dialog";
 import ResponseComponent from "@/components/Response.vue";
 import { ErrorData, Response } from "@/types";
 
-@Component({ components: { ResponseComponent } })
+@Component({ components: { ResponseComponent, VueMarkdown } })
 export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
   private emlFile: File | null = null;
   private response: Response | undefined = undefined;

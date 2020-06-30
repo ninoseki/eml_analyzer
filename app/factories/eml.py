@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import Any, Dict, List
 
 import arrow
@@ -10,6 +11,8 @@ from ioc_finder import (
 )
 
 from app.schemas.eml import Eml
+from app.services import outlookmsgfile
+from app.services.validator import is_eml_file
 
 
 class EmlFactory:
@@ -64,12 +67,6 @@ class EmlFactory:
         self.parsed["bodies"] = [self._normalize_body(body) for body in bodies]
         del self.parsed["body"]
 
-    def _normalize_attachment(self, attachment: Dict[str, Any]):
-        attachment["content_header"] = self._normalize_key_value_header(
-            attachment.get("content_header", {})
-        )
-        return attachment
-
     def _normalize_attachments(self):
         # change "attachment" to "attachments"
         attachments = self.parsed.get("attachment", [])
@@ -87,6 +84,13 @@ class EmlFactory:
         return Eml.parse_obj(self.parsed)
 
     @classmethod
-    def from_bytes(cls, eml_file: bytes) -> Eml:
-        obj = cls(eml_file)
+    def from_bytes(cls, data: bytes) -> Eml:
+        if is_eml_file(data):
+            obj = cls(data)
+            return obj.to_model()
+
+        # assume data is a msg file
+        file = BytesIO(data)
+        message = outlookmsgfile.load(file)
+        obj = cls(message.as_bytes())
         return obj.to_model()

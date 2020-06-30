@@ -59,6 +59,11 @@ def xls_with_macro() -> bytes:
 
 
 @pytest.fixture
+def complete_msg() -> bytes:
+    return read_file_as_binary("complete.msg")
+
+
+@pytest.fixture
 def spamassassin_response() -> Response:
     body = read_file("sa.txt").encode()
     headers = SpamcHeaders()
