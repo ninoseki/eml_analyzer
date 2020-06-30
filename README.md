@@ -33,5 +33,5 @@ Alternatively, you can deploy the application on Heroku.
 
 ## ToDo
 
-- [ ] Support MSG format.
+- [x] Support MSG format.
 - [ ] In-depth attachments analysis by using oletools.

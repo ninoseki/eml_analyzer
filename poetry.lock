@@ -206,6 +206,26 @@ python-versions = "*"
 version = "2.2.0"
 
 [[package]]
+category = "main"
+description = "Library for parsing and reading OLE Compound Documents"
+name = "compoundfiles"
+optional = false
+python-versions = "*"
+version = "0.3"
+
+[package.extras]
+doc = ["sphinx"]
+test = ["pytest", "coverage", "mock"]
+
+[[package]]
+category = "main"
+description = "Compressed Rich Text Format (RTF) compression and decompression package"
+name = "compressed-rtf"
+optional = false
+python-versions = "*"
+version = "1.0.6"
+
+[[package]]
 category = "dev"
 description = "Code coverage measurement for Python"
 name = "coverage"
@@ -1092,7 +1112,7 @@ version = "1.0.1"
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [metadata]
-content-hash = "6fecc1f3da30d08da3f31dc801885d05b832e7b88ad80d0602ce1c7bf485bca1"
+content-hash = "c43616dfff94745bc4cfa1fa9a9ed5951a6eee23df101c71293c25fd7843f209"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1229,6 +1249,12 @@ colorama = [
 ]
 colorclass = [
     {file = "colorclass-2.2.0.tar.gz", hash = "sha256:b05c2a348dfc1aff2d502527d78a5b7b7e2f85da94a96c5081210d8e9ee8e18b"},
+]
+compoundfiles = [
+    {file = "compoundfiles-0.3.tar.gz", hash = "sha256:a435c1053786850a78b74b9ba6a317aab2ae97442d48f3ec5392dc2c51c161e9"},
+]
+compressed-rtf = [
+    {file = "compressed_rtf-1.0.6.tar.gz", hash = "sha256:c1c827f1d124d24608981a56e8b8691eb1f2a69a78ccad6440e7d92fde1781dd"},
 ]
 coverage = [
     {file = "coverage-5.1-cp27-cp27m-macosx_10_12_x86_64.whl", hash = "sha256:0cb4be7e784dcdc050fc58ef05b71aa8e89b7e6636b99967fadbdba694cf2b65"},
