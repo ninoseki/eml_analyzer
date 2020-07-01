@@ -3,12 +3,7 @@
     <div class="box">
       <div class="upload-form">
         <b-message type="is-info" class="content">
-          <VueMarkdown>
-            - EML(`.eml`) and MSG(`.msg`) formats are supported.
-          </VueMarkdown>
-          <VueMarkdown
-            >- This app doesn't store any information you enter.
-          </VueMarkdown>
+          <VueMarkdown v-bind:source="informationMessages" />
         </b-message>
         <b-field>
           <b-upload v-model="emlFile" drag-drop expanded>
@@ -56,6 +51,12 @@ export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
   private emlFile: File | null = null;
   private response: Response | undefined = undefined;
   private hasResponse = false;
+
+  private informationMessages = [
+    "- EML(`.eml`) and MSG(`.msg`) formats are supported.",
+    "  - The MSG file will be converted to the EML file before analyzing. The conversion might be lossy.",
+    "- This app doesn't store any information you enter.",
+  ].join("\n");
 
   async parse() {
     const loadingComponent = this.$buefy.loading.open({
