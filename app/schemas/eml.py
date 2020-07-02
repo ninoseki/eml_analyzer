@@ -40,12 +40,12 @@ class Body(APIModel):
 
 
 class Received(APIModel):
-    by: List[str]
+    by: Optional[List[str]] = None
     date: datetime
     for_: Optional[List[str]] = None
     from_: Optional[List[str]] = None
     src: str
-    with_: str
+    with_: Optional[str]
     delay: int
 
     class Config:

@@ -1,4 +1,6 @@
+import glob
 from pathlib import Path
+from typing import List
 
 import httpx
 import pytest
@@ -41,6 +43,14 @@ def multipart_eml() -> bytes:
 @pytest.fixture
 def encrypted_docx_eml() -> bytes:
     return read_file("encrypted_docx.eml").encode()
+
+
+@pytest.fixture
+def emails() -> List[bytes]:
+    parent = str(Path(__file__).parent.absolute())
+    path = parent + "/fixtures/emails/**/*.eml"
+    paths = glob.glob(path)
+    return [open(path, "rb").read() for path in paths]
 
 
 @pytest.fixture
