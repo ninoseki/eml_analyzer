@@ -2,6 +2,7 @@ from io import BytesIO
 from typing import Any, Dict, List
 
 import arrow
+import dateparser
 from eml_parser import EmlParser
 from ioc_finder import (
     parse_domain_names,
@@ -21,6 +22,17 @@ class EmlFactory:
         parser = EmlParser(include_raw_body=True, include_attachment_data=True)
         self.parsed = parser.decode_email_bytes(eml_file)
 
+    def _normalize_received_date(self, received: Dict):
+        date = received.get("date", "")
+        if date != "":
+            return received
+
+        src = received.get("src", "")
+        parts = src.split(";")
+        date_ = parts[-1].strip()
+        received["date"] = dateparser.parse(date_)
+        return received
+
     def _normalize_received(self, received: List[Dict]) -> List[Dict]:
         if len(received) == 0:
             return []
@@ -30,9 +42,10 @@ class EmlFactory:
         base_date = arrow.get(first.get("date", ""))
 
         for r in received:
-            date = arrow.get(r.get("date", ""))
+            normalized = self._normalize_received_date(r)
+            date = arrow.get(normalized.get("date", ""))
             delay = (date - base_date).seconds
-            r["delay"] = delay
+            normalized["delay"] = delay
             base_date = date
 
         return received

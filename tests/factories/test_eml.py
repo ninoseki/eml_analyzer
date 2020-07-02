@@ -1,3 +1,5 @@
+from typing import List
+
 from app.factories.eml import EmlFactory
 
 
@@ -45,6 +47,16 @@ def test_encrypted_docx(encrypted_docx_eml):
         first.hash_.sha256
         == "28df2d6dfa10dc85c8ebb5defffcb15c196dca7b26d4fd6859b9ec75ac60cf9e"
     )
+
+
+def test_emails(emails: List[bytes]):
+    for email in emails:
+        try:
+            eml = EmlFactory.from_bytes(email)
+            assert eml is not None
+        except Exception as e:
+            print(e)
+            print(email.decode())
 
 
 def test_complete_msg(complete_msg):

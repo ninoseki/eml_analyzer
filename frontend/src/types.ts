@@ -40,12 +40,12 @@ export interface Body {
 }
 
 export interface Received {
-  by: string[];
+  by: string[] | undefined;
   date: string;
   for: string[] | undefined;
   from: string[] | undefined;
   src: string;
-  with: string;
+  with: string | undefined;
   delay: number;
 }
 
