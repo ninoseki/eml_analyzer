@@ -12,7 +12,7 @@ from ioc_finder import (
 )
 
 from app.schemas.eml import Eml
-from app.services import outlookmsgfile
+from app.services.outlookmsgfile import Message
 from app.services.validator import is_eml_file
 
 
@@ -104,6 +104,7 @@ class EmlFactory:
 
         # assume data is a msg file
         file = BytesIO(data)
-        message = outlookmsgfile.load(file)
-        obj = cls(message.as_bytes())
+        message = Message(file)
+        email = message.to_email()
+        obj = cls(email.as_bytes())
         return obj.to_model()

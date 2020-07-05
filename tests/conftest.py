@@ -54,6 +54,16 @@ def emails() -> List[bytes]:
 
 
 @pytest.fixture
+def outer_msg() -> bytes:
+    return read_file_as_binary("outer.msg")
+
+
+@pytest.fixture
+def other_msg() -> bytes:
+    return read_file_as_binary("other.msg")
+
+
+@pytest.fixture
 def emailrep_response() -> str:
     return read_file("emailrep.json")
 

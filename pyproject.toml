@@ -50,7 +50,7 @@ seed-isort-config = "^2.1.0"
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette"]
+known_third_party = ["aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette"]
 line_length = 88
 multi_line_output = 3
 use_parentheses= true
