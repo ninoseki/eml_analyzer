@@ -20,21 +20,29 @@ import email.policy
 import os
 import re
 import sys
+from email.message import EmailMessage
 from email.utils import formataddr, formatdate
 from functools import reduce
+from typing import BinaryIO, Union
 
-import compoundfiles
-
-# MAIN FUNCTIONS
-
-
-def load(filename_or_stream):
-    with compoundfiles.CompoundFileReader(filename_or_stream) as doc:
-        doc.rtf_attachments = 0
-        return load_message_stream(doc.root, True, doc)
+import compressed_rtf
+from compoundfiles import CompoundFileEntity, CompoundFileReader
+from loguru import logger
 
 
-def load_message_stream(entry, is_top_level, doc):
+class Message:
+    def __init__(self, filename_or_stream: Union[str, BinaryIO]):
+        self.filename_or_stream = filename_or_stream
+
+    def to_email(self) -> EmailMessage:
+        with CompoundFileReader(self.filename_or_stream) as doc:
+            doc.rtf_attachments = 0
+            return load_message_stream(doc.root, True, doc)
+
+
+def load_message_stream(
+    entry: CompoundFileEntity, is_top_level: bool, doc: CompoundFileReader
+):
     # Load stream data.
     props = parse_properties(entry["__properties_version1.0"], is_top_level, entry, doc)
 
@@ -121,8 +129,6 @@ def load_message_stream(entry, is_top_level, doc):
         )
 
         # Decompress the value to Rich Text Format.
-        import compressed_rtf
-
         rtf = props["RTF_COMPRESSED"]
         rtf = compressed_rtf.decompress(rtf)
 
@@ -143,7 +149,9 @@ def load_message_stream(entry, is_top_level, doc):
     return msg
 
 
-def process_attachment(msg, entry, doc):
+def process_attachment(
+    msg: EmailMessage, entry: CompoundFileEntity, doc: CompoundFileReader
+):
     # Load attachment stream.
     props = parse_properties(entry["__properties_version1.0"], False, entry, doc)
 
@@ -179,7 +187,12 @@ def process_attachment(msg, entry, doc):
         msg.add_attachment(blob, filename=filename)
 
 
-def parse_properties(properties, is_top_level, container, doc):
+def parse_properties(
+    properties: CompoundFileEntity,
+    is_top_level: bool,
+    container: CompoundFileEntity,
+    doc: CompoundFileReader,
+):
     # Read a properties stream and return a Python dictionary
     # of the fields and values, using human-readable field names
     # in the mapping at the top of this module.
@@ -197,7 +210,7 @@ def parse_properties(properties, is_top_level, container, doc):
         # Read the entry.
         property_type = stream[i + 0 : i + 2]
         property_tag = stream[i + 2 : i + 4]
-        flags = stream[i + 4 : i + 8]
+        # flags = stream[i + 4 : i + 8]
         value = stream[i + 8 : i + 16]
         i += 16
 
@@ -215,8 +228,6 @@ def parse_properties(properties, is_top_level, container, doc):
 
         # Variable Length Properties.
         elif isinstance(tag_type, VariableLengthValueLoader):
-            value_length = stream[i + 8 : i + 12]  # not used
-
             # Look up the stream in the document that holds the value.
             streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(
                 property_tag, 4, property_type, 4
@@ -224,9 +235,9 @@ def parse_properties(properties, is_top_level, container, doc):
             try:
                 with doc.open(container[streamname]) as innerstream:
                     value = innerstream.read()
-            except:
+            except Exception:
                 # Stream isn't present!
-                print("stream missing", streamname, file=sys.stderr)
+                logger.info("stream missing", streamname, file=sys.stderr)
                 continue
 
             value = tag_type.load(value)
@@ -238,15 +249,15 @@ def parse_properties(properties, is_top_level, container, doc):
             )
             try:
                 value = container[streamname]
-            except:
+            except Exception:
                 # Stream isn't present!
-                print("stream missing", streamname, file=sys.stderr)
+                logger.info("stream missing", streamname, file=sys.stderr)
                 continue
             value = tag_type.load(value, doc)
 
         else:
             # unrecognized type
-            print("unhandled property type", hex(property_type), file=sys.stderr)
+            logger.info("unhandled property type", hex(property_type), file=sys.stderr)
             continue
 
         ret[tag_name] = value
@@ -254,11 +265,10 @@ def parse_properties(properties, is_top_level, container, doc):
     return ret
 
 
-# PROPERTY VALUE LOADERS
-
-
 class FixedLengthValueLoader:
-    pass
+    @staticmethod
+    def load(value):
+        raise NotImplementedError()
 
 
 class NULL(FixedLengthValueLoader):
@@ -315,7 +325,9 @@ class INTTIME(FixedLengthValueLoader):
 
 
 class VariableLengthValueLoader:
-    pass
+    @staticmethod
+    def load(value):
+        raise NotImplementedError()
 
 
 class BINARY(VariableLengthValueLoader):
@@ -327,20 +339,20 @@ class BINARY(VariableLengthValueLoader):
 
 class STRING8(VariableLengthValueLoader):
     @staticmethod
-    def load(value):
+    def load(value: bytes):
         # value is a bytestring. I haven't seen specified what character encoding
         # is used when the Unicode storage type is not used, so we'll assume it's
         # ASCII or Latin-1 like but we'll use UTF-8 to cover the bases.
-        return value.decode("utf8")
+        return value.decode("utf8").rstrip("\x00")
 
 
 class UNICODE(VariableLengthValueLoader):
     @staticmethod
-    def load(value):
+    def load(value: bytes):
         # value is a bytestring. I haven't seen specified what character encoding
         # is used when the Unicode storage type is not used, so we'll assume it's
         # ASCII or Latin-1 like but we'll use UTF-8 to cover the bases.
-        return value.decode("utf16")
+        return value.decode("utf16").rstrip("\x00")
 
 
 # TODO: The other variable-length tag types are "CLSID", "OBJECT".
@@ -688,7 +700,7 @@ property_tags = {
     0x3616: ("DEFAULT_VIEW_ENTRYID", "BINARY"),
     0x3617: ("ASSOC_CONTENT_COUNT", "I4"),
     0x3700: ("ATTACHMENT_X400_PARAMETERS", "BINARY"),
-    0x3701: ("ATTACH_DATA_OBJ", "OBJECT"),
+    # 0x3701: ("ATTACH_DATA_OBJ", "OBJECT"),
     0x3701: ("ATTACH_DATA_BIN", "BINARY"),
     0x3702: ("ATTACH_ENCODING", "BINARY"),
     0x3703: ("ATTACH_EXTENSION", "STRING"),
@@ -834,23 +846,3 @@ property_tags = {
     0x3F07: ("CONTROL_ID", "BINARY"),
     0x3F08: ("INITIAL_DETAILS_PANE", "I4"),
 }
-
-
-# COMMAND-LINE ENTRY POINT
-
-
-if __name__ == "__main__":
-    # If no command-line arguments are given, convert the .msg
-    # file on STDIN to .eml format on STDOUT.
-    if len(sys.argv) <= 1:
-        print(load(sys.stdin), file=sys.stdout)
-
-    # Otherwise, for each file mentioned on the command-line,
-    # convert it and save it to a file with ".eml" appended
-    # to the name.
-    else:
-        for fn in sys.argv[1:]:
-            print(fn + "...")
-            msg = load(fn)
-            with open(fn + ".eml", "wb") as f:
-                f.write(msg.as_bytes())
