@@ -37,15 +37,15 @@ class EmlFactory:
         if len(received) == 0:
             return []
 
+        received = [self._normalize_received_date(r) for r in received]
         received.reverse()
+
         first = received[0]
         base_date = arrow.get(first.get("date", ""))
-
         for r in received:
-            normalized = self._normalize_received_date(r)
-            date = arrow.get(normalized.get("date", ""))
+            date = arrow.get(r.get("date", ""))
             delay = (date - base_date).seconds
-            normalized["delay"] = delay
+            r["delay"] = delay
             base_date = date
 
         return received
