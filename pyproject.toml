@@ -33,7 +33,7 @@ autopep8 = "^1.5.1"
 black = "^19.10b0"
 coveralls = "^2.0.0"
 flake8 = "^3.7.9"
-isort = "^4.3.21"
+isort = "^5.0.4"
 mypy = "^0.770"
 pre-commit = "^2.2.0"
 pytest = "^5.4.1"
@@ -42,10 +42,9 @@ pytest-cov = "^2.8.1"
 pytest-mock = "^3.1.0"
 pytest-randomly = "^3.3.1"
 pytest-timeout = "^1.3.4"
-pyupgrade = "^2.6.1"
+pyupgrade = "^2.6.2"
 respx = "^0.11.1"
-seed-isort-config = "^2.1.0"
-
+seed-isort-config = "^2.2.0"
 
 [tool.isort]
 force_grid_wrap = 0
