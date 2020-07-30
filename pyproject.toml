@@ -23,7 +23,7 @@ loguru = "^0.5.1"
 oletools = "^0.55.1"
 pydantic = "^1.6.1"
 python-multipart = "^0.0.5"
-uvicorn = "^0.11.6"
+uvicorn = "^0.11.7"
 dateparser = "^0.7.6"
 
 [tool.poetry.dev-dependencies]
@@ -36,7 +36,7 @@ flake8 = "^3.8.3"
 isort = "^5.1.3"
 mypy = "^0.782"
 pre-commit = "^2.6.0"
-pytest = "^5.4.3"
+pytest = "^6.0.0"
 pytest-asyncio = "^0.14.0"
 pytest-cov = "^2.10.0"
 pytest-mock = "^3.2.0"
@@ -44,7 +44,7 @@ pytest-parallel = "^0.1.0"
 pytest-randomly = "^3.4.1"
 pytest-sugar = "^0.9.4"
 pytest-timeout = "^1.4.2"
-pyupgrade = "^2.7.1"
+pyupgrade = "^2.7.2"
 respx = "^0.11.2"
 seed-isort-config = "^2.2.0"
 
@@ -55,6 +55,10 @@ known_third_party = ["aiospamc", "arrow", "async_timeout", "asynctest", "compoun
 line_length = 88
 multi_line_output = 3
 use_parentheses= true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = " --workers auto"
 
 [build-system]
 requires = ["poetry>=0.12"]
