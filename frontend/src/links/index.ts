@@ -1,6 +1,7 @@
 import { Link } from "@/types";
 
 import { AnyRun } from "./anyrun";
+import { Browserling } from "./browserling";
 import { Crtsh } from "./crtsh";
 import { EmailRep } from "./emailrep";
 import { HybridAnalysis } from "./hybridanalysis";
@@ -16,6 +17,7 @@ import {
 
 export const Links: Link[] = [
   new AnyRun(),
+  new Browserling(),
   new Crtsh(),
   new EmailRep(),
   new HybridAnalysis(),
