@@ -14,7 +14,7 @@ async-timeout = "^3.0.1"
 compoundfiles = "^0.3"
 compressed-rtf = "^1.0.6"
 eml_parser = {extras = ["filemagic"], version = "^1.14.0"}
-fastapi = "^0.59.0"
+fastapi = "^0.60.0"
 fastapi-utils = "^0.2.1"
 gunicorn = "^20.0.4"
 httpx = "^0.13.3"
