@@ -27,7 +27,7 @@
     "vue-markdown": "2.2.4",
     "vue-mixin-decorator": "1.2.0",
     "vue-property-decorator": "9.0.0",
-    "vue-router": "3.4.1"
+    "vue-router": "3.4.2"
   },
   "devDependencies": {
     "@types/highlight.js": "9.12.4",
