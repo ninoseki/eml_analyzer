@@ -1,0 +1,1313 @@
+{
+  "data": {
+    "requests": [
+      {
+        "request": {
+          "requestId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/",
+            "method": "GET",
+            "headers": {
+              "Upgrade-Insecure-Requests": "1",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "VeryHigh",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.345207,
+          "wallTime": 1598146371.203674,
+          "initiator": {
+            "type": "other"
+          },
+          "type": "Document",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 2024,
+          "dataLength": 4042,
+          "requestId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "type": "Document",
+          "response": {
+            "url": "http://rakuten-ia.com/",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Type": "text/html; charset=UTF-8",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "Set-Cookie": "__cfduid=d119bec6b0e8c631b943bdc18797d23941598146371; expires=Tue, 22-Sep-20 01:32:51 GMT; path=/; domain=.rakuten-ia.com; HttpOnly; SameSite=Lax",
+              "X-Frame-Options": "SAMEORIGIN",
+              "cf-request-id": "04ba8b76930000c2a457b03200000001",
+              "Vary": "Accept-Encoding",
+              "Server": "cloudflare",
+              "CF-RAY": "5c7115041bb2c2a4-FRA",
+              "Content-Encoding": "gzip"
+            },
+            "mimeType": "text/html",
+            "requestHeaders": {
+              "Host": "rakuten-ia.com",
+              "Connection": "keep-alive",
+              "Pragma": "no-cache",
+              "Cache-Control": "no-cache",
+              "Upgrade-Insecure-Requests": "1",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+              "Accept-Encoding": "gzip, deflate",
+              "Accept-Language": "en-US"
+            },
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 482,
+            "timing": {
+              "requestTime": 9360446.34566,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": 0.473,
+              "dnsEnd": 9.867,
+              "connectStart": 9.867,
+              "connectEnd": 15.017,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 15.07,
+              "sendEnd": 15.105,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 28.289
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "hash": "ca4cd26fdfe666a6da4b852f939c50b480e8748bf53524830762fe30ea50707b",
+          "size": 4042,
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.2",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+            "method": "GET",
+            "headers": {
+              "Referer": "http://rakuten-ia.com/",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "VeryHigh",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.377392,
+          "wallTime": 1598146371.235851,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/",
+            "lineNumber": 12
+          },
+          "type": "Stylesheet",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 5295,
+          "dataLength": 28004,
+          "requestId": "21414.2",
+          "type": "Stylesheet",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "X-Frame-Options": "SAMEORIGIN",
+              "ETag": "W/\"5f3ab77a-6d64\"",
+              "Vary": "Accept-Encoding",
+              "Content-Type": "text/css",
+              "Cache-Control": "max-age=7200, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115043bc8c2a4-FRA",
+              "cf-request-id": "04ba8b76a50000c2a457b04200000001",
+              "Expires": "Sun, 23 Aug 2020 03:32:51 GMT"
+            },
+            "mimeType": "text/css",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 470,
+            "timing": {
+              "requestTime": 9360446.377593,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": -1,
+              "dnsEnd": -1,
+              "connectStart": -1,
+              "connectEnd": -1,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 0.735,
+              "sendEnd": 0.766,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 7.57
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "hash": "ff5b724501640c081ba873f3d27b9f547b62ce5a4ef5d594ff630f00ba1eea7e",
+          "size": 28004,
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.3",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/scripts/zepto.min.js",
+            "method": "GET",
+            "headers": {
+              "Referer": "http://rakuten-ia.com/",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "High",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.377505,
+          "wallTime": 1598146371.235964,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/",
+            "lineNumber": 17
+          },
+          "type": "Script",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 9840,
+          "dataLength": 24975,
+          "requestId": "21414.3",
+          "type": "Script",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/scripts/zepto.min.js",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Vary": "Accept-Encoding",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "ETag": "W/\"5f3ab77a-618f\"",
+              "X-Frame-Options": "SAMEORIGIN",
+              "Content-Type": "application/javascript",
+              "Cache-Control": "max-age=172800, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115044907e00b-FRA",
+              "cf-request-id": "04ba8b76ac0000e00b8782d200000001",
+              "Expires": "Tue, 25 Aug 2020 01:32:51 GMT"
+            },
+            "mimeType": "application/javascript",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 486,
+            "timing": {
+              "requestTime": 9360446.377767,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": 0.422,
+              "dnsEnd": 0.429,
+              "connectStart": 0.429,
+              "connectEnd": 5.573,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 5.608,
+              "sendEnd": 5.664,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 22.696
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "hash": "cdb3d0c8bdaa4ff0e4808dd9f53c33f0898fd934c3df605368b82a92c88ec049",
+          "size": 24975,
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.4",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/scripts/cf.common.js",
+            "method": "GET",
+            "headers": {
+              "Referer": "http://rakuten-ia.com/",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "High",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.377599,
+          "wallTime": 1598146371.236058,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/",
+            "lineNumber": 18
+          },
+          "type": "Script",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 2488,
+          "dataLength": 4408,
+          "requestId": "21414.4",
+          "type": "Script",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/scripts/cf.common.js",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Vary": "Accept-Encoding",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "ETag": "W/\"5f3ab77a-1138\"",
+              "X-Frame-Options": "SAMEORIGIN",
+              "Content-Type": "application/javascript",
+              "Cache-Control": "max-age=172800, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115044d1d05e4-FRA",
+              "cf-request-id": "04ba8b76aa000005e481bf8200000001",
+              "Expires": "Tue, 25 Aug 2020 01:32:51 GMT"
+            },
+            "mimeType": "application/javascript",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 486,
+            "timing": {
+              "requestTime": 9360446.377908,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": 0.37,
+              "dnsEnd": 0.375,
+              "connectStart": 0.375,
+              "connectEnd": 5.536,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 5.56,
+              "sendEnd": 5.587,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 16.178
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "hash": "393c14162b5472e48358ba027ef7fc321d7761e6f4a86ea909b58ad9839177c4",
+          "size": 4408,
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.20",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/images/icon-exclamation.png?1376755637",
+            "method": "GET",
+            "headers": {
+              "Referer": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "Low",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.40964,
+          "wallTime": 1598146371.268098,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css"
+          },
+          "type": "Image",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 911,
+          "dataLength": 452,
+          "requestId": "21414.20",
+          "type": "Image",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/images/icon-exclamation.png?1376755637",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "X-Frame-Options": "SAMEORIGIN",
+              "ETag": "\"5f3ab77a-1c4\"",
+              "Vary": "Accept-Encoding",
+              "Content-Type": "image/png",
+              "Cache-Control": "max-age=7200, public",
+              "Connection": "keep-alive",
+              "Accept-Ranges": "bytes",
+              "CF-RAY": "5c7115046933e00b-FRA",
+              "Content-Length": "452",
+              "cf-request-id": "04ba8b76c50000e00b87832200000001",
+              "Expires": "Sun, 23 Aug 2020 03:32:51 GMT"
+            },
+            "mimeType": "image/png",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 459,
+            "timing": {
+              "requestTime": 9360446.409887,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": -1,
+              "dnsEnd": -1,
+              "connectStart": -1,
+              "connectEnd": -1,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 0.303,
+              "sendEnd": 0.341,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 6.925
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "hash": "f1591a5221136c49438642155691ae6c68e25b7241f3d7ebe975b09a77662016",
+          "size": 604,
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.8",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-300.woff",
+            "method": "GET",
+            "headers": {
+              "Origin": "http://rakuten-ia.com",
+              "Referer": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "VeryHigh",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.411132,
+          "wallTime": 1598146371.26959,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css"
+          },
+          "type": "Font",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 15153,
+          "dataLength": 15868,
+          "requestId": "21414.8",
+          "type": "Font",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-300.woff",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "X-Frame-Options": "SAMEORIGIN",
+              "ETag": "W/\"5f3ab77a-3dfc\"",
+              "Vary": "Accept-Encoding",
+              "Content-Type": "application/font-woff",
+              "Cache-Control": "max-age=7200, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115047d6505e4-FRA",
+              "cf-request-id": "04ba8b76c6000005e481bf9200000001",
+              "Expires": "Sun, 23 Aug 2020 03:32:51 GMT"
+            },
+            "mimeType": "application/font-woff",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 483,
+            "timing": {
+              "requestTime": 9360446.411399,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": -1,
+              "dnsEnd": -1,
+              "connectStart": -1,
+              "connectEnd": -1,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 0.251,
+              "sendEnd": 0.285,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 6.769
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.10",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-400.woff",
+            "method": "GET",
+            "headers": {
+              "Origin": "http://rakuten-ia.com",
+              "Referer": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "VeryHigh",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.411866,
+          "wallTime": 1598146371.270325,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css"
+          },
+          "type": "Font",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 15227,
+          "dataLength": 15936,
+          "requestId": "21414.10",
+          "type": "Font",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-400.woff",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "X-Frame-Options": "SAMEORIGIN",
+              "ETag": "W/\"5f3ab77a-3e40\"",
+              "Vary": "Accept-Encoding",
+              "Content-Type": "application/font-woff",
+              "Cache-Control": "max-age=7200, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115047bf2c2a4-FRA",
+              "cf-request-id": "04ba8b76c70000c2a457b0b200000001",
+              "Expires": "Sun, 23 Aug 2020 03:32:51 GMT"
+            },
+            "mimeType": "application/font-woff",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 483,
+            "timing": {
+              "requestTime": 9360446.412095,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": -1,
+              "dnsEnd": -1,
+              "connectStart": -1,
+              "connectEnd": -1,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 0.237,
+              "sendEnd": 0.27,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 6.775
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      },
+      {
+        "request": {
+          "requestId": "21414.12",
+          "loaderId": "FBBFF1BB5C51082D0C247C55CD138D96",
+          "documentURL": "http://rakuten-ia.com/",
+          "request": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-600.woff",
+            "method": "GET",
+            "headers": {
+              "Origin": "http://rakuten-ia.com",
+              "Referer": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+              "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            },
+            "mixedContentType": "none",
+            "initialPriority": "VeryHigh",
+            "referrerPolicy": "no-referrer-when-downgrade"
+          },
+          "timestamp": 9360446.412646,
+          "wallTime": 1598146371.271104,
+          "initiator": {
+            "type": "parser",
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css"
+          },
+          "type": "Font",
+          "frameId": "CF2B9C62484FDC896E4D53C3AACA7D22",
+          "hasUserGesture": false
+        },
+        "response": {
+          "encodedDataLength": 15347,
+          "dataLength": 16056,
+          "requestId": "21414.12",
+          "type": "Font",
+          "response": {
+            "url": "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-600.woff",
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "Date": "Sun, 23 Aug 2020 01:32:51 GMT",
+              "Content-Encoding": "gzip",
+              "Last-Modified": "Mon, 17 Aug 2020 16:59:38 GMT",
+              "Server": "cloudflare",
+              "X-Frame-Options": "SAMEORIGIN",
+              "ETag": "W/\"5f3ab77a-3eb8\"",
+              "Vary": "Accept-Encoding",
+              "Content-Type": "application/font-woff",
+              "Cache-Control": "max-age=7200, public",
+              "Transfer-Encoding": "chunked",
+              "Connection": "keep-alive",
+              "CF-RAY": "5c7115047943e00b-FRA",
+              "cf-request-id": "04ba8b76cc0000e00b87833200000001",
+              "Expires": "Sun, 23 Aug 2020 03:32:51 GMT"
+            },
+            "mimeType": "application/font-woff",
+            "remoteIPAddress": "[2606:4700:3031::6818:7bee]",
+            "remotePort": 80,
+            "fromPrefetchCache": false,
+            "encodedDataLength": 483,
+            "timing": {
+              "requestTime": 9360446.412931,
+              "proxyStart": -1,
+              "proxyEnd": -1,
+              "dnsStart": -1,
+              "dnsEnd": -1,
+              "connectStart": -1,
+              "connectEnd": -1,
+              "sslStart": -1,
+              "sslEnd": -1,
+              "workerStart": -1,
+              "workerReady": -1,
+              "sendStart": 4.476,
+              "sendEnd": 4.52,
+              "pushStart": 0,
+              "pushEnd": 0,
+              "receiveHeadersEnd": 11.332
+            },
+            "protocol": "http/1.1",
+            "securityState": "insecure",
+            "securityHeaders": [
+              {
+                "name": "X-Frame-Options",
+                "value": "SAMEORIGIN"
+              }
+            ]
+          },
+          "asn": {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          },
+          "geoip": {
+            "range": "",
+            "country": "US",
+            "region": "",
+            "city": "",
+            "ll": [37.751, -97.822],
+            "metro": 0,
+            "area": 100,
+            "eu": "0",
+            "timezone": "America/Chicago",
+            "country_name": "United States"
+          }
+        },
+        "initiatorInfo": {
+          "url": "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+          "host": "rakuten-ia.com",
+          "type": "parser"
+        }
+      }
+    ],
+    "cookies": [
+      {
+        "name": "__cfduid",
+        "value": "d119bec6b0e8c631b943bdc18797d23941598146371",
+        "domain": ".rakuten-ia.com",
+        "path": "/",
+        "expires": 1600738371.232418,
+        "size": 51,
+        "httpOnly": true,
+        "secure": false,
+        "session": false,
+        "sameSite": "Lax",
+        "priority": "Medium"
+      }
+    ],
+    "console": [],
+    "links": [
+      {
+        "href": "https://www.cloudflare.com/5xx-error-landing?utm_source=error_footer",
+        "text": "Cloudflare"
+      }
+    ],
+    "timing": {
+      "beginNavigation": "2020-08-23T01:32:51.203Z",
+      "frameStartedLoading": "2020-08-23T01:32:51.234Z",
+      "frameNavigated": "2020-08-23T01:32:51.235Z",
+      "domContentEventFired": "2020-08-23T01:32:51.272Z",
+      "loadEventFired": "2020-08-23T01:32:51.318Z",
+      "frameStoppedLoading": "2020-08-23T01:32:51.319Z"
+    },
+    "globals": [
+      {
+        "prop": "trustedTypes",
+        "type": "object"
+      },
+      {
+        "prop": "Zepto",
+        "type": "function"
+      },
+      {
+        "prop": "$",
+        "type": "function"
+      },
+      {
+        "prop": "Polyglot",
+        "type": "function"
+      },
+      {
+        "prop": "polyglot",
+        "type": "object"
+      },
+      {
+        "prop": "_cf_translation",
+        "type": "object"
+      }
+    ]
+  },
+  "stats": {
+    "resourceStats": [
+      {
+        "count": 3,
+        "size": 47860,
+        "encodedSize": 45727,
+        "latency": 0,
+        "countries": ["US"],
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "type": "Font",
+        "compression": "1.0",
+        "percentage": null
+      },
+      {
+        "count": 2,
+        "size": 29383,
+        "encodedSize": 12328,
+        "latency": 0,
+        "countries": ["US"],
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "type": "Script",
+        "compression": "2.4",
+        "percentage": null
+      },
+      {
+        "count": 1,
+        "size": 452,
+        "encodedSize": 911,
+        "latency": 0,
+        "countries": ["US"],
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "type": "Image",
+        "compression": "0.5",
+        "percentage": null
+      },
+      {
+        "count": 1,
+        "size": 28004,
+        "encodedSize": 5295,
+        "latency": 0,
+        "countries": ["US"],
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "type": "Stylesheet",
+        "compression": "5.3",
+        "percentage": null
+      },
+      {
+        "count": 1,
+        "size": 4042,
+        "encodedSize": 2024,
+        "latency": 0,
+        "countries": ["US"],
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "type": "Document",
+        "compression": "2.0",
+        "percentage": null
+      }
+    ],
+    "protocolStats": [
+      {
+        "count": 8,
+        "size": 109741,
+        "encodedSize": 66285,
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "countries": ["US"],
+        "securityState": {},
+        "protocol": "http/1.1"
+      }
+    ],
+    "tlsStats": [
+      {
+        "count": 8,
+        "size": 109741,
+        "encodedSize": 66285,
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "countries": ["US"],
+        "protocols": {},
+        "securityState": "insecure"
+      }
+    ],
+    "serverStats": [
+      {
+        "count": 8,
+        "size": 109741,
+        "encodedSize": 66285,
+        "ips": ["[2606:4700:3031::6818:7bee]"],
+        "countries": ["US"],
+        "server": "cloudflare"
+      }
+    ],
+    "domainStats": [
+      {
+        "count": 8,
+        "ips": ["2606:4700:3031::6818:7bee", "[2606:4700:3031::6818:7bee]"],
+        "domain": "rakuten-ia.com",
+        "size": 109741,
+        "encodedSize": 66285,
+        "countries": ["US"],
+        "index": 0,
+        "initiators": ["rakuten-ia.com"],
+        "redirects": 0
+      }
+    ],
+    "regDomainStats": [
+      {
+        "count": 8,
+        "ips": ["2606:4700:3031::6818:7bee", "[2606:4700:3031::6818:7bee]"],
+        "regDomain": "rakuten-ia.com",
+        "size": 109741,
+        "encodedSize": 66285,
+        "countries": [],
+        "index": 0,
+        "subDomains": [],
+        "redirects": 0
+      }
+    ],
+    "secureRequests": 0,
+    "securePercentage": 0,
+    "IPv6Percentage": 100,
+    "uniqCountries": 1,
+    "totalLinks": 1,
+    "malicious": 0,
+    "adBlocked": 0,
+    "ipStats": [
+      {
+        "requests": 8,
+        "domains": ["rakuten-ia.com"],
+        "ip": "2606:4700:3031::6818:7bee",
+        "asn": {
+          "ip": "2606:4700:3031::6818:7bee",
+          "asn": "13335",
+          "country": "US",
+          "registrar": "arin",
+          "date": "2010-07-14",
+          "description": "CLOUDFLARENET, US",
+          "route": "2606:4700:3031::/48",
+          "name": "CLOUDFLARENET"
+        },
+        "dns": {},
+        "geoip": {
+          "range": "",
+          "country": "US",
+          "region": "",
+          "city": "",
+          "ll": [37.751, -97.822],
+          "metro": 0,
+          "area": 100,
+          "eu": "0",
+          "timezone": "America/Chicago",
+          "country_name": "United States"
+        },
+        "size": 109741,
+        "encodedSize": 66285,
+        "countries": ["US", "US", "US", "US", "US", "US", "US", "US"],
+        "index": 0,
+        "ipv6": true,
+        "redirects": 0,
+        "count": null
+      }
+    ]
+  },
+  "meta": {
+    "processors": {
+      "rdns": {
+        "state": "done",
+        "data": []
+      },
+      "geoip": {
+        "state": "done",
+        "data": [
+          {
+            "ip": "2606:4700:3031::6818:7bee",
+            "geoip": {
+              "range": "",
+              "country": "US",
+              "region": "",
+              "city": "",
+              "ll": [37.751, -97.822],
+              "metro": 0,
+              "area": 100,
+              "eu": "0",
+              "timezone": "America/Chicago",
+              "country_name": "United States"
+            }
+          }
+        ]
+      },
+      "wappa": {
+        "state": "done",
+        "data": [
+          {
+            "app": "CloudFlare",
+            "confidence": [
+              {
+                "pattern": "headers server /^cloudflare$/i",
+                "confidence": 100
+              }
+            ],
+            "confidenceTotal": 100,
+            "icon": "CloudFlare.svg",
+            "website": "http://www.cloudflare.com",
+            "categories": [
+              {
+                "name": "CDN",
+                "priority": 9
+              }
+            ]
+          }
+        ]
+      },
+      "asn": {
+        "state": "done",
+        "data": [
+          {
+            "ip": "2606:4700:3031::6818:7bee",
+            "asn": "13335",
+            "country": "US",
+            "registrar": "arin",
+            "date": "2010-07-14",
+            "description": "CLOUDFLARENET, US",
+            "route": "2606:4700:3031::/48",
+            "name": "CLOUDFLARENET"
+          }
+        ]
+      },
+      "done": {
+        "state": "done",
+        "data": {
+          "state": "done"
+        }
+      }
+    }
+  },
+  "task": {
+    "uuid": "3db439ff-036f-409f-96d6-c28da55767f4",
+    "time": "2020-08-23T01:32:51.069Z",
+    "url": "http://rakuten-ia.com",
+    "visibility": "public",
+    "options": {
+      "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+    },
+    "method": "api",
+    "source": "c708bdbe",
+    "tags": [],
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+    "reportURL": "https://urlscan.io/result/3db439ff-036f-409f-96d6-c28da55767f4/",
+    "screenshotURL": "https://urlscan.io/screenshots/3db439ff-036f-409f-96d6-c28da55767f4.png",
+    "domURL": "https://urlscan.io/dom/3db439ff-036f-409f-96d6-c28da55767f4/"
+  },
+  "page": {
+    "url": "http://rakuten-ia.com/",
+    "domain": "rakuten-ia.com",
+    "country": "US",
+    "city": "",
+    "server": "cloudflare",
+    "ip": "2606:4700:3031::6818:7bee",
+    "asn": "AS13335",
+    "asnname": "CLOUDFLARENET, US"
+  },
+  "lists": {
+    "ips": ["2606:4700:3031::6818:7bee"],
+    "countries": ["US"],
+    "asns": ["13335"],
+    "domains": ["rakuten-ia.com"],
+    "servers": ["cloudflare"],
+    "urls": [
+      "http://rakuten-ia.com/",
+      "http://rakuten-ia.com/cdn-cgi/styles/cf.errors.css",
+      "http://rakuten-ia.com/cdn-cgi/scripts/zepto.min.js",
+      "http://rakuten-ia.com/cdn-cgi/scripts/cf.common.js",
+      "http://rakuten-ia.com/cdn-cgi/images/icon-exclamation.png?1376755637",
+      "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-300.woff",
+      "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-400.woff",
+      "http://rakuten-ia.com/cdn-cgi/styles/fonts/opensans-600.woff"
+    ],
+    "linkDomains": ["www.cloudflare.com"],
+    "certificates": [],
+    "hashes": [
+      "ca4cd26fdfe666a6da4b852f939c50b480e8748bf53524830762fe30ea50707b",
+      "ff5b724501640c081ba873f3d27b9f547b62ce5a4ef5d594ff630f00ba1eea7e",
+      "cdb3d0c8bdaa4ff0e4808dd9f53c33f0898fd934c3df605368b82a92c88ec049",
+      "393c14162b5472e48358ba027ef7fc321d7761e6f4a86ea909b58ad9839177c4",
+      "f1591a5221136c49438642155691ae6c68e25b7241f3d7ebe975b09a77662016"
+    ]
+  },
+  "verdicts": {
+    "overall": {
+      "score": 100,
+      "categories": ["phishing"],
+      "brands": ["generic cloudflare"],
+      "tags": ["phishing"],
+      "malicious": true,
+      "hasVerdicts": 100
+    },
+    "urlscan": {
+      "score": 100,
+      "categories": ["phishing"],
+      "brands": [
+        {
+          "key": "genericcloudflare",
+          "name": "Generic CloudFlare",
+          "country": ["us"],
+          "vertical": ["Online"]
+        }
+      ],
+      "tags": ["phishing"],
+      "detectionDetails": [],
+      "malicious": true
+    },
+    "engines": {
+      "score": 0,
+      "malicious": [],
+      "benign": [],
+      "maliciousTotal": 0,
+      "benignTotal": 0,
+      "verdicts": [],
+      "enginesTotal": 0
+    },
+    "community": {
+      "score": 0,
+      "votes": [],
+      "votesTotal": 0,
+      "votesMalicious": 0,
+      "votesBenign": 0,
+      "tags": [],
+      "categories": []
+    },
+    "raw": [
+      null,
+      {
+        "key": "genericcloudflare",
+        "name": "Generic CloudFlare",
+        "country": ["us"],
+        "vertical": ["Online"]
+      }
+    ]
+  }
+}

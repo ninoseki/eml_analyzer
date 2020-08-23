@@ -7,7 +7,7 @@ import { EmailRep } from "./emailrep";
 import { HybridAnalysis } from "./hybridanalysis";
 import { SecurityTrails } from "./securitytrails";
 import { Shodan } from "./shodan";
-import { UrlscanForDomain, UrlscanForIP } from "./urlscan";
+import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from "./urlscan";
 import {
   VirusTotalForDomain,
   VirusTotalForIP,
@@ -25,6 +25,7 @@ export const Links: Link[] = [
   new Shodan(),
   new UrlscanForDomain(),
   new UrlscanForIP(),
+  new UrlscanForURL(),
   new VirusTotalForDomain(),
   new VirusTotalForIP(),
   new VirusTotalForSHA256(),

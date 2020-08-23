@@ -8,11 +8,13 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 aiofiles = "^0.5.0"
+aiometer = "^0.2.1"
 aiospamc = "^0.6.1"
 arrow = "^0.15.7"
 async-timeout = "^3.0.1"
 compoundfiles = "^0.3"
 compressed-rtf = "^1.0.6"
+dateparser = "^0.7.6"
 eml_parser = {extras = ["filemagic"], version = "^1.14.0"}
 fastapi = "^0.60.0"
 fastapi-utils = "^0.2.1"
@@ -24,7 +26,6 @@ oletools = "^0.55.1"
 pydantic = "^1.6.1"
 python-multipart = "^0.0.5"
 uvicorn = "^0.11.7"
-dateparser = "^0.7.6"
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
@@ -51,7 +52,7 @@ seed-isort-config = "^2.2.0"
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette"]
+known_third_party = ["aiometer", "aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette"]
 line_length = 88
 multi_line_output = 3
 use_parentheses= true

@@ -19,6 +19,18 @@ class Urlscan implements Link {
   }
 }
 
+export class UrlscanForURL extends Urlscan {
+  public constructor() {
+    super();
+    this.type = "url";
+  }
+
+  public href(value: string): string {
+    const query = encodeURIComponent(`task.url:"${value}"`);
+    return buildURL(this.baseURL, `/search/#${query}`);
+  }
+}
+
 export class UrlscanForDomain extends Urlscan {
   public constructor() {
     super();

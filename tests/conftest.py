@@ -69,6 +69,16 @@ def emailrep_response() -> str:
 
 
 @pytest.fixture
+def urlscan_search_response() -> str:
+    return read_file("urlscan_search.json")
+
+
+@pytest.fixture
+def urlscan_result_response() -> str:
+    return read_file("urlscan_result.json")
+
+
+@pytest.fixture
 def encrypted_docx() -> bytes:
     return read_file_as_binary("encrypted.docx")
 
