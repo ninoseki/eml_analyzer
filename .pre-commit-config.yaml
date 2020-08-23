@@ -22,7 +22,7 @@ repos:
       - id: seed-isort-config
 
   - repo: https://github.com/timothycrosley/isort
-    rev: 5.2.1
+    rev: 5.4.2
     hooks:
       - id: isort
         additional_dependencies: [toml]
