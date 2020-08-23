@@ -8,6 +8,17 @@ version = "0.5.0"
 
 [[package]]
 category = "main"
+description = "A Python concurrency scheduling library, compatible with asyncio and trio"
+name = "aiometer"
+optional = false
+python-versions = ">=3.7"
+version = "0.2.1"
+
+[package.dependencies]
+anyio = ">=1.0.0,<2.0.0"
+
+[[package]]
+category = "main"
 description = "An asyncio-based library to communicate with SpamAssassin's SPAMD service."
 name = "aiospamc"
 optional = false
@@ -16,6 +27,25 @@ version = "0.6.1"
 
 [package.dependencies]
 certifi = ">=2019.9,<2020.0"
+
+[[package]]
+category = "main"
+description = "High level compatibility layer for multiple asynchronous event loop implementations"
+name = "anyio"
+optional = false
+python-versions = ">=3.5.3"
+version = "1.4.0"
+
+[package.dependencies]
+async-generator = "*"
+idna = ">=2.8"
+sniffio = ">=1.1"
+
+[package.extras]
+curio = ["curio (>=0.9)"]
+doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["coverage (>=4.5)", "hypothesis (>=4.0)", "pytest (>=3.7.2)", "uvloop"]
+trio = ["trio (>=0.12)"]
 
 [[package]]
 category = "dev"
@@ -46,6 +76,14 @@ version = "2.1.1"
 
 [package.dependencies]
 cached-property = "*"
+
+[[package]]
+category = "main"
+description = "Async generators and context managers for Python 3.5+"
+name = "async-generator"
+optional = false
+python-versions = ">=3.5"
+version = "1.10"
 
 [[package]]
 category = "main"
@@ -1186,7 +1224,7 @@ version = "1.0.1"
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [metadata]
-content-hash = "fd4d780d18f817335c00d408cef0326dd626ae224ef93e34d2ca2455196bea86"
+content-hash = "e815ff7c2609c116929df5fcf0526efc8d3a225faf7a0a1800fdf280f50549b6"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1194,9 +1232,17 @@ aiofiles = [
     {file = "aiofiles-0.5.0-py3-none-any.whl", hash = "sha256:377fdf7815cc611870c59cbd07b68b180841d2a2b79812d8c218be02448c2acb"},
     {file = "aiofiles-0.5.0.tar.gz", hash = "sha256:98e6bcfd1b50f97db4980e182ddd509b7cc35909e903a8fe50d8849e02d815af"},
 ]
+aiometer = [
+    {file = "aiometer-0.2.1-py3-none-any.whl", hash = "sha256:6a6d9181032d4173d94a38f4bfe9dffa43874665c73f41539af4ae7147679cef"},
+    {file = "aiometer-0.2.1.tar.gz", hash = "sha256:379e4e5a01f4c4b9bc3200cd93cd17e9bbcd791d404a312eb331e47f7011fd53"},
+]
 aiospamc = [
     {file = "aiospamc-0.6.1-py3-none-any.whl", hash = "sha256:63b7d213d6af01058b855ddcde2147485ea4e685d6d13ee682ad12cb1fa87ca6"},
     {file = "aiospamc-0.6.1.tar.gz", hash = "sha256:4923bf3d1bf5a07151a3a9ea8be7862d9dcdef37a858035668ad1c726b7b98c1"},
+]
+anyio = [
+    {file = "anyio-1.4.0-py3-none-any.whl", hash = "sha256:9ee67e8131853f42957e214d4531cee6f2b66dda164a298d9686a768b7161a4f"},
+    {file = "anyio-1.4.0.tar.gz", hash = "sha256:95f60964fc4583f3f226f8dc275dfb02aefe7b39b85a999c6d14f4ec5323c1d8"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1209,6 +1255,10 @@ arrow = [
 "aspy.refactor-imports" = [
     {file = "aspy.refactor_imports-2.1.1-py2.py3-none-any.whl", hash = "sha256:9df76bf19ef81620068b785a386740ab3c8939fcbdcebf20c4a4e0057230d782"},
     {file = "aspy.refactor_imports-2.1.1.tar.gz", hash = "sha256:eec8d1a73bedf64ffb8b589ad919a030c1fb14acf7d1ce0ab192f6eedae895c5"},
+]
+async-generator = [
+    {file = "async_generator-1.10-py3-none-any.whl", hash = "sha256:01c7bf666359b4967d2cda0000cc2e4af16a0ae098cbffcb8472fb9e8ad6585b"},
+    {file = "async_generator-1.10.tar.gz", hash = "sha256:6ebb3d106c12920aaae42ccb6f787ef5eefdcdd166ea3d628fa8476abe712144"},
 ]
 async-timeout = [
     {file = "async-timeout-3.0.1.tar.gz", hash = "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f"},
