@@ -1,4 +1,4 @@
-import { UrlscanForDomain, UrlscanForIP } from "@/links/urlscan";
+import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from "@/links/urlscan";
 
 describe("Urlscan for ip address", function () {
   const subject = new UrlscanForIP();
@@ -31,6 +31,25 @@ describe("Urlscan for domain", function () {
       const value = "example.com";
       expect(subject.href(value)).toEqual(
         "https://urlscan.io/domain/example.com"
+      );
+    });
+  });
+});
+
+describe("Urlscan for URL", function () {
+  const subject = new UrlscanForURL();
+
+  describe("#type", function () {
+    it("equals to domain", function () {
+      expect(subject.type).toEqual("url");
+    });
+  });
+
+  describe("#href", function () {
+    it("returns URL", function () {
+      const value = "http://example.com";
+      expect(subject.href(value)).toEqual(
+        "https://urlscan.io/search/#task.url%3A%22http%3A%2F%2Fexample.com%22"
       );
     });
   });
