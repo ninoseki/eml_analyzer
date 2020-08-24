@@ -26,6 +26,7 @@ oletools = "^0.55.1"
 pydantic = "^1.6.1"
 python-multipart = "^0.0.5"
 uvicorn = "^0.11.7"
+vt-py = "^0.5.4"
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
@@ -48,11 +49,12 @@ pytest-timeout = "^1.4.2"
 pyupgrade = "^2.7.2"
 respx = "^0.11.2"
 seed-isort-config = "^2.2.0"
+vcrpy = "^4.1.0"
 
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["aiometer", "aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette"]
+known_third_party = ["aiometer", "aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette", "vcr", "vt"]
 line_length = 88
 multi_line_output = 3
 use_parentheses= true
