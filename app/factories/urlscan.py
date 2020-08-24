@@ -88,7 +88,7 @@ class UrlscanVerdictFactory:
                 details=[
                     Detail(
                         key="benign",
-                        description="There is no suspicous urls in bodies.",
+                        description="There is no malicious URL in bodies.",
                     )
                 ],
             )
