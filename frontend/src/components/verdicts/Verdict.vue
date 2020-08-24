@@ -7,9 +7,11 @@
       has-icon
     >
       <div v-if="hasDetails">
-        <li v-for="detail in verdict.details" v-bind:key="detail.description">
-          {{ detail.description }} (score: {{ detail.score || "N/A" }})
-        </li>
+        <DetailComponent
+          v-for="detail in verdict.details"
+          v-bind:detail="detail"
+          v-bind:key="detail.key"
+        />
       </div>
       <div v-else>N/A</div>
     </b-message>
@@ -19,9 +21,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import DetailComponent from "@/components/verdicts/Detail.vue";
 import { Verdict } from "@/types";
 
-@Component
+@Component({
+  components: {
+    DetailComponent,
+  },
+})
 export default class VerdictComponent extends Vue {
   @Prop() private verdict!: Verdict;
 

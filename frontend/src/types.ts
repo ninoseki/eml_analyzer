@@ -76,6 +76,7 @@ export interface Detail {
   key: string;
   score: number | undefined;
   description: string;
+  referenceLink: string | undefined;
 }
 
 export interface Verdict {

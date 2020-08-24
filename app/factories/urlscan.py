@@ -17,12 +17,12 @@ class UrlscanVerdict:
     url: str
 
     @property
-    def link(self) -> str:
-        return f"https://urlscan.io/result/{self.uuid}"
+    def reference_link(self) -> str:
+        return f"https://urlscan.io/result/{self.uuid}/"
 
     @property
     def description(self) -> str:
-        return f"{self.url}({self.link}) is malicious."
+        return f"{self.url} is malicious."
 
 
 async def bulk_get_results(uuids: List[str]) -> List[dict]:
@@ -96,7 +96,10 @@ class UrlscanVerdictFactory:
         details: List[Detail] = []
         details = [
             Detail(
-                key=verdict.url, score=verdict.score, description=verdict.description
+                key=verdict.url,
+                score=verdict.score,
+                description=verdict.description,
+                reference_link=verdict.reference_link,
             )
             for verdict in malicious_verdicts
         ]

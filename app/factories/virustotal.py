@@ -16,7 +16,7 @@ class VirusTotalVerdict:
     sha256: str
 
     @property
-    def link(self) -> str:
+    def reference_link(self) -> str:
         return f"https://www.virustotal.com/gui/file/{self.sha256}/detection"
 
     @property
@@ -91,6 +91,7 @@ class VirusTotalVerdictFactory:
                 key=verdict.sha256,
                 score=verdict.malicious,
                 description=verdict.description,
+                reference_link=verdict.reference_link,
             )
             for verdict in malicious_verdicts
         ]
