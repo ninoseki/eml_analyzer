@@ -33,7 +33,7 @@ async def get_file(client: vt.Client, sha256: str) -> Optional[vt.Object]:
 
 
 async def bulk_get_files(sha256s: List[str]) -> List[vt.Object]:
-    if VIRUSTOTAL_API_KEY == "":
+    if str(VIRUSTOTAL_API_KEY) == "":
         return []
 
     if len(sha256s) == 0:
@@ -47,7 +47,7 @@ async def bulk_get_files(sha256s: List[str]) -> List[vt.Object]:
 
 
 async def get_virustotal_verdicts(sha256s: List[str]) -> List[VirusTotalVerdict]:
-    if VIRUSTOTAL_API_KEY == "":
+    if str(VIRUSTOTAL_API_KEY) == "":
         return []
 
     files = await bulk_get_files(sha256s)
