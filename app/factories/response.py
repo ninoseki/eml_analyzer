@@ -3,6 +3,7 @@ from typing import List
 
 import aiometer
 
+from app.core.settings import URLSCAN_API_KEY, VIRUSTOTAL_API_KEY
 from app.factories.eml import EmlFactory
 from app.factories.oldid import OleIDVerdictFactory
 from app.factories.spamassassin import SpamAssassinVerdictFactory
@@ -27,6 +28,14 @@ def aggregate_sha256s_from_attachments(attachments: List[Attachment]) -> List[st
     return sha256s
 
 
+def has_urlscan_api_key() -> bool:
+    return str(URLSCAN_API_KEY) != ""
+
+
+def has_virustotal_api_key() -> bool:
+    return str(VIRUSTOTAL_API_KEY) != ""
+
+
 class ResponseFactory:
     def __init__(self, eml_file: bytes):
         self.eml_file = eml_file
@@ -37,14 +46,17 @@ class ResponseFactory:
         sha256s = aggregate_sha256s_from_attachments(eml.attachments)
 
         verdicts: List[Verdict] = []
-        # Add SpamAsassin and urlscan verdicts
-        verdicts = await aiometer.run_all(
-            [
-                partial(SpamAssassinVerdictFactory.from_bytes, self.eml_file),
-                partial(UrlscanVerdictFactory.from_urls, urls),
-                partial(VirusTotalVerdictFactory.from_sha256s, sha256s),
-            ]
-        )
+
+        async_tasks = [
+            partial(SpamAssassinVerdictFactory.from_bytes, self.eml_file),
+        ]
+        if has_urlscan_api_key():
+            async_tasks.append(partial(UrlscanVerdictFactory.from_urls, urls))
+        if has_virustotal_api_key():
+            async_tasks.append(partial(VirusTotalVerdictFactory.from_sha256s, sha256s))
+
+        # Add SpamAsassin, urlscan, virustotal verdicts
+        verdicts = await aiometer.run_all(async_tasks)
         # Add OleID verdict
         verdicts.append(OleIDVerdictFactory.from_attachments(eml.attachments))
         # Add VT verdict
