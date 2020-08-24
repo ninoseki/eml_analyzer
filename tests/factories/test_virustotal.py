@@ -1,7 +1,7 @@
 import pytest
 import vcr
 
-from app.factories.virustotal import VirusTotalVerdictFactory
+from app.factories.virustotal import VirusTotalVerdict, VirusTotalVerdictFactory
 
 
 @pytest.mark.asyncio
@@ -24,3 +24,8 @@ async def test_virustotal_with_non_malicious_file():
         ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
     )
     assert verdict.malicious is False
+
+
+def test_virustotal_verdict():
+    verdict = VirusTotalVerdict(malicious=True, sha256="foo")
+    assert verdict.reference_link == "https://www.virustotal.com/gui/file/foo/detection"

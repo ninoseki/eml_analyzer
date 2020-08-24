@@ -7,6 +7,7 @@ class Detail(APIModel):
     key: str
     score: Optional[Union[float, int]]
     description: str
+    reference_link: Optional[str]
 
 
 class Verdict(APIModel):
