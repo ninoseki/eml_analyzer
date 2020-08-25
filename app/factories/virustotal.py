@@ -80,7 +80,8 @@ class VirusTotalVerdictFactory:
                 malicious=False,
                 details=[
                     Detail(
-                        key="benign", description="There is no malicious attachment.",
+                        key="benign",
+                        description="There is no malicious attachment or VirusTotal doesn't have information about the attachments.",
                     )
                 ],
             )
