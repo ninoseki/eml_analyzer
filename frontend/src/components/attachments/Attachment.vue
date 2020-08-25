@@ -1,5 +1,5 @@
 <template>
-  <div class="table-container">
+  <div>
     <nav class="navbar">
       <div class="navbar-brand">
         <h3 class="is-size-5 has-text-weight-bold">
@@ -12,28 +12,30 @@
         </div>
       </div>
     </nav>
-    <table class="table is-fullwidth">
-      <tbody>
-        <tr>
-          <th>Filename</th>
-          <td>{{ attachment.filename }}</td>
-        </tr>
-        <tr>
-          <th>Size</th>
-          <td>{{ filesize }}</td>
-        </tr>
-        <tr>
-          <th>MIME type</th>
-          <td>{{ attachment.mimeType || "N/A" }}</td>
-        </tr>
-        <tr>
-          <th>Hash</th>
-          <td>
-            <Indicators v-bind:type="sha256Type" v-bind:values="values" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <tbody>
+          <tr>
+            <th>Filename</th>
+            <td>{{ attachment.filename }}</td>
+          </tr>
+          <tr>
+            <th>Size</th>
+            <td>{{ filesize }}</td>
+          </tr>
+          <tr>
+            <th>MIME type</th>
+            <td>{{ attachment.mimeType || "N/A" }}</td>
+          </tr>
+          <tr>
+            <th>Hash</th>
+            <td>
+              <Indicators v-bind:type="sha256Type" v-bind:values="values" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
