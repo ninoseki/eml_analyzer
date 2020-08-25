@@ -1,0 +1,36 @@
+from typing import Optional, cast
+
+from httpx._client import AsyncClient
+from httpx._exceptions import HTTPError
+
+from app.core.resources import httpx_client
+from app.core.settings import INQUEST_API_KEY
+
+
+class InQuest:
+    HOST = "labs.inquest.net"
+    BASE_URL = f"https://{HOST}/api"
+
+    def __init__(
+        self, client: AsyncClient = httpx_client, api_key: str = str(INQUEST_API_KEY)
+    ):
+        self.client = client
+        self.api_key = api_key
+
+    def _url_for(self, path: str) -> str:
+        return f"{self.BASE_URL}{path}"
+
+    def _headers(self) -> dict:
+        return {"Authorization": f"Basic: {self.api_key}"}
+
+    async def dfi_details(self, sha256: str) -> Optional[dict]:
+        try:
+            r = await self.client.get(
+                self._url_for("/dfi/details"),
+                params={"sha256": sha256},
+                headers=self._headers(),
+            )
+            r.raise_for_status()
+            return cast(dict, r.json())
+        except HTTPError:
+            return None

@@ -12,7 +12,7 @@ class Urlscan:
     BASE_URL = f"https://{HOST}/api/{VERSION}"
 
     def __init__(self, client=httpx_client):
-        self.client = httpx_client
+        self.client = client
 
     def _url_for(self, path: str) -> str:
         return f"{self.BASE_URL}{path}"
