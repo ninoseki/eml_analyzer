@@ -39,11 +39,11 @@ async def bulk_get_files(sha256s: List[str]) -> List[vt.Object]:
     if len(sha256s) == 0:
         return []
 
-    client = vt.Client(str(VIRUSTOTAL_API_KEY))
-    files = await aiometer.run_all(
-        [partial(get_file, client, sha256) for sha256 in sha256s]
-    )
-    return [file_ for file_ in files if file_ is not None]
+    async with vt.Client(str(VIRUSTOTAL_API_KEY)) as client:
+        files = await aiometer.run_all(
+            [partial(get_file, client, sha256) for sha256 in sha256s]
+        )
+        return [file_ for file_ in files if file_ is not None]
 
 
 async def get_virustotal_verdicts(sha256s: List[str]) -> List[VirusTotalVerdict]:
