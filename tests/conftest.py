@@ -79,6 +79,11 @@ def urlscan_result_response() -> str:
 
 
 @pytest.fixture
+def inquest_dfi_details_response() -> str:
+    return read_file("inquest_dfi_details.json")
+
+
+@pytest.fixture
 def encrypted_docx() -> bytes:
     return read_file_as_binary("encrypted.docx")
 

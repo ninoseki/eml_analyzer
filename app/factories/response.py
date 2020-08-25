@@ -3,8 +3,9 @@ from typing import List
 
 import aiometer
 
-from app.core.settings import URLSCAN_API_KEY, VIRUSTOTAL_API_KEY
+from app.core.settings import INQUEST_API_KEY, URLSCAN_API_KEY, VIRUSTOTAL_API_KEY
 from app.factories.eml import EmlFactory
+from app.factories.inquest import InQuestVerdictFactory
 from app.factories.oldid import OleIDVerdictFactory
 from app.factories.spamassassin import SpamAssassinVerdictFactory
 from app.factories.urlscan import UrlscanVerdictFactory
@@ -36,6 +37,10 @@ def has_virustotal_api_key() -> bool:
     return str(VIRUSTOTAL_API_KEY) != ""
 
 
+def has_inquest_api_key() -> bool:
+    return str(INQUEST_API_KEY) != ""
+
+
 class ResponseFactory:
     def __init__(self, eml_file: bytes):
         self.eml_file = eml_file
@@ -54,6 +59,8 @@ class ResponseFactory:
             async_tasks.append(partial(UrlscanVerdictFactory.from_urls, urls))
         if has_virustotal_api_key():
             async_tasks.append(partial(VirusTotalVerdictFactory.from_sha256s, sha256s))
+        if has_inquest_api_key():
+            async_tasks.append(partial(InQuestVerdictFactory.from_sha256s, sha256s))
 
         # Add SpamAsassin, urlscan, virustotal verdicts
         verdicts = await aiometer.run_all(async_tasks)

@@ -21,3 +21,5 @@ SPAMASSASSIN_TIMEOUT: int = config("SPAMASSASSIN_TIMEOUT", cast=int, default=10)
 URLSCAN_API_KEY: Secret = config("URLSCAN_API_KEY", cast=Secret, default="")
 
 VIRUSTOTAL_API_KEY: Secret = config("VIRUSTOTAL_API_KEY", cast=Secret, default="")
+
+INQUEST_API_KEY: Secret = config("INQUEST_API_KEY", cast=Secret, default="")
