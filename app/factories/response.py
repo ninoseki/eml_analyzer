@@ -3,7 +3,11 @@ from typing import List
 
 import aiometer
 
-from app.core.settings import INQUEST_API_KEY, URLSCAN_API_KEY, VIRUSTOTAL_API_KEY
+from app.core.utils import (
+    has_inquest_api_key,
+    has_urlscan_api_key,
+    has_virustotal_api_key,
+)
 from app.factories.eml import EmlFactory
 from app.factories.inquest import InQuestVerdictFactory
 from app.factories.oldid import OleIDVerdictFactory
@@ -27,18 +31,6 @@ def aggregate_sha256s_from_attachments(attachments: List[Attachment]) -> List[st
     for attachment in attachments:
         sha256s.append(attachment.hash_.sha256)
     return sha256s
-
-
-def has_urlscan_api_key() -> bool:
-    return str(URLSCAN_API_KEY) != ""
-
-
-def has_virustotal_api_key() -> bool:
-    return str(VIRUSTOTAL_API_KEY) != ""
-
-
-def has_inquest_api_key() -> bool:
-    return str(INQUEST_API_KEY) != ""
 
 
 class ResponseFactory:

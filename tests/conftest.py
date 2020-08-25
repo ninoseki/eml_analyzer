@@ -9,6 +9,8 @@ from aiospamc.header_values import SpamValue
 from aiospamc.responses import Response
 
 from app import create_app
+from app.factories.eml import EmlFactory
+from app.schemas.eml import Attachment
 
 
 def read_file(filename) -> str:
@@ -84,6 +86,11 @@ def inquest_dfi_details_response() -> str:
 
 
 @pytest.fixture
+def inquest_dfi_upload_response() -> str:
+    return read_file("inquest_dfi_upload.json")
+
+
+@pytest.fixture
 def encrypted_docx() -> bytes:
     return read_file_as_binary("encrypted.docx")
 
@@ -96,6 +103,12 @@ def xls_with_macro() -> bytes:
 @pytest.fixture
 def complete_msg() -> bytes:
     return read_file_as_binary("complete.msg")
+
+
+@pytest.fixture
+def docx_attachment(encrypted_docx_eml: bytes) -> Attachment:
+    eml = EmlFactory.from_bytes(encrypted_docx_eml)
+    return eml.attachments[0]
 
 
 @pytest.fixture

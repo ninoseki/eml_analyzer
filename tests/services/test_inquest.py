@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import pytest
 import respx
 
@@ -33,3 +35,22 @@ async def test_dfi_details_with_eicar():
     api = InQuest()
     res = await api.dfi_details(sha256)
     assert res is None
+
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_dfi_upload(encrypted_docx: bytes, inquest_dfi_upload_response: str):
+    respx.post(
+        "https://labs.inquest.net/api/dfi/upload", content=inquest_dfi_upload_response
+    )
+
+    file_ = BytesIO(encrypted_docx)
+    file_.name = "encrypted.docx"
+
+    api = InQuest()
+    res = await api.dfi_upload(file_)
+    assert res is not None
+    assert (
+        res.get("data", "")
+        == "539e4557975be726d0fc8d7813dba5470dd703272957b4476296f976b5678900"
+    )

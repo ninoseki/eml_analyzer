@@ -4,8 +4,8 @@ import vcr
 from app.factories.virustotal import VirusTotalVerdict, VirusTotalVerdictFactory
 
 
-@pytest.mark.asyncio
 @vcr.use_cassette("tests/fixtures/vcr_cassettes/vt.yaml", filter_headers=["x-apikey"])
+@pytest.mark.asyncio
 async def test_virustotal():
     # eicar file
     verdict = await VirusTotalVerdictFactory.from_sha256s(
