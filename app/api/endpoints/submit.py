@@ -26,6 +26,15 @@ async def submit_to_inquest(attachment: Attachment) -> SubmissionResult:
             status_code=403,
             content=jsonable_encoder({"detail": "You don't have the InQuest API key"}),
         )
+    # check ext type
+    valid_types = ["doc", "docx", "ppt", "pptx", "xls", "xlsx"]
+    if attachment.extension not in valid_types:
+        return JSONResponse(
+            status_code=415,
+            content=jsonable_encoder(
+                {"detail": f"{attachment.extension} is not supported."}
+            ),
+        )
 
     submitter = InQuestSubmitter(attachment)
     try:
