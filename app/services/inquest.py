@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import Optional, cast
 
 from httpx._client import AsyncClient
@@ -34,3 +35,12 @@ class InQuest:
             return cast(dict, r.json())
         except HTTPError:
             return None
+
+    async def dfi_upload(self, file_: BytesIO) -> dict:
+        files = {"file": file_}
+
+        r = await self.client.post(
+            self._url_for("/dfi/upload"), files=files, headers=self._headers(),
+        )
+        r.raise_for_status()
+        return cast(dict, r.json())

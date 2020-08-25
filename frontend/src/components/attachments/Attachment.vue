@@ -1,6 +1,17 @@
 <template>
   <div class="table-container">
-    <H3>{{ header }}</H3>
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <h3 class="is-size-5 has-text-weight-bold">
+          {{ header }}
+        </h3>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <Submitters v-bind:type="sha256Type" v-bind:value="attachment" />
+        </div>
+      </div>
+    </nav>
     <table class="table is-fullwidth">
       <tbody>
         <tr>
@@ -31,11 +42,12 @@ import fileSize from "filesize.js";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import Indicators from "@/components/indicators/Indicators.vue";
+import Submitters from "@/components/submitters/Submitters.vue";
 import H3 from "@/components/ui/h3.vue";
 import { Attachment } from "@/types";
 
 @Component({
-  components: { Indicators, H3 },
+  components: { Indicators, H3, Submitters },
 })
 export default class AttachmentComponent extends Vue {
   @Prop() private attachment!: Attachment;

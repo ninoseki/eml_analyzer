@@ -91,6 +91,11 @@ export interface Response {
   verdicts: Verdict[];
 }
 
+export interface SubmissionResult {
+  referenceUrl: string;
+  status: string | undefined;
+}
+
 export interface ValidationError {
   loc: string[];
   msg: string;
@@ -126,4 +131,13 @@ export interface Link {
   baseURL: string;
   favicon: string;
   href(hostname: string): string;
+}
+
+export type SubmitType = "sha256";
+
+export interface Submitter {
+  name: string;
+  type: SubmitType;
+  favicon: string;
+  submit(attachment: Attachment): Promise<SubmissionResult>;
 }
