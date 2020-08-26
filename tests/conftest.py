@@ -106,6 +106,11 @@ def complete_msg() -> bytes:
 
 
 @pytest.fixture
+def test_html() -> str:
+    return read_file("test.html")
+
+
+@pytest.fixture
 def docx_attachment(encrypted_docx_eml: bytes) -> Attachment:
     eml = EmlFactory.from_bytes(encrypted_docx_eml)
     return eml.attachments[0]

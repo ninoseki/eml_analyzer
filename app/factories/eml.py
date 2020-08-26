@@ -4,14 +4,10 @@ from typing import Any, Dict, List
 import arrow
 import dateparser
 from eml_parser import EmlParser
-from ioc_finder import (
-    parse_domain_names,
-    parse_email_addresses,
-    parse_ipv4_addresses,
-    parse_urls,
-)
+from ioc_finder import parse_domain_names, parse_email_addresses, parse_ipv4_addresses
 
 from app.schemas.eml import Eml
+from app.services.extractor import parse_urls_from_body
 from app.services.outlookmsgfile import Message
 from app.services.validator import is_eml_file
 
@@ -59,12 +55,12 @@ class EmlFactory:
 
         received = header.get("received", [])
         header["received"] = self._normalize_received(received)
-
         self.parsed["header"] = header
 
     def _normalize_body(self, body: Dict[str, Any]) -> Dict[str, Any]:
         content = body.get("content", "")
-        body["urls"] = parse_urls(content, parse_urls_without_scheme=False)
+        content_type = body.get("content_type", "")
+        body["urls"] = parse_urls_from_body(content, content_type)
         body["emails"] = parse_email_addresses(content)
         body["domains"] = parse_domain_names(content)
         body["ip_addresses"] = parse_ipv4_addresses(content)
