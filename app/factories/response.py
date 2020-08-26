@@ -23,14 +23,14 @@ def aggregate_urls_from_bodies(bodies: List[Body]) -> List[str]:
     urls: List[str] = []
     for body in bodies:
         urls.extend(body.urls)
-    return urls
+    return list(set(urls))
 
 
 def aggregate_sha256s_from_attachments(attachments: List[Attachment]) -> List[str]:
     sha256s: List[str] = []
     for attachment in attachments:
         sha256s.append(attachment.hash_.sha256)
-    return sha256s
+    return list(set(sha256s))
 
 
 class ResponseFactory:
