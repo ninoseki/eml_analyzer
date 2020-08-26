@@ -55,7 +55,7 @@ aioresponses = "^0.6.4"
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["aiometer", "aioresponses", "aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "respx", "starlette", "vcr", "vt"]
+known_third_party = ["aiometer", "aioresponses", "aiospamc", "arrow", "async_timeout", "asynctest", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "pytest_mock", "respx", "starlette", "vcr", "vt"]
 line_length = 88
 multi_line_output = 3
 use_parentheses= true
