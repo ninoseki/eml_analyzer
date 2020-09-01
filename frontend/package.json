@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/highlight.js": "9.12.4",
-    "@types/jest": "26.0.10",
+    "@types/jest": "26.0.12",
     "@types/js-base64": "3.0.0",
     "@types/qs": "6.9.4",
     "@types/url-parse": "1.4.3",
