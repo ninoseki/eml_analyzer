@@ -1,6 +1,6 @@
 from typing import List
 
-from app.factories.eml import EmlFactory
+from app.factories.eml import EmlFactory, is_inline_forward_attachment
 
 
 def test_sample(sample_eml):
@@ -63,3 +63,22 @@ def test_complete_msg(complete_msg):
     eml = EmlFactory.from_bytes(complete_msg)
 
     assert eml.header.subject == "Test Multiple attachments complete email!!"
+
+
+def test_is_inline_forward_attachment():
+    inline_foward = {
+        "content_header": {
+            "content-type": ['message/rfc822; name="Fwd: foo"'],
+            "content-disposition": ['inline; filename="Fwd: foo"'],
+        }
+    }
+    assert is_inline_forward_attachment(inline_foward) is True
+
+    zip_ = {
+        "content_header": {
+            "content-type": ['application/x-zip-compressed; name="foo.zip"'],
+            "content-transfer-encoding": ["base64"],
+            "content-disposition": ['attachment; filename="foo.zip"'],
+        }
+    }
+    assert is_inline_forward_attachment(zip_) is False
