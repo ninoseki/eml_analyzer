@@ -12,6 +12,26 @@ from app.services.outlookmsgfile import Message
 from app.services.validator import is_eml_file
 
 
+def is_inline_forward_attachment(attachment: dict) -> bool:
+    content_header = attachment.get("content_header", {})
+    content_types: List[str] = content_header.get("content-type", [])
+    content_dispositions: List[str] = content_header.get("content-disposition", [])
+
+    is_rfc822 = False
+    for content_type in content_types:
+        if content_type.startswith("message/rfc822;"):
+            is_rfc822 = True
+            break
+
+    is_inline = False
+    for content_disposition in content_dispositions:
+        if content_disposition.startswith("inline;"):
+            is_inline = True
+            break
+
+    return is_rfc822 and is_inline
+
+
 class EmlFactory:
     def __init__(self, eml_file: bytes):
         self.eml_file = eml_file
@@ -79,7 +99,13 @@ class EmlFactory:
     def _normalize_attachments(self):
         # change "attachment" to "attachments"
         attachments = self.parsed.get("attachment", [])
-        self.parsed["attachments"] = attachments
+
+        non_inline_forward_attachments = []
+        for attachment in attachments:
+            if not is_inline_forward_attachment(attachment):
+                non_inline_forward_attachments.append(attachment)
+
+        self.parsed["attachments"] = non_inline_forward_attachments
         if "attachment" in self.parsed:
             del self.parsed["attachment"]
 
