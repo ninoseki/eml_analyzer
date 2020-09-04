@@ -23,8 +23,9 @@ COPY app /backend/app
 COPY --from=build /frontend /backend/frontend
 
 RUN pip3 install poetry && poetry config virtualenvs.create false && poetry install --no-dev
+RUN pip3 install circus
 
-COPY supervisord.conf /etc/supervisord.conf
+COPY circus.ini /etc/circus.ini
 
 # spamd envs
 ENV SPAMD_MAX_CHILDREN=1 \
@@ -37,4 +38,4 @@ ENV SPAMASSASSIN_PORT=7833 \
 
 EXPOSE $PORT
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["circusd", "/etc/circus.ini"]
