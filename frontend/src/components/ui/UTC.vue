@@ -5,8 +5,11 @@
 </template>
 
 <script lang="ts">
-import moment from "moment/moment";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { Component, Prop, Vue } from "vue-property-decorator";
+
+dayjs.extend(utc);
 
 @Component
 export default class UTC extends Vue {
@@ -16,7 +19,7 @@ export default class UTC extends Vue {
     if (this.datetime === undefined) {
       return "N/A";
     }
-    return moment.utc(this.datetime).format();
+    return dayjs.utc(this.datetime).format();
   }
 }
 </script>
