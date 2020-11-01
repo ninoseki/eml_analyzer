@@ -52,7 +52,7 @@ pyupgrade = "^2.7.2"
 respx = "^0.12.1"
 seed-isort-config = "^2.2.0"
 vcrpy = "^4.1.0"
-aioresponses = "^0.6.4"
+aioresponses = "^0.7.0"
 
 [tool.isort]
 force_grid_wrap = 0
