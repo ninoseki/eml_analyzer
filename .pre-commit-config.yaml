@@ -29,7 +29,7 @@ repos:
       - id: black
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.4.0
+    rev: v7.16.0
     hooks:
       - id: eslint
         files: \.(ts|vue)$
