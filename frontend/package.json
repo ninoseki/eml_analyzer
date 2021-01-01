@@ -45,7 +45,7 @@
     "@vue/eslint-config-prettier": "6.0.0",
     "@vue/eslint-config-typescript": "5.1.0",
     "@vue/test-utils": "1.1.0",
-    "eslint": "7.14.0",
+    "eslint": "7.16.0",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-simple-import-sort": "5.0.3",
     "eslint-plugin-vue": "6.2.2",
