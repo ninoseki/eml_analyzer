@@ -48,14 +48,14 @@ aiohttp = ">=2.0.0,<4.0.0"
 
 [[package]]
 name = "aiospamc"
-version = "0.6.1"
+version = "0.7.1"
 description = "An asyncio-based library to communicate with SpamAssassin's SPAMD service."
 category = "main"
 optional = false
-python-versions = ">=3.5,<4.0"
+python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
-certifi = ">=2019.9,<2020.0"
+certifi = ">=2020.6,<2021.0"
 
 [[package]]
 name = "anyio"
@@ -241,7 +241,7 @@ python-versions = "*"
 
 [[package]]
 name = "certifi"
-version = "2019.11.28"
+version = "2020.12.5"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -404,7 +404,7 @@ python-versions = "*"
 
 [[package]]
 name = "eml-parser"
-version = "1.14.3"
+version = "1.14.4"
 description = "Python EML parser library"
 category = "main"
 optional = false
@@ -1340,7 +1340,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "cc76a964a167e1092c40052cd651b447b80129e852f0608d593612a6e596e376"
+content-hash = "a1ef6e896f95cdcd60a7c367d0b746fc28e125e2785d4297c469e46c2feae97b"
 
 [metadata.files]
 aiofiles = [
@@ -1370,8 +1370,8 @@ aioresponses = [
     {file = "aioresponses-0.7.1.tar.gz", hash = "sha256:f65bba2be1e9a4997ee166bc0161a50be0fef7350ad09e6afdb2adccf74dfefe"},
 ]
 aiospamc = [
-    {file = "aiospamc-0.6.1-py3-none-any.whl", hash = "sha256:63b7d213d6af01058b855ddcde2147485ea4e685d6d13ee682ad12cb1fa87ca6"},
-    {file = "aiospamc-0.6.1.tar.gz", hash = "sha256:4923bf3d1bf5a07151a3a9ea8be7862d9dcdef37a858035668ad1c726b7b98c1"},
+    {file = "aiospamc-0.7.1-py3-none-any.whl", hash = "sha256:16f0b8b11e996997f30394f94094bf7451eee9e5e1f8505e0179d2fca51877f4"},
+    {file = "aiospamc-0.7.1.tar.gz", hash = "sha256:a5c5c3b93839596b12b58be2ea5ce4922b25504a3ec21b54b30fbb8b66eae8da"},
 ]
 anyio = [
     {file = "anyio-1.4.0-py3-none-any.whl", hash = "sha256:9ee67e8131853f42957e214d4531cee6f2b66dda164a298d9686a768b7161a4f"},
@@ -1465,8 +1465,8 @@ cchardet = [
     {file = "cchardet-2.1.6.tar.gz", hash = "sha256:b76afb2059ad69eab576949980a17413c1e9e5a5624abf9e43542d8853f146b3"},
 ]
 certifi = [
-    {file = "certifi-2019.11.28-py2.py3-none-any.whl", hash = "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3"},
-    {file = "certifi-2019.11.28.tar.gz", hash = "sha256:25b64c7da4cd7479594d035c08c2d809eb4aab3a26e5a990ea98cc450c320f1f"},
+    {file = "certifi-2020.12.5-py2.py3-none-any.whl", hash = "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"},
+    {file = "certifi-2020.12.5.tar.gz", hash = "sha256:1a4995114262bffbc2413b159f2a1a480c969de6e6eb13ee966d470af86af59c"},
 ]
 cffi = [
     {file = "cffi-1.14.3-2-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:3eeeb0405fd145e714f7633a5173318bd88d8bbfc3dd0a5751f8c4f70ae629bc"},
@@ -1611,7 +1611,7 @@ easygui = [
     {file = "easygui-0.98.1.tar.gz", hash = "sha256:dbc89afbb1aca83830ea4af568eb2491654e16b2706a14d040757fdf1fafbbfe"},
 ]
 eml-parser = [
-    {file = "eml_parser-1.14.3-py3-none-any.whl", hash = "sha256:460e510c875ffc59635da780727c6b2bac6e94098d41d0d3f4c0d94f19000446"},
+    {file = "eml_parser-1.14.4-py3-none-any.whl", hash = "sha256:635cd948f26a30665aeea81b36cdc37b370d2984043cab35659e86da23678215"},
 ]
 fastapi = [
     {file = "fastapi-0.61.1-py3-none-any.whl", hash = "sha256:6cc31bb555dd8ca956d1d227477d661e4ac012337242a41d36214ffbda78bfe9"},
@@ -1875,6 +1875,8 @@ pyyaml = [
     {file = "PyYAML-5.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:73f099454b799e05e5ab51423c7bcf361c58d3206fa7b0d555426b1f4d9a3eaf"},
     {file = "PyYAML-5.3.1-cp38-cp38-win32.whl", hash = "sha256:06a0d7ba600ce0b2d2fe2e78453a470b5a6e000a985dd4a4e54e436cc36b0e97"},
     {file = "PyYAML-5.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:95f71d2af0ff4227885f7a6605c37fd53d3a106fcab511b8860ecca9fcf400ee"},
+    {file = "PyYAML-5.3.1-cp39-cp39-win32.whl", hash = "sha256:ad9c67312c84def58f3c04504727ca879cb0013b2517c85a9a253f0cb6380c0a"},
+    {file = "PyYAML-5.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:6034f55dab5fea9e53f436aa68fa3ace2634918e8b5994d82f3621c04ff5ed2e"},
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 regex = [
