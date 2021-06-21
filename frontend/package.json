@@ -22,12 +22,12 @@
     "js-sha256": "0.9.0",
     "qs": "6.9.4",
     "url-parse": "1.4.7",
-    "vue": "2.6.12",
+    "vue": "2.6.14",
     "vue-class-component": "7.2.6",
     "vue-markdown": "2.2.4",
     "vue-mixin-decorator": "1.2.0",
     "vue-property-decorator": "9.0.0",
-    "vue-router": "3.4.3"
+    "vue-router": "3.5.2"
   },
   "devDependencies": {
     "@types/highlight.js": "9.12.4",
@@ -37,20 +37,20 @@
     "@types/url-parse": "1.4.3",
     "@typescript-eslint/eslint-plugin": "4.2.0",
     "@typescript-eslint/parser": "4.2.0",
-    "@vue/cli-plugin-babel": "4.5.6",
-    "@vue/cli-plugin-eslint": "4.5.6",
-    "@vue/cli-plugin-typescript": "4.5.6",
-    "@vue/cli-plugin-unit-jest": "4.5.6",
-    "@vue/cli-service": "4.5.6",
+    "@vue/cli-plugin-babel": "4.5.13",
+    "@vue/cli-plugin-eslint": "4.5.13",
+    "@vue/cli-plugin-typescript": "4.5.13",
+    "@vue/cli-plugin-unit-jest": "4.5.13",
+    "@vue/cli-service": "4.5.13",
     "@vue/eslint-config-prettier": "6.0.0",
     "@vue/eslint-config-typescript": "5.1.0",
-    "@vue/test-utils": "1.1.0",
+    "@vue/test-utils": "1.2.1",
     "eslint": "7.23.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-simple-import-sort": "5.0.3",
     "eslint-plugin-vue": "6.2.2",
     "prettier": "2.2.1",
     "typescript": "4.2.4",
-    "vue-template-compiler": "2.6.12"
+    "vue-template-compiler": "2.6.14"
   }
 }
