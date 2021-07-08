@@ -13,7 +13,7 @@
     "@fortawesome/fontawesome-free": "5.14.0",
     "@mdi/font": "5.6.55",
     "axios": "0.21.1",
-    "buefy": "0.9.3",
+    "buefy": "0.9.8",
     "core-js": "3.6.5",
     "dayjs": "1.8.36",
     "filesize.js": "2.0.0",
