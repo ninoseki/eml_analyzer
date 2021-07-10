@@ -23,7 +23,7 @@
           </td>
         </tr>
         <tr>
-          <th>Extracted emalis</th>
+          <th>Extracted emails</th>
           <td>
             <Indicators v-bind:type="emailType" v-bind:values="body.emails" />
           </td>
