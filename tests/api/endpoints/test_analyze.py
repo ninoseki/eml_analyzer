@@ -35,6 +35,6 @@ async def test_analyze_file(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_analyze_file_with_invalid_file(client: AsyncClient):
     data = {"file": b""}
-    response = await client.post("/api/analyze/file", data=data)
+    response = await client.post("/api/analyze/file", files=data)
 
     assert response.status_code == 422
