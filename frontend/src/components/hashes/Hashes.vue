@@ -24,12 +24,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 import { Hash } from "@/types";
-
-@Component
-export default class Hashes extends Vue {
-  @Prop() private hash!: Hash;
-}
+export default defineComponent({
+  name: "Hashes",
+  props: {
+    hash: {
+      type: Object as PropType<Hash>,
+      required: true,
+    },
+  },
+});
 </script>

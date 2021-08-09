@@ -1,33 +1,42 @@
 <template>
   <div>
     <div v-if="hasValues">
-      <div class="indicator" v-for="value in values" v-bind:key="value">
+      <div class="indicator" v-for="value in values" :key="value">
         <p class="value">{{ value }}</p>
-        <Links v-bind:type="type" v-bind:value="value" />
+        <Links :type="type" :value="value" />
       </div>
     </div>
-    <div v-else>
-      N/A
-    </div>
+    <div v-else>N/A</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import Links from "@/components/links/Links.vue";
 
-@Component({
+export default defineComponent({
+  name: "Indicators",
+  props: {
+    values: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+  },
   components: { Links },
-})
-export default class Indicators extends Vue {
-  @Prop() private values!: string[];
-  @Prop() private type!: string;
 
-  get hasValues(): boolean {
-    return this.values.length > 0;
-  }
-}
+  setup(props) {
+    const hasValues = computed(() => {
+      return props.values.length > 0;
+    });
+
+    return { hasValues };
+  },
+});
 </script>
 
 <style scoped>

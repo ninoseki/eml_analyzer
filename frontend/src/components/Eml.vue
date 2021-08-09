@@ -1,27 +1,26 @@
 <template>
   <div>
-    <Headers v-bind:header="eml.header" />
-    <Bodies v-bind:bodies="eml.bodies" />
-    <Attachments v-bind:attachments="eml.attachments" />
+    <Headers :header="eml.header" />
+    <Bodies :bodies="eml.bodies" />
+    <Attachments :attachments="eml.attachments" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 import Attachments from "@/components/attachments/Attachments.vue";
 import Bodies from "@/components/bodies/Bodies.vue";
 import Headers from "@/components/headers/Headers.vue";
 import { Eml } from "@/types";
-
-@Component({
-  components: {
-    Attachments,
-    Bodies,
-    Headers,
+export default defineComponent({
+  name: "DnsRecords",
+  props: {
+    eml: {
+      type: Object as PropType<Eml>,
+      required: true,
+    },
   },
-})
-export default class EmlComponent extends Vue {
-  @Prop() private eml!: Eml;
-}
+  components: { Attachments, Bodies, Headers },
+});
 </script>

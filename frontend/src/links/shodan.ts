@@ -1,5 +1,5 @@
 import { Link, LinkType } from "@/types";
-import { buildURL } from "@/utils/url_builder";
+import { buildURL } from "@/utils/urlBuilder";
 
 export class Shodan implements Link {
   public baseURL: string;

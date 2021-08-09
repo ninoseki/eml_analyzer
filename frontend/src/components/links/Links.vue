@@ -2,35 +2,41 @@
   <div class="buttons links">
     <LinkComponent
       v-for="link in selectedLinks"
-      v-bind:link="link"
-      v-bind:value="value"
-      v-bind:key="link.name"
+      :link="link"
+      :value="value"
+      :key="link.name"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent } from "@vue/composition-api";
 
 import LinkComponent from "@/components/links/Link.vue";
 import { Links } from "@/links";
-import { Link, LinkType } from "@/types";
 
-@Component({
-  components: {
-    LinkComponent,
+export default defineComponent({
+  name: "Links",
+  props: {
+    value: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
   },
-})
-export default class LinksComponent extends Vue {
-  @Prop() private value!: string;
-  @Prop() private type!: LinkType;
+  components: { LinkComponent },
+  setup(props) {
+    const selectedLinks = computed(() => {
+      if (props.type === undefined) {
+        return Links;
+      }
+      return Links.filter((link) => link.type === props.type);
+    });
 
-  get selectedLinks(): Link[] {
-    if (this.type === undefined) {
-      return Links;
-    }
-
-    return Links.filter((link) => link.type === this.type);
-  }
-}
+    return { selectedLinks };
+  },
+});
 </script>

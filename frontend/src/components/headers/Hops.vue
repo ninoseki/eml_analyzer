@@ -7,10 +7,10 @@
           {{ props.row.index }}
         </b-table-column>
         <b-table-column field="from" label="From" v-slot="props">
-          {{ props.row.received.from | toCommaSeparatedString }}
+          {{ toCommaSeparatedString(props.row.received.from) }}
         </b-table-column>
         <b-table-column field="by" label="By" v-slot="props">
-          {{ props.row.received.by | toCommaSeparatedString }}
+          {{ toCommaSeparatedString(props.row.received.by) }}
         </b-table-column>
         <b-table-column field="with" label="With" v-slot="props">
           {{ props.row.received.with }}
@@ -19,51 +19,58 @@
           <UTC v-bind:datetime="props.row.received.date" />
         </b-table-column>
         <b-table-column field="delay" label="Delay" v-slot="props">
-          {{ props.row.received.delay | secondsToHumanize }}
+          {{ secondsToHumanize(props.row.received.delay) }}
         </b-table-column>
       </b-table>
     </div>
-    <div v-else>
-      N/A
-    </div>
+    <div v-else>N/A</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import H3 from "@/components/ui/h3.vue";
-import UTC from "@/components/ui/UTC.vue";
 import { Header, Received } from "@/types";
+import { toCommaSeparatedString } from "@/utils/commaSeparated";
+import { secondsToHumanize } from "@/utils/secondsToHumanize";
 
 interface ReceivedWithIndex {
   index: number;
   received: Received;
 }
 
-@Component({
-  components: {
-    UTC,
-    H3,
+export default defineComponent({
+  name: "Hops",
+  props: {
+    header: {
+      type: Object as PropType<Header>,
+      required: true,
+    },
   },
-})
-export default class Hops extends Vue {
-  @Prop() private header!: Header;
+  components: { H3 },
+  setup(props) {
+    const receivedWithIndex = computed(() => {
+      const received = props.header.received || [];
 
-  get receivedWithIndex(): ReceivedWithIndex[] {
-    const received = this.header.received || [];
+      const receivedWithIndex: ReceivedWithIndex[] = received.map(
+        (recived_, index) => {
+          return { index: index + 1, received: recived_ };
+        }
+      );
+      return receivedWithIndex;
+    });
 
-    const receivedWithIndex: ReceivedWithIndex[] = received.map(
-      (recived_, index) => {
-        return { index: index + 1, received: recived_ };
-      }
-    );
+    const hasReceivedWithIndex = computed(() => {
+      return receivedWithIndex.value.length > 0;
+    });
 
-    return receivedWithIndex;
-  }
-
-  get hasReceivedWithIndex(): boolean {
-    return this.receivedWithIndex.length > 0;
-  }
-}
+    return {
+      hasReceivedWithIndex,
+      receivedWithIndex,
+      toCommaSeparatedString,
+      secondsToHumanize,
+    };
+  },
+});
 </script>

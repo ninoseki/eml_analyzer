@@ -13,21 +13,21 @@
         </tr>
         <tr>
           <th>Date (UTC)</th>
-          <td><UTC v-bind:datetime="header.date" /></td>
+          <td><UTC :datetime="header.date" /></td>
         </tr>
         <tr>
           <th>From</th>
           <td>
-            <Indicators v-bind:type="emailType" v-bind:values="emails" />
+            <Indicators :type="emailType" :values="emails" />
           </td>
         </tr>
         <tr>
           <th>To</th>
-          <td>{{ header.to | toCommaSeparatedString }}</td>
+          <td>{{ toCommaSeparatedString(header.to) }}</td>
         </tr>
         <tr>
           <th>Cc</th>
-          <td>{{ header.cc | toCommaSeparatedString }}</td>
+          <td>{{ toCommaSeparatedString(header.cc) }}</td>
         </tr>
       </tbody>
     </table>
@@ -35,24 +35,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 import Indicators from "@/components/indicators/Indicators.vue";
 import H3 from "@/components/ui/h3.vue";
 import UTC from "@/components/ui/UTC.vue";
 import { Header } from "@/types";
+import { toCommaSeparatedString } from "@/utils/commaSeparated";
 
-@Component({
-  components: {
-    Indicators,
-    UTC,
-    H3,
+export default defineComponent({
+  name: "BasicHeaders",
+  props: {
+    header: {
+      type: Object as PropType<Header>,
+      required: true,
+    },
   },
-})
-export default class BasicHeaders extends Vue {
-  @Prop() private header!: Header;
+  components: { Indicators, UTC, H3 },
+  setup(props) {
+    const emailType = "email";
+    const emails = [props.header.from];
 
-  private emailType = "email";
-  private emails = [this.header.from];
-}
+    return { emails, emailType, toCommaSeparatedString };
+  },
+});
 </script>

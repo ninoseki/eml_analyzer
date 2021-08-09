@@ -1,4 +1,4 @@
-import { secondsToHumanize } from "@/utils/seconds_to_humanize";
+import { secondsToHumanize } from "@/utils/secondsToHumanize";
 
 describe("#secondsToHumanize", function () {
   it("returns humanized string", function () {

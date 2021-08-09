@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class H2 extends Vue {}
+export default defineComponent({
+  name: "H2",
+});
 </script>
 
 <style scoped>

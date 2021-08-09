@@ -6,35 +6,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import FlattenHeaders from "@/components/headers/FlattenHeaders.vue";
 import H3 from "@/components/ui/h3.vue";
-import { basicKeys, Header, HeaderItem, secuirtyKeys } from "@/types";
+import { basicKeys, Header, HeaderItem, securityKeys } from "@/types";
 
-@Component({
+export default defineComponent({
+  name: "OtherHeaders",
+  props: {
+    header: {
+      type: Object as PropType<Header>,
+      required: true,
+    },
+  },
   components: { FlattenHeaders, H3 },
-})
-export default class OtherHeaders extends Vue {
-  @Prop() private header!: Header;
+  setup(props) {
+    const otherHeaders = computed(() => {
+      const header = props.header.header;
+      const keys = Object.keys(header);
+      const otherKeys = keys
+        .filter((key) => !key.startsWith("x-"))
+        .filter((key) => securityKeys.indexOf(key) == -1)
+        .filter((key) => basicKeys.indexOf(key) == -1);
 
-  private title = "Other headers";
+      const items = otherKeys.map((key) => {
+        if (key in header) {
+          return { key: key, values: header[key] };
+        }
+      });
 
-  get otherHeaders(): HeaderItem[] {
-    const header = this.header.header;
-    const keys = Object.keys(header);
-    const otherKeys = keys
-      .filter((key) => !key.startsWith("x-"))
-      .filter((key) => secuirtyKeys.indexOf(key) == -1)
-      .filter((key) => basicKeys.indexOf(key) == -1);
-
-    const items = otherKeys.map((key) => {
-      if (key in header) {
-        return { key: key, values: header[key] };
-      }
+      return items.filter((x): x is HeaderItem => x !== undefined);
     });
 
-    return items.filter((x): x is HeaderItem => x !== undefined);
-  }
-}
+    return { otherHeaders };
+  },
+});
 </script>

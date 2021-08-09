@@ -1,14 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
+import VueCompositionApi from "@vue/composition-api";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 
 import SecurityHeaders from "@/components/headers/SecurityHeaders.vue";
-import { secuirtyKeys } from "@/types";
+import { securityKeys } from "@/types";
 
 import { header } from "../../fixtures";
+
+const localVue = createLocalVue();
+localVue.use(VueCompositionApi);
 
 describe("SecurityHeaders.vue", () => {
   describe("#securityHeaders", () => {
     it("returns security headers", () => {
       const wrapper = shallowMount(SecurityHeaders, {
+        localVue,
         propsData: { header },
       });
 
@@ -19,7 +24,7 @@ describe("SecurityHeaders.vue", () => {
         (securityHeader) => securityHeader.key
       ) as string[];
 
-      keys.forEach((key) => expect(secuirtyKeys).toContain(key));
+      keys.forEach((key) => expect(securityKeys).toContain(key));
     });
   });
 });

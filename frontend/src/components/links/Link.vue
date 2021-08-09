@@ -6,22 +6,30 @@
     target="_blank"
   >
     <span class="icon">
-      <img v-bind:src="link.favicon" alt="favicon" />
+      <img :src="link.favicon" alt="favicon" />
     </span>
     <span>{{ link.name }}</span>
   </a>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 import { Link } from "@/types";
 
-@Component
-export default class LinkComponent extends Vue {
-  @Prop() private value!: string;
-  @Prop() private link!: Link;
-}
+export default defineComponent({
+  name: "Link",
+  props: {
+    value: {
+      type: String,
+      required: true,
+    },
+    link: {
+      type: Object as PropType<Link>,
+      required: true,
+    },
+  },
+});
 </script>
 
 <style scoped>

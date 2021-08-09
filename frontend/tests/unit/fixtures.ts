@@ -19,8 +19,7 @@ export const header: Header = {
       date: "2020-06-26T03:01:53-07:00",
       for: ["test@test.com"],
       from: ["bmmph0401.jpx1.mta.foo.com", "1.1.1.1"],
-      src:
-        "from bmmph0401.jpx1.mta.foo.com (bmmph0401.jpx1.mta.foo.com. [1.1.1.1]) by mx.google.com with esmtps id t23si17369479plr.47.2020.06.26.03.01.52 for <test@test.com> (version=tls1_2 cipher=ecdhe-ecdsa-aes128-gcm-sha256 bits=128/128); fri, 26 jun 2020 03:01:53 -0700 (pdt)",
+      src: "from bmmph0401.jpx1.mta.foo.com (bmmph0401.jpx1.mta.foo.com. [1.1.1.1]) by mx.google.com with esmtps id t23si17369479plr.47.2020.06.26.03.01.52 for <test@test.com> (version=tls1_2 cipher=ecdhe-ecdsa-aes128-gcm-sha256 bits=128/128); fri, 26 jun 2020 03:01:53 -0700 (pdt)",
       with: "esmtps id t23si17369479plr.47.2020.06.26.03.01.52",
       delay: 0,
     },
@@ -29,8 +28,7 @@ export const header: Header = {
       date: "2020-06-26T03:01:53-07:00",
       for: [],
       from: [],
-      src:
-        "by 2002:a67:d211:0:0:0:0:0 with smtp id y17csp352571vsi; fri, 26 jun 2020 03:01:53 -0700 (pdt)",
+      src: "by 2002:a67:d211:0:0:0:0:0 with smtp id y17csp352571vsi; fri, 26 jun 2020 03:01:53 -0700 (pdt)",
       with: "smtp id y17csp352571vsi",
       delay: 0,
     },

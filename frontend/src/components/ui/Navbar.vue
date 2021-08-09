@@ -22,13 +22,6 @@
   </b-navbar>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-@Component
-export default class Navbar extends Vue {}
-</script>
-
 <style>
 .navbar {
   border-bottom: 1px solid lightgray;

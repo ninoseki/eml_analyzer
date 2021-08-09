@@ -1,13 +1,18 @@
-import { shallowMount } from "@vue/test-utils";
+import VueCompositionApi from "@vue/composition-api";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 
 import XHeaders from "@/components/headers/XHeaders.vue";
 
 import { header } from "../../fixtures";
 
+const localVue = createLocalVue();
+localVue.use(VueCompositionApi);
+
 describe("XHeaders.vue", () => {
   describe("#xHeaders", () => {
     it("returns headers which start with x", () => {
       const wrapper = shallowMount(XHeaders, {
+        localVue,
         propsData: { header },
       });
 
