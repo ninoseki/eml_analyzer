@@ -6,7 +6,7 @@ authors = ["Manabu Niseki <manabu.niseki@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 aiofiles = "^0.7.0"
 aiometer = "^0.3.0"
 aiospamc = "^0.7.1"
