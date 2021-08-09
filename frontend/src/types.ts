@@ -19,6 +19,7 @@ interface Dictionary {
 }
 
 export interface Attachment {
+  raw: string;
   filename: string;
   size: number;
   extension: string | undefined;

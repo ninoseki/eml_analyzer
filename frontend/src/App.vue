@@ -42,4 +42,8 @@ pre {
   margin-bottom: 10px;
   border-bottom: 2px solid lightgray;
 }
+
+table.is-fullwidth th {
+  width: 360px;
+}
 </style>
