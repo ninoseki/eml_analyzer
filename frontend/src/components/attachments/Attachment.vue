@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <th>Size</th>
-            <td>{{ filesize }}</td>
+            <td>{{ fileSize(attachment.size) }}</td>
           </tr>
           <tr>
             <th>MIME type</th>
@@ -30,7 +30,7 @@
           <tr>
             <th>Hash</th>
             <td>
-              <Indicators v-bind:type="sha256Type" v-bind:values="values" />
+              <Indicators :type="sha256Type" v-bind:values="values" />
             </td>
           </tr>
         </tbody>
@@ -40,27 +40,37 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 import fileSize from "filesize.js";
-import { Component, Prop, Vue } from "vue-property-decorator";
 
 import Indicators from "@/components/indicators/Indicators.vue";
 import Submitters from "@/components/submitters/Submitters.vue";
 import H3 from "@/components/ui/h3.vue";
 import { Attachment } from "@/types";
 
-@Component({
-  components: { Indicators, H3, Submitters },
-})
-export default class AttachmentComponent extends Vue {
-  @Prop() private attachment!: Attachment;
-  @Prop() private index!: number;
+export default defineComponent({
+  name: "Attachement",
+  props: {
+    attachment: {
+      type: Object as PropType<Attachment>,
+      required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+  components: { H3, Submitters, Indicators },
+  setup(props) {
+    const header = computed(() => {
+      return `#${props.index + 1}`;
+    });
+    const values = computed(() => {
+      return [props.attachment.hash.sha256];
+    });
+    const sha256Type = "sha256";
 
-  private header = `#${this.index + 1}`;
-  private values = [this.attachment.hash.sha256];
-  private sha256Type = "sha256";
-
-  get filesize(): string {
-    return fileSize(this.attachment.size);
-  }
-}
+    return { header, values, sha256Type, fileSize };
+  },
+});
 </script>

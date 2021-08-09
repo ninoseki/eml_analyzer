@@ -1,34 +1,39 @@
 <template>
   <div class="table-container">
     <H3>Security headers</H3>
-    <FlattenHeaders v-bind:headers="securityHeaders" />
+    <FlattenHeaders :headers="securityHeaders" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import FlattenHeaders from "@/components/headers/FlattenHeaders.vue";
 import H3 from "@/components/ui/h3.vue";
-import { Header, HeaderItem, secuirtyKeys } from "@/types";
+import { Header, HeaderItem, securityKeys } from "@/types";
 
-@Component({
+export default defineComponent({
+  name: "SecurityHeaders",
+  props: {
+    header: {
+      type: Object as PropType<Header>,
+      required: true,
+    },
+  },
   components: { FlattenHeaders, H3 },
-})
-export default class SecurityHeaders extends Vue {
-  @Prop() private header!: Header;
+  setup(props) {
+    const securityHeaders = computed(() => {
+      const header = props.header.header;
 
-  private title = "Security headers";
-
-  get securityHeaders(): HeaderItem[] {
-    const header = this.header.header;
-
-    const items = secuirtyKeys.map((key) => {
-      if (key in header) {
-        return { key: key, values: header[key] };
-      }
+      const items = securityKeys.map((key) => {
+        if (key in header) {
+          return { key: key, values: header[key] };
+        }
+      });
+      return items.filter((x): x is HeaderItem => x !== undefined);
     });
-    return items.filter((x): x is HeaderItem => x !== undefined);
-  }
-}
+
+    return { securityHeaders };
+  },
+});
 </script>

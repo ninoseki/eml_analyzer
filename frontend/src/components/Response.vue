@@ -1,24 +1,24 @@
 <template>
   <div>
-    <Verdicts v-bind:verdicts="response.verdicts" />
-    <Eml v-bind:eml="response.eml" />
+    <Verdicts :verdicts="response.verdicts" />
+    <Eml :eml="response.eml" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 import Eml from "@/components/Eml.vue";
 import Verdicts from "@/components/verdicts/Verdicts.vue";
 import { Response } from "@/types";
-
-@Component({
-  components: {
-    Eml,
-    Verdicts,
+export default defineComponent({
+  name: "Response",
+  props: {
+    response: {
+      type: Object as PropType<Response>,
+      required: true,
+    },
   },
-})
-export default class ResponseComponent extends Vue {
-  @Prop() private response!: Response;
-}
+  components: { Eml, Verdicts },
+});
 </script>

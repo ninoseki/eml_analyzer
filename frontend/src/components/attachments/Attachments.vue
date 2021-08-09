@@ -4,9 +4,9 @@
     <div v-if="hasAttachments">
       <AttachmentComponent
         v-for="(attachment, index) in attachments"
-        v-bind:key="attachment.hash.md5"
-        v-bind:attachment="attachment"
-        v-bind:index="index"
+        :key="attachment.hash.md5"
+        :attachment="attachment"
+        :index="index"
       />
     </div>
     <div v-else>
@@ -16,23 +16,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import AttachmentComponent from "@/components/attachments/Attachment.vue";
 import H2 from "@/components/ui/h2.vue";
 import { Attachment } from "@/types";
 
-@Component({
-  components: {
-    AttachmentComponent,
-    H2,
+export default defineComponent({
+  name: "Attachements",
+  props: {
+    attachments: {
+      type: Array as PropType<Attachment[]>,
+      required: true,
+    },
   },
-})
-export default class Attachments extends Vue {
-  @Prop() private attachments!: Attachment[];
-
-  get hasAttachments(): boolean {
-    return this.attachments.length > 0;
-  }
-}
+  components: { AttachmentComponent, H2 },
+  setup(props) {
+    const hasAttachments = computed((): boolean => {
+      return props.attachments.length > 0;
+    });
+    return { hasAttachments };
+  },
+});
 </script>

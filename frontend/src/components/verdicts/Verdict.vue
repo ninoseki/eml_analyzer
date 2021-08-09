@@ -1,16 +1,11 @@
 <template>
   <div class="verdict">
-    <b-message
-      v-bind:title="title"
-      v-bind:type="type"
-      v-bind:closable="closable"
-      has-icon
-    >
+    <b-message :title="title" :type="type" :closable="closable" has-icon>
       <div v-if="hasDetails">
-        <DetailComponent
+        <Detail
           v-for="detail in verdict.details"
-          v-bind:detail="detail"
-          v-bind:key="detail.key"
+          :detail="detail"
+          :key="detail.key"
         />
       </div>
       <div v-else>N/A</div>
@@ -19,33 +14,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
-import DetailComponent from "@/components/verdicts/Detail.vue";
+import Detail from "@/components/verdicts/Detail.vue";
 import { Verdict } from "@/types";
-
-@Component({
-  components: {
-    DetailComponent,
+export default defineComponent({
+  name: "Verdict",
+  props: {
+    verdict: {
+      type: Object as PropType<Verdict>,
+      required: true,
+    },
   },
-})
-export default class VerdictComponent extends Vue {
-  @Prop() private verdict!: Verdict;
+  components: { Detail },
+  setup(props) {
+    const closable = false;
+    const title = computed(() => {
+      return `${props.verdict.name} (score: ${props.verdict.score || "N/A"})`;
+    });
+    const type = computed(() => {
+      return props.verdict.malicious ? "is-warning" : "is-success";
+    });
+    const hasDetails = computed(() => {
+      return props.verdict.details.length > 0;
+    });
 
-  private closable = false;
-
-  get title(): string {
-    return `${this.verdict.name} (score: ${this.verdict.score || "N/A"})`;
-  }
-
-  get type(): string {
-    return this.verdict.malicious ? "is-warning" : "is-success";
-  }
-
-  get hasDetails(): boolean {
-    return this.verdict.details.length > 0;
-  }
-}
+    return { closable, type, title, hasDetails };
+  },
+});
 </script>
 
 <style scoped>

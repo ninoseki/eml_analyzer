@@ -10,37 +10,31 @@
         <tr>
           <th>Content</th>
           <td>
-            <Content
-              v-bind:content="body.content"
-              v-bind:contentType="body.contentType"
-            />
+            <Content :content="body.content" :contentType="body.contentType" />
           </td>
         </tr>
         <tr>
           <th>Extracted URLs</th>
           <td>
-            <Indicators v-bind:type="urlType" v-bind:values="body.urls" />
+            <Indicators :type="urlType" :values="body.urls" />
           </td>
         </tr>
         <tr>
           <th>Extracted emails</th>
           <td>
-            <Indicators v-bind:type="emailType" v-bind:values="body.emails" />
+            <Indicators :type="emailType" :values="body.emails" />
           </td>
         </tr>
         <tr>
           <th>Extracted domains</th>
           <td>
-            <Indicators v-bind:type="domainType" v-bind:values="body.domains" />
+            <Indicators :type="domainType" :values="body.domains" />
           </td>
         </tr>
         <tr>
           <th>Extracted IPv4s</th>
           <td>
-            <Indicators
-              v-bind:type="ipAddressType"
-              v-bind:values="body.ipAddresses"
-            />
+            <Indicators :type="ipAddressType" :values="body.ipAddresses" />
           </td>
         </tr>
       </tbody>
@@ -49,26 +43,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import Content from "@/components/bodies/Content.vue";
 import Indicators from "@/components/indicators/Indicators.vue";
 import H3 from "@/components/ui/h3.vue";
 import { Body } from "@/types";
+export default defineComponent({
+  name: "Body",
+  props: {
+    body: {
+      type: Object as PropType<Body>,
+      required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+  components: { H3, Content, Indicators },
+  setup(props) {
+    const domainType = "domain";
+    const emailType = "email";
+    const ipAddressType = "ip_address";
+    const sha256Type = "sha256";
+    const urlType = "url";
 
-@Component({
-  components: { Content, Indicators, H3 },
-})
-export default class BodyComponent extends Vue {
-  @Prop() private body!: Body;
-  @Prop() private index!: number;
+    const header = computed(() => {
+      return `#${props.index + 1}`;
+    });
 
-  private domainType = "domain";
-  private emailType = "email";
-  private ipAddressType = "ip_address";
-  private sha256Type = "sha256";
-  private urlType = "url";
-
-  private header = `#${this.index + 1}`;
-}
+    return {
+      header,
+      domainType,
+      emailType,
+      ipAddressType,
+      sha256Type,
+      urlType,
+    };
+  },
+});
 </script>

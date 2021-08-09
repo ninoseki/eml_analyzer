@@ -106,7 +106,7 @@ export interface ErrorData {
   detail: string | ValidationError[];
 }
 
-export const secuirtyKeys = [
+export const securityKeys = [
   "received-spm",
   "authentication-results",
   "dkim-signature",

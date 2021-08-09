@@ -2,7 +2,7 @@ import { sha256 } from "js-sha256";
 import URL from "url-parse";
 
 import { Link, LinkType } from "@/types";
-import { buildURL } from "@/utils/url_builder";
+import { buildURL } from "@/utils/urlBuilder";
 
 class VirusTotal implements Link {
   public favicon: string;
@@ -41,7 +41,7 @@ export class VirusTotalForURL extends VirusTotal {
 
   private normalizeURL(uri: string): string {
     const parsedUrl = new URL(uri);
-    if (parsedUrl.pathname === "" && !uri.endsWith("/")) {
+    if (parsedUrl.pathname === "/" && !uri.endsWith("/")) {
       return `${uri}/`;
     }
     return uri;

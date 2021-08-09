@@ -5,21 +5,31 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent } from "@vue/composition-api";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { Component, Prop, Vue } from "vue-property-decorator";
 
 dayjs.extend(utc);
 
-@Component
-export default class UTC extends Vue {
-  @Prop() private datetime!: string | undefined;
+export default defineComponent({
+  name: "UTC",
+  props: {
+    datetime: {
+      type: String,
+    },
+  },
+  setup(props) {
+    const utcDatetime = computed(() => {
+      if (props.datetime === undefined) {
+        return "N/A";
+      }
+      return dayjs.utc(props.datetime).format();
+    });
 
-  get utcDatetime(): string {
-    if (this.datetime === undefined) {
-      return "N/A";
-    }
-    return dayjs.utc(this.datetime).format();
-  }
-}
+    return { utcDatetime };
+  },
+});
 </script>
+
+function comptued(arg0: () => string) { throw new Error("Function not
+implemented."); }

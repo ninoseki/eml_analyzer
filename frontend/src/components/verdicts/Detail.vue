@@ -13,18 +13,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import { Detail } from "@/types";
 
-@Component
-export default class DetailCmponent extends Vue {
-  @Prop() private detail!: Detail;
-
-  get hasReferenceLink(): boolean {
-    return this.detail.referenceLink !== null;
-  }
-}
+export default defineComponent({
+  name: "Detail",
+  props: {
+    detail: {
+      type: Object as PropType<Detail>,
+      required: true,
+    },
+  },
+  setup(props) {
+    const hasReferenceLink = computed(() => {
+      return props.detail.referenceLink !== null;
+    });
+    return { hasReferenceLink };
+  },
+});
 </script>
 
 <style scoped>

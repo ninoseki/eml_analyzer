@@ -3,7 +3,7 @@
     <div class="box">
       <div class="upload-form">
         <b-message type="is-info" class="content">
-          <VueMarkdown v-bind:source="informationMessages" />
+          <VueMarkdown :source="informationMessages" />
         </b-message>
         <b-field>
           <b-upload v-model="emlFile" drag-drop expanded>
@@ -33,68 +33,64 @@
       </div>
     </div>
 
-    <ResponseComponent v-bind:response="response" v-if="hasResponse" />
+    <ResponseComponent
+      :response="analyzeFileTask.last.value"
+      v-if="analyzeFileTask.last"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import axios from "axios";
+import { defineComponent, ref } from "@vue/composition-api";
+import { useAsyncTask } from "vue-concurrency";
 import VueMarkdown from "vue-markdown";
-import { Component, Mixins } from "vue-mixin-decorator";
 
-import { ErrorDialogMixin } from "@/components/mixins/error_dialog";
+import { API } from "@/api";
 import ResponseComponent from "@/components/Response.vue";
 import { ErrorData, Response } from "@/types";
+import { alertError } from "@/utils/alert";
 
-@Component({ components: { ResponseComponent, VueMarkdown } })
-export default class Home extends Mixins<ErrorDialogMixin>(ErrorDialogMixin) {
-  private emlFile: File | null = null;
-  private response: Response | undefined = undefined;
-  private hasResponse = false;
+export default defineComponent({
+  name: "Home",
+  components: {
+    VueMarkdown,
+    ResponseComponent,
+  },
 
-  private informationMessages = [
-    "- EML(`.eml`) and MSG(`.msg`) formats are supported.",
-    "  - The MSG file will be converted to the EML file before analyzing. The conversion might be lossy.",
-    "- This app doesn't store any information you enter.",
-  ].join("\n");
+  setup(_, context) {
+    const emlFile = ref<File | undefined>(undefined);
 
-  async parse() {
-    const loadingComponent = this.$buefy.loading.open({
-      container: this.$el,
-    });
+    const informationMessages = [
+      "- EML(`.eml`) and MSG(`.msg`) formats are supported.",
+      "  - The MSG file will be converted to the EML file before analyzing. The conversion might be lossy.",
+      "- This app doesn't store any information you enter.",
+    ].join("\n");
 
-    const formData = new FormData();
-    if (this.emlFile !== null) {
-      formData.append("file", this.emlFile);
-    }
+    const analyzeFileTask = useAsyncTask<Response, [File | undefined]>(
+      async (_signal, file: File | undefined) => {
+        return await API.analyzeFile(file);
+      }
+    );
 
-    this.response = undefined;
-    this.hasResponse = false;
+    const parse = async () => {
+      const loadingComponent = context.root.$buefy.loading.open({
+        container: context.root.$el,
+      });
 
-    try {
-      const response = await axios.post<Response>(
-        "/api/analyze/file",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      try {
+        await analyzeFileTask.perform(emlFile.value);
+        loadingComponent.close();
+      } catch (error) {
+        loadingComponent.close();
 
-      loadingComponent.close();
+        const data = error.response.data as ErrorData;
+        alertError(data, context);
+      }
+    };
 
-      this.response = response.data;
-      this.hasResponse = true;
-      this.$forceUpdate();
-    } catch (error) {
-      loadingComponent.close();
-
-      const data = error.response.data as ErrorData;
-      this.alertError(data);
-    }
-  }
-}
+    return { parse, analyzeFileTask, informationMessages, emlFile };
+  },
+});
 </script>
 
 <style scoped>

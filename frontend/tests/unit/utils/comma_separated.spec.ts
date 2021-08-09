@@ -1,4 +1,4 @@
-import { toCommaSeparatedString } from "@/utils/comma_separated";
+import { toCommaSeparatedString } from "@/utils/commaSeparated";
 
 describe("#toCommaSeparatedString", function () {
   it("returns comma separated string", function () {

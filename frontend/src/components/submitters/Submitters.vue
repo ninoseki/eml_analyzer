@@ -8,40 +8,47 @@
 
     <b-dropdown-item
       v-for="submitter in selectedSubmitters"
-      v-bind:key="submitter.name"
+      :key="submitter.name"
       aria-role="listitem"
     >
       <SubmitterComponent
-        v-bind:submitter="submitter"
-        v-bind:value="value"
-        v-bind:key="submitter.name"
+        :submitter="submitter"
+        :value="value"
+        :key="submitter.name"
       />
     </b-dropdown-item>
   </b-dropdown>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import SubmitterComponent from "@/components/submitters/Submitter.vue";
 import { Submitters } from "@/submitters";
-import { Attachment, Submitter, SubmitType } from "@/types";
+import { Attachment, SubmitType } from "@/types";
 
-@Component({
-  components: {
-    SubmitterComponent,
+export default defineComponent({
+  name: "Submitters",
+  props: {
+    value: {
+      type: Object as PropType<Attachment>,
+      required: true,
+    },
+    type: {
+      type: Object as PropType<SubmitType>,
+      required: true,
+    },
   },
-})
-export default class SubmittersComponent extends Vue {
-  @Prop() private value!: Attachment;
-  @Prop() private type!: SubmitType;
+  components: { SubmitterComponent },
+  setup(props) {
+    const selectedSubmitters = computed(() => {
+      if (props.type === undefined) {
+        return Submitters;
+      }
+      return Submitters.filter((submitter) => submitter.type === props.type);
+    });
 
-  get selectedSubmitters(): Submitter[] {
-    if (this.type === undefined) {
-      return Submitters;
-    }
-
-    return Submitters.filter((submitter) => submitter.type === this.type);
-  }
-}
+    return { selectedSubmitters };
+  },
+});
 </script>

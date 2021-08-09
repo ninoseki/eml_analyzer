@@ -4,18 +4,15 @@ import "@mdi/font/css/materialdesignicons.css";
 import "buefy/dist/buefy.css";
 import "highlight.js/styles/androidstudio.css";
 
+import VueCompositionAPI from "@vue/composition-api";
 import Buefy from "buefy";
 import Vue from "vue";
 
 import App from "@/App.vue";
 import router from "@/router";
-import { toCommaSeparatedString } from "@/utils/comma_separated";
-import { secondsToHumanize } from "@/utils/seconds_to_humanize";
 
 Vue.use(Buefy);
-
-Vue.filter("toCommaSeparatedString", toCommaSeparatedString);
-Vue.filter("secondsToHumanize", secondsToHumanize);
+Vue.use(VueCompositionAPI);
 
 Vue.config.productionTip = false;
 

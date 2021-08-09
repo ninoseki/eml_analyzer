@@ -4,8 +4,8 @@
     <div v-if="hasVerdicts">
       <VerdictComponent
         v-for="verdict in verdicts"
-        v-bind:key="verdict.name"
-        v-bind:verdict="verdict"
+        :key="verdict.name"
+        :verdict="verdict"
       />
     </div>
     <div v-else>
@@ -15,23 +15,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import H2 from "@/components/ui/h2.vue";
 import VerdictComponent from "@/components/verdicts/Verdict.vue";
 import { Verdict } from "@/types";
 
-@Component({
-  components: {
-    VerdictComponent,
-    H2,
+export default defineComponent({
+  name: "Verdicts",
+  props: {
+    verdicts: {
+      type: Array as PropType<Verdict[]>,
+      required: true,
+    },
   },
-})
-export default class Verdicts extends Vue {
-  @Prop() private verdicts!: Verdict[];
-
-  get hasVerdicts(): boolean {
-    return this.verdicts.length > 0;
-  }
-}
+  components: { VerdictComponent, H2 },
+  setup(props) {
+    const hasVerdicts = computed((): boolean => {
+      return props.verdicts.length > 0;
+    });
+    return { hasVerdicts };
+  },
+});
 </script>

@@ -1,61 +1,65 @@
 <template>
   <div @click="confirm">
     <span class="icon" @click="confirm">
-      <img v-bind:src="submitter.favicon" alt="favicon" />
+      <img :src="submitter.favicon" alt="favicon" />
     </span>
     <span>{{ submitter.name }}</span>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-mixin-decorator";
-import { Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
-import { ErrorDialogMixin } from "@/components/mixins/error_dialog";
-import { Attachment, Submitter } from "@/types";
-import { ErrorData } from "@/types";
+import { Attachment, ErrorData, Submitter } from "@/types";
+import { alertError } from "@/utils/alert";
 
-@Component
-export default class SubmitterComponent extends Mixins<ErrorDialogMixin>(
-  ErrorDialogMixin
-) {
-  @Prop() private value!: Attachment;
-  @Prop() private submitter!: Submitter;
+export default defineComponent({
+  name: "Submitter",
+  props: {
+    value: {
+      type: Object as PropType<Attachment>,
+      required: true,
+    },
+    submitter: {
+      type: Object as PropType<Submitter>,
+      required: true,
+    },
+  },
+  setup(props, context) {
+    const showResult = (url: string) => {
+      const message = `The submission result will be available at <a href="${url}" target="_blank">here</a>. Please wait for a while.`;
+      context.root.$buefy.dialog.alert({
+        title: "Submitted successfully",
+        message: message,
+        confirmText: "Close",
+      });
+    };
 
-  showResult(url: string): void {
-    const message = `The submission result will be available at <a href="${url}" target="_blank">here</a>. Please wait for a while.`;
-    this.$buefy.dialog.alert({
-      title: "Submitted successfully",
-      message: message,
-      confirmText: "Close",
-    });
-  }
+    const confirm = () => {
+      context.root.$buefy.dialog.confirm({
+        message: `Are you sure to submit this attachment to ${props.submitter.name}?`,
+        onConfirm: () => submit(),
+      });
+    };
 
-  confirm(): void {
-    this.$buefy.dialog.confirm({
-      message: `Are you sure to submit this attachment to ${this.submitter.name}?`,
-      onConfirm: () => this.submit(),
-    });
-  }
+    const submit = async () => {
+      const loadingComponent = context.root.$buefy.loading.open({
+        container: null,
+      });
+      try {
+        const result = await props.submitter.submit(props.value);
+        loadingComponent.close();
+        showResult(result.referenceUrl);
+      } catch (error) {
+        loadingComponent.close();
+        const data = error as ErrorData;
+        alertError(data, context);
+      }
+    };
 
-  async submit(): Promise<void> {
-    const loadingComponent = this.$buefy.loading.open({
-      container: null,
-    });
-
-    try {
-      const result = await this.submitter.submit(this.value);
-      loadingComponent.close();
-
-      this.showResult(result.referenceUrl);
-    } catch (error) {
-      loadingComponent.close();
-
-      const data = error as ErrorData;
-      this.alertError(data);
-    }
-  }
-}
+    return { confirm };
+  },
+});
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <table class="table is-fullwidth" v-if="hasFlattenHeaders">
     <tbody>
-      <tr v-for="header in flattenHeaders" v-bind:key="header.id">
+      <tr v-for="header in flattenHeaders" :key="header.id">
         <th>{{ header.key }}</th>
         <td>{{ header.value }}</td>
       </tr>
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import { HeaderItem } from "@/types";
 
@@ -23,30 +23,38 @@ interface FlattenHeader {
   value: string | number;
 }
 
-@Component
-export default class FlattenHeaders extends Vue {
-  @Prop() private headers!: HeaderItem[];
-
-  get flattenHeaders(): FlattenHeader[] {
-    const headers: FlattenHeader[] = [];
-    let index = 0;
-    for (const header of this.headers) {
-      const key = header.key;
-      const values = header.values;
-      for (const value of values) {
-        index += 1;
-        headers.push({
-          id: key + index.toString(),
-          key: key,
-          value: value,
-        });
+export default defineComponent({
+  name: "FlattenHeaders",
+  props: {
+    headers: {
+      type: Array as PropType<HeaderItem[]>,
+      required: true,
+    },
+  },
+  setup(props) {
+    const flattenHeaders = computed(() => {
+      const headers: FlattenHeader[] = [];
+      let index = 0;
+      for (const header of props.headers) {
+        const key = header.key;
+        const values = header.values;
+        for (const value of values) {
+          index += 1;
+          headers.push({
+            id: key + index.toString(),
+            key: key,
+            value: value,
+          });
+        }
       }
-    }
-    return headers;
-  }
+      return headers;
+    });
 
-  get hasFlattenHeaders(): boolean {
-    return this.flattenHeaders.length > 0;
-  }
-}
+    const hasFlattenHeaders = computed(() => {
+      return flattenHeaders.value.length > 0;
+    });
+
+    return { hasFlattenHeaders, flattenHeaders };
+  },
+});
 </script>
