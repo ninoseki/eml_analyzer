@@ -1,23 +1,25 @@
 <template>
-  <b-dropdown aria-role="list">
-    <button class="button" slot="trigger" slot-scope="{ active }">
-      <b-icon pack="fas" icon="upload" size="is-small" />
-      <span>Submit to</span>
-      <b-icon :icon="active ? 'menu-up' : 'menu-down'"></b-icon>
-    </button>
+  <div class="navbar-item">
+    <b-dropdown aria-role="list">
+      <button class="button" slot="trigger" slot-scope="{ active }">
+        <b-icon pack="fas" icon="upload" size="is-small" />
+        <span>Submit to</span>
+        <b-icon :icon="active ? 'menu-up' : 'menu-down'"></b-icon>
+      </button>
 
-    <b-dropdown-item
-      v-for="submitter in selectedSubmitters"
-      :key="submitter.name"
-      aria-role="listitem"
-    >
-      <SubmitterComponent
-        :submitter="submitter"
-        :value="value"
+      <b-dropdown-item
+        v-for="submitter in selectedSubmitters"
         :key="submitter.name"
-      />
-    </b-dropdown-item>
-  </b-dropdown>
+        aria-role="listitem"
+      >
+        <SubmitterComponent
+          :submitter="submitter"
+          :value="value"
+          :key="submitter.name"
+        />
+      </b-dropdown-item>
+    </b-dropdown>
+  </div>
 </template>
 
 <script lang="ts">
