@@ -53,7 +53,6 @@ import fileDownload from "js-file-download";
 
 import Indicators from "@/components/indicators/Indicators.vue";
 import Submitters from "@/components/submitters/Submitters.vue";
-import H3 from "@/components/ui/h3.vue";
 import { Attachment } from "@/types";
 import { b64toBlob } from "@/utils/base64";
 
@@ -69,7 +68,7 @@ export default defineComponent({
       required: true,
     },
   },
-  components: { H3, Submitters, Indicators },
+  components: { Submitters, Indicators },
   setup(props, context) {
     const header = computed(() => {
       return `#${props.index + 1}`;
