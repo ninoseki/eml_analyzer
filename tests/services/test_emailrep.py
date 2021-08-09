@@ -1,14 +1,14 @@
+import httpx
 import pytest
-import respx
+from respx import MockRouter
 
 from app.services.emailrep import EmailRep
 
 
 @pytest.mark.asyncio
-@respx.mock
-async def test_get(emailrep_response):
-    respx.get(
-        "https://emailrep.io/bill@microsoft.com", content=emailrep_response,
+async def test_get(emailrep_response, respx_mock: MockRouter):
+    respx_mock.get("https://emailrep.io/bill@microsoft.com").mock(
+        return_value=httpx.Response(200, content=emailrep_response),
     )
     emailrep = EmailRep()
     res = await emailrep.get("bill@microsoft.com")

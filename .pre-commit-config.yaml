@@ -17,9 +17,10 @@ repos:
         args: [--py37-plus]
 
   - repo: https://github.com/timothycrosley/isort
-    rev: 5.7.0
+    rev: 5.9.3
     hooks:
       - id: isort
+        args: ["--profile", "black"]
         additional_dependencies: [toml]
         exclude: ^.*/?setup\.py$
 
@@ -29,7 +30,7 @@ repos:
       - id: black
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.21.0
+    rev: v7.32.0
     hooks:
       - id: eslint
         files: \.(ts|vue)$
