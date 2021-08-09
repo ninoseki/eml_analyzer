@@ -1,18 +1,17 @@
 from io import BytesIO
 
+import httpx
 import pytest
-import respx
+from respx import MockRouter
 
 from app.services.inquest import InQuest
 
 
 @pytest.mark.asyncio
-@respx.mock
-async def test_dfi_details(inquest_dfi_details_response: str):
+async def test_dfi_details(inquest_dfi_details_response: str, respx_mock: MockRouter):
     sha256 = "e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149"
-    respx.get(
-        f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",
-        content=inquest_dfi_details_response,
+    respx_mock.get(f"https://labs.inquest.net/api/dfi/details?sha256={sha256}").mock(
+        return_value=httpx.Response(200, content=inquest_dfi_details_response),
     )
 
     api = InQuest()
@@ -23,13 +22,10 @@ async def test_dfi_details(inquest_dfi_details_response: str):
 
 
 @pytest.mark.asyncio
-@respx.mock
-async def test_dfi_details_with_eicar():
+async def test_dfi_details_with_eicar(respx_mock: MockRouter):
     sha256 = "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"
-    respx.get(
-        f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",
-        content="",
-        status_code=404,
+    respx_mock.get(f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",).mock(
+        return_value=httpx.Response(404, content="")
     )
 
     api = InQuest()
@@ -38,10 +34,11 @@ async def test_dfi_details_with_eicar():
 
 
 @pytest.mark.asyncio
-@respx.mock
-async def test_dfi_upload(encrypted_docx: bytes, inquest_dfi_upload_response: str):
-    respx.post(
-        "https://labs.inquest.net/api/dfi/upload", content=inquest_dfi_upload_response
+async def test_dfi_upload(
+    encrypted_docx: bytes, inquest_dfi_upload_response: str, respx_mock: MockRouter
+):
+    respx_mock.post("https://labs.inquest.net/api/dfi/upload").mock(
+        return_value=httpx.Response(200, content=inquest_dfi_upload_response)
     )
 
     file_ = BytesIO(encrypted_docx)

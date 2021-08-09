@@ -1,10 +1,11 @@
 import pytest
+from httpx import AsyncClient
 
 from tests.conftest import read_file
 
 
 @pytest.mark.asyncio
-async def test_analyze(client):
+async def test_analyze(client: AsyncClient):
     payload = {"file": read_file("sample.eml")}
     response = await client.post("/api/analyze/", json=payload)
 
@@ -14,7 +15,7 @@ async def test_analyze(client):
 
 
 @pytest.mark.asyncio
-async def test_analyze_with_invalid_file(client):
+async def test_analyze_with_invalid_file(client: AsyncClient):
     payload = {"file": ""}
     response = await client.post("/api/analyze/", json=payload)
 
@@ -22,9 +23,9 @@ async def test_analyze_with_invalid_file(client):
 
 
 @pytest.mark.asyncio
-async def test_analyze_file(client):
+async def test_analyze_file(client: AsyncClient):
     data = {"file": read_file("sample.eml").encode()}
-    response = await client.post("/api/analyze/file", data=data)
+    response = await client.post("/api/analyze/file", files=data)
 
     json = response.json()
     assert json.get("eml", {}).get("header", {}).get("subject") == "Winter promotions"
@@ -32,7 +33,7 @@ async def test_analyze_file(client):
 
 
 @pytest.mark.asyncio
-async def test_analyze_file_with_invalid_file(client):
+async def test_analyze_file_with_invalid_file(client: AsyncClient):
     data = {"file": b""}
     response = await client.post("/api/analyze/file", data=data)
 

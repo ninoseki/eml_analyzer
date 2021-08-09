@@ -66,13 +66,13 @@ def test_complete_msg(complete_msg):
 
 
 def test_is_inline_forward_attachment():
-    inline_foward = {
+    inline_forward = {
         "content_header": {
             "content-type": ['message/rfc822; name="Fwd: foo"'],
             "content-disposition": ['inline; filename="Fwd: foo"'],
         }
     }
-    assert is_inline_forward_attachment(inline_foward) is True
+    assert is_inline_forward_attachment(inline_forward) is True
 
     zip_ = {
         "content_header": {

@@ -1,10 +1,9 @@
 import glob
 from pathlib import Path
-from typing import List
+from typing import Any, Dict, List
 
 import httpx
 import pytest
-from aiospamc.common import SpamcHeaders
 from aiospamc.header_values import SpamValue
 from aiospamc.responses import Response
 
@@ -119,7 +118,7 @@ def docx_attachment(encrypted_docx_eml: bytes) -> Attachment:
 @pytest.fixture
 def spamassassin_response() -> Response:
     body = read_file("sa.txt").encode()
-    headers = SpamcHeaders()
+    headers: Dict[str, Any] = {}
     headers["Spam"] = SpamValue(value=True, score=40, threshold=20)
     return Response(headers=headers, body=body)
 

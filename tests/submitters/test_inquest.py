@@ -1,15 +1,19 @@
+import httpx
 import pytest
-import respx
+from respx import MockRouter
 
 from app.schemas.eml import Attachment
 from app.submitters.inquest import InQuestSubmitter
 
 
 @pytest.mark.asyncio
-@respx.mock
-async def test_inquest(docx_attachment: Attachment, inquest_dfi_upload_response: str):
-    respx.post(
-        "https://labs.inquest.net/api/dfi/upload", content=inquest_dfi_upload_response,
+async def test_inquest(
+    docx_attachment: Attachment,
+    inquest_dfi_upload_response: str,
+    respx_mock: MockRouter,
+):
+    respx_mock.post("https://labs.inquest.net/api/dfi/upload").mock(
+        return_value=httpx.Response(200, content=inquest_dfi_upload_response),
     )
 
     submitter = InQuestSubmitter(docx_attachment)

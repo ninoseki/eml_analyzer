@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Any, Dict, List
 
 import aiospamc
-from aiospamc.common import SpamcHeaders
 from async_timeout import timeout
 
 
@@ -24,7 +23,7 @@ class Report:
 
 
 class Parser:
-    def __init__(self, headers: SpamcHeaders, body: str):
+    def __init__(self, headers: Dict[str, Any], body: str):
         self.headers = headers
         self.body = body
         self.score = 0.0
