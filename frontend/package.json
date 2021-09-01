@@ -15,7 +15,7 @@
     "@vue/composition-api": "^1.0.6",
     "@vueuse/core": "^5.2.0",
     "axios": "0.21.1",
-    "buefy": "0.9.8",
+    "buefy": "0.9.10",
     "core-js": "3.16.1",
     "dayjs": "1.10.6",
     "filesize.js": "2.0.0",
