@@ -14,7 +14,7 @@
     "@mdi/font": "5.9.55",
     "@vue/composition-api": "^1.0.6",
     "@vueuse/core": "^5.2.0",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "buefy": "0.9.8",
     "core-js": "3.16.1",
     "dayjs": "1.10.6",
