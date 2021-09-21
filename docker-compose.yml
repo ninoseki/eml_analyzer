@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  eml_analyzer:
+    container_name: eml_analyzer
+    build: .
+    image: eml_analyzer:latest
+    restart: unless-stopped
+    ports:
+     - "8000:8000"
