@@ -17,7 +17,7 @@
     "axios": "0.21.1",
     "buefy": "0.9.8",
     "core-js": "3.16.1",
-    "dayjs": "1.10.6",
+    "dayjs": "1.10.7",
     "filesize.js": "2.0.0",
     "highlight.js": "11.2.0",
     "js-base64": "3.6.1",
