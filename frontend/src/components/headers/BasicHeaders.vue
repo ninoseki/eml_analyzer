@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 import Indicators from "@/components/indicators/Indicators.vue";
 import H3 from "@/components/ui/h3.vue";
@@ -54,7 +54,9 @@ export default defineComponent({
   components: { Indicators, UTC, H3 },
   setup(props) {
     const emailType = "email";
-    const emails = [props.header.from];
+    const emails = computed(() => {
+      return [props.header.from];
+    });
 
     return { emails, emailType, toCommaSeparatedString };
   },
