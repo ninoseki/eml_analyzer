@@ -40,7 +40,9 @@ class InQuest:
         files = {"file": file_}
 
         r = await self.client.post(
-            self._url_for("/dfi/upload"), files=files, headers=self._headers(),
+            self._url_for("/dfi/upload"),
+            files=files,
+            headers=self._headers(),
         )
         r.raise_for_status()
         return cast(dict, r.json())

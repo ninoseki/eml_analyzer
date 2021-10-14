@@ -24,9 +24,9 @@ async def test_dfi_details(inquest_dfi_details_response: str, respx_mock: MockRo
 @pytest.mark.asyncio
 async def test_dfi_details_with_eicar(respx_mock: MockRouter):
     sha256 = "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"
-    respx_mock.get(f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",).mock(
-        return_value=httpx.Response(404, content="")
-    )
+    respx_mock.get(
+        f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",
+    ).mock(return_value=httpx.Response(404, content=""))
 
     api = InQuest()
     res = await api.dfi_details(sha256)

@@ -5,7 +5,8 @@ from app.factories.virustotal import VirusTotalVerdict, VirusTotalVerdictFactory
 
 
 @vcr.use_cassette(
-    "tests/fixtures/vcr_cassettes/vt.yaml", filter_headers=["x-apikey"],
+    "tests/fixtures/vcr_cassettes/vt.yaml",
+    filter_headers=["x-apikey"],
 )
 @pytest.mark.asyncio
 async def test_virustotal():
@@ -18,7 +19,8 @@ async def test_virustotal():
 
 @pytest.mark.asyncio
 @vcr.use_cassette(
-    "tests/fixtures/vcr_cassettes/vt_non_malicious.yaml", filter_headers=["x-apikey"],
+    "tests/fixtures/vcr_cassettes/vt_non_malicious.yaml",
+    filter_headers=["x-apikey"],
 )
 async def test_virustotal_with_non_malicious_file():
     # empty file
