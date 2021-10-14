@@ -27,7 +27,8 @@ export class VirusTotal implements Submitter {
       );
       return response.data;
     } catch (error) {
-      const data = error.response.data as ErrorData;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data = (error as any).response.data as ErrorData;
       throw data;
     }
   }
