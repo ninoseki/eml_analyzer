@@ -43,7 +43,10 @@ class SpamAssassinVerdictFactory:
         score = report.score
         malicious = report.is_spam()
         return Verdict(
-            name=self.name, malicious=malicious, score=score, details=details,
+            name=self.name,
+            malicious=malicious,
+            score=score,
+            details=details,
         )
 
     @classmethod

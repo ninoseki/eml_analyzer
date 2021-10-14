@@ -12,7 +12,10 @@ def create_app():
         settings.LOG_FILE, level=settings.LOG_LEVEL, backtrace=settings.LOG_BACKTRACE
     )
 
-    app = FastAPI(debug=settings.DEBUG, title=settings.PROJECT_NAME,)
+    app = FastAPI(
+        debug=settings.DEBUG,
+        title=settings.PROJECT_NAME,
+    )
     # add middleware
     app.add_middleware(GZipMiddleware, minimum_size=1000)
 
