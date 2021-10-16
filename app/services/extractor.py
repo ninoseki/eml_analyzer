@@ -3,10 +3,25 @@ from typing import List
 import html2text
 from bs4 import BeautifulSoup
 from ioc_finder import parse_urls
+import re
+import urllib.parse
 
 
 def is_html(content_type: str) -> bool:
     return "text/html" in content_type
+
+
+def desafelink_url(url: str):
+    # convert a Microsoft safelink back to a normal URL
+    match = re.search(r"https?://[^/]+\.safelinks\.protection\.outlook\.com/\?url=([^&]+)", url)
+    if match:
+        url = urllib.parse.unquote(match.group(1))
+
+    return url
+
+
+def desafelink_urls(urls: List[str]) -> List[str]:
+    return [desafelink_url(url) for url in urls]
 
 
 def normalize_url(url: str):
@@ -46,4 +61,4 @@ def parse_urls_from_body(content: str, content_type: str) -> List[str]:
         )
 
     urls.extend(parse_urls(content, parse_urls_without_scheme=False))
-    return normalize_urls(urls)
+    return desafelink_urls(normalize_urls(urls))
