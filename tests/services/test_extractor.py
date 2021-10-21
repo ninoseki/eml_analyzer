@@ -25,3 +25,11 @@ def test_parse_urls_from_body_with_text():
     )
     assert len(urls) == 1
     assert "http://example.com" in urls
+
+
+def test_parse_urls_with_safelinks():
+    urls = parse_urls_from_body(
+        "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.google.com%2F",
+        "text/plain",
+    )
+    assert "https://www.google.com/" in urls
