@@ -6,6 +6,7 @@ def test_parse_urls_from_body_with_html(test_html: str):
 
     assert len(urls) > 0
     assert "http://www.w3.org/TR/html4/loose.dtd" not in urls
+    assert "http://example.com" in urls
 
     # check whether urls are unique or not
     assert len(set(urls)) == len(urls)

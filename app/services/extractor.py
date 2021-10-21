@@ -39,7 +39,7 @@ def normalize_urls(urls: List[str]) -> List[str]:
 
 
 def get_href_links(html: str) -> List[str]:
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html.parser")
     links: List[str] = [str(link.get("href")) for link in soup.findAll("a")]
     return [
         link
@@ -58,9 +58,7 @@ def parse_urls_from_body(content: str, content_type: str) -> List[str]:
         # convert HTML to text
         h = html2text.HTML2Text()
         h.ignore_links = True
-        content = h.handle(
-            "<p>Hello, <a href='https://www.google.com/earth/'>world</a>!"
-        )
+        content = h.handle(content)
 
     urls.extend(parse_urls(content, parse_urls_without_scheme=False))
     return normalize_urls(unpack_safelink_urls(urls))
