@@ -124,6 +124,7 @@ def spamassassin_response() -> Response:
 
 
 @pytest.fixture
-def client():
+async def client():
     app = create_app()
-    return httpx.AsyncClient(app=app, base_url="http://testserver")
+    async with httpx.AsyncClient(app=app, base_url="http://testserver") as c:
+        yield c
