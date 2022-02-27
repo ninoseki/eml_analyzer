@@ -24,7 +24,7 @@
     "js-file-download": "^0.4.12",
     "js-sha256": "0.9.0",
     "qs": "6.10.1",
-    "url-parse": "1.5.3",
+    "url-parse": "1.5.8",
     "vue": "2.6.14",
     "vue-concurrency": "^2.2.1",
     "vue-markdown": "2.2.4",
