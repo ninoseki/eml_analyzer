@@ -1,5 +1,5 @@
 # build env
-FROM node:14-alpine as build
+FROM node:16-alpine as build
 
 COPY ./frontend /frontend
 WORKDIR /frontend
@@ -20,12 +20,13 @@ WORKDIR /backend
 COPY pyproject.toml /backend
 COPY poetry.lock /backend
 COPY app /backend/app
-COPY --from=build /frontend /backend/frontend
 
 RUN pip3 install poetry && poetry config virtualenvs.create false && poetry install --no-dev
 RUN pip3 install circus
 
 COPY circus.ini /etc/circus.ini
+
+COPY --from=build /frontend /backend/frontend
 
 # spamd envs
 ENV SPAMD_MAX_CHILDREN=1 \
