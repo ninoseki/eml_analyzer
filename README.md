@@ -25,6 +25,23 @@ docker run -i -d -p 8000:8000 eml_analyzer
 
 The application is running at: http://localhost:8000/ in your browser.
 
+### Docker Compose
+
+```bash
+git clone https://github.com/ninoseki/eml_analyzer.git
+cd eml_analyzer
+docker-compose up
+```
+
+### Docker vs. Docker compose
+
+- Docker:
+  - Run [Uvicorn](https://www.uvicorn.org/) and [SpamAssassin](https://spamassassin.apache.org/) in the same container. (The processes are managed by [Circus](https://circus.readthedocs.io/en/latest/))
+- Docker Compose:
+  - Run [Gunicorn](https://gunicorn.org/) and SpamAssassin in each container.
+
+Thus Docker Compose is suitable for the production use.
+
 ### Heroku
 
 Alternatively, you can deploy the application on Heroku.
