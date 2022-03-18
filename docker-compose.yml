@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  spamassassin:
+    container_name: eml_analyzer_spamassassin
+    image: instantlinux/spamassassin:3.4.6-1
+    ports:
+      - ${PORT_SPAMASSASSIN:-783}:783
+    restart: always
+
+  eml_analyzer:
+    container_name: eml_analyzer_app
+    build:
+      context: ./
+      dockerfile: app.Dockerfile
+    ports:
+      - ${PORT:-8000}:8000
+    environment:
+      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
+      - URLSCAN_API_KEY=${URLSCAN_API_KEY}
+      - INQUEST_API_KEY=${INQUEST_API_KEY}
+      - SPAMASSASSIN_HOST=spamassassin
+      - SPAMASSASSIN_PORT=${PORT_SPAMASSASSIN:-783}
+    restart: always
+    depends_on:
+      - spamassassin
