@@ -1,14 +1,12 @@
 version: "3.7"
 services:
   spamassassin:
-    container_name: eml_analyzer_spamassassin
     image: instantlinux/spamassassin:3.4.6-1
     ports:
       - ${PORT_SPAMASSASSIN:-783}:783
     restart: always
 
-  eml_analyzer:
-    container_name: eml_analyzer_app
+  eml_analyzer:    
     build:
       context: ./
       dockerfile: app.Dockerfile
