@@ -6,7 +6,7 @@ services:
       - ${PORT_SPAMASSASSIN:-783}:783
     restart: always
 
-  eml_analyzer:    
+  eml_analyzer:
     build:
       context: ./
       dockerfile: app.Dockerfile
