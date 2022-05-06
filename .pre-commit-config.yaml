@@ -11,7 +11,7 @@ repos:
           ]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.31.0
+    rev: v2.32.0
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
@@ -25,7 +25,7 @@ repos:
         exclude: ^.*/?setup\.py$
 
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 22.3.0
     hooks:
       - id: black
 
