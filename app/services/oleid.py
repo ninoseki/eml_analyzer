@@ -1,7 +1,7 @@
 from typing import Optional
 
 import oletools.oleid
-from olefile import OleFileIO, isOleFile
+from olefile import isOleFile
 
 
 class OleID:
@@ -9,8 +9,7 @@ class OleID:
         self.oid: Optional[oletools.oleid.OleID] = None
 
         if isOleFile(data):
-            ole_file = OleFileIO(data)
-            self.oid = oletools.oleid.OleID(ole_file)
+            self.oid = oletools.oleid.OleID(data=data)
             self.oid.check()
 
     def is_encrypted(self) -> bool:
@@ -24,8 +23,8 @@ class OleID:
         if self.oid is None:
             return False
 
-        macros = self.oid.get_indicator("vba_macros")
-        return macros is not None and macros.value is True
+        macros = self.oid.get_indicator("vba")
+        return macros is not None and macros.value == "Yes"
 
     def has_flash_objects(self) -> bool:
         if self.oid is None:

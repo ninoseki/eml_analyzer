@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.1.1",
-    "@mdi/font": "6.6.96",
-    "@vue/composition-api": "^1.6.1",
+    "@mdi/font": "6.7.96",
+    "@vue/composition-api": "^1.6.2",
     "@vueuse/core": "^7.7.1",
     "axios": "0.27.2",
-    "buefy": "0.9.20",
-    "core-js": "3.22.4",
-    "dayjs": "1.11.1",
+    "buefy": "0.9.21",
+    "core-js": "3.22.7",
+    "dayjs": "1.11.2",
     "filesize.js": "2.0.0",
     "highlight.js": "11.5.1",
     "js-base64": "3.7.2",
@@ -31,7 +31,7 @@
     "vue-router": "3.5.2"
   },
   "devDependencies": {
-    "@types/jest": "27.5.0",
+    "@types/jest": "27.5.1",
     "@types/js-base64": "3.3.1",
     "@types/qs": "6.9.7",
     "@types/url-parse": "1.4.8",
@@ -50,7 +50,7 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-vue": "7.19.1",
     "prettier": "2.6.2",
-    "typescript": "4.6.4",
+    "typescript": "4.7.2",
     "vue-template-compiler": "2.6.14"
   }
 }
