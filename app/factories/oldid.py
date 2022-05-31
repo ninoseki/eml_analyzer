@@ -20,8 +20,13 @@ class OleIDVerdictFactory:
         oleid = OleID(data)
         file_info = f"{attachment.filename}({attachment.hash_.sha256})"
         if oleid.has_vba_macros():
-            key = "vba_macros"
+            key = "vba"
             description = f"{file_info} contains VBA macros."
+            details.append(Detail(key=key, description=description))
+
+        if oleid.has_xlm_macros():
+            key = "xlm"
+            description = f"{file_info} contains XLM macros."
             details.append(Detail(key=key, description=description))
 
         if oleid.has_flash_objects():
@@ -32,6 +37,16 @@ class OleIDVerdictFactory:
         if oleid.is_encrypted():
             key = "encrypted"
             description = f"{file_info} is encrypted."
+            details.append(Detail(key=key, description=description))
+
+        if oleid.has_external_relationships():
+            key = "ext_rels"
+            description = f"{file_info} contains external relationships."
+            details.append(Detail(key=key, description=description))
+
+        if oleid.has_object_pool():
+            key = "ObjectPool"
+            description = f"{file_info} contains an ObjectPool stream."
             details.append(Detail(key=key, description=description))
 
         return details
