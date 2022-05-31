@@ -50,7 +50,7 @@ class OleIDVerdictFactory:
             details.append(
                 Detail(
                     key="benign",
-                    description="There is no suspicous OLE file in attachments.",
+                    description="There is no suspicious OLE file in attachments.",
                 )
             )
         return Verdict(name=self.name, malicious=malicious, details=details)
