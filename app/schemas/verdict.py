@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 from fastapi_utils.api_model import APIModel
 
@@ -14,4 +14,4 @@ class Verdict(APIModel):
     name: str
     malicious: bool
     score: Optional[Union[float, int]]
-    details: List[Detail]
+    details: list[Detail]

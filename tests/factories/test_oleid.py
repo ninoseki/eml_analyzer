@@ -1,11 +1,9 @@
-from typing import List
-
 from app.factories.eml import EmlFactory
 from app.factories.oldid import OleIDVerdictFactory
 from app.schemas.eml import Attachment
 
 
-def get_attachments(eml_file: bytes) -> List[Attachment]:
+def get_attachments(eml_file: bytes) -> list[Attachment]:
     eml = EmlFactory.from_bytes(eml_file)
     return eml.attachments
 

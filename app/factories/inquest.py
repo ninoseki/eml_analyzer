@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from functools import partial
-from typing import List, Optional
+from typing import Optional
 
 import aiometer
 from loguru import logger
@@ -18,7 +18,7 @@ class InQuestAlert:
     reference: Optional[str]
 
     @classmethod
-    def build(cls, dicts: List[dict]) -> List["InQuestAlert"]:
+    def build(cls, dicts: list[dict]) -> list["InQuestAlert"]:
         return [
             cls(
                 category=d.get("category", ""),
@@ -34,7 +34,7 @@ class InQuestAlert:
 class InQuestVerdict:
     sha256: str
     classification: str
-    alerts: List[InQuestAlert] = field(default_factory=list)
+    alerts: list[InQuestAlert] = field(default_factory=list)
 
     @property
     def malicious(self) -> bool:
@@ -74,7 +74,7 @@ async def get_result(client: InQuest, sha256: str) -> Optional[dict]:
     return None
 
 
-async def bulk_get_results(sha256s: List[str]) -> List[dict]:
+async def bulk_get_results(sha256s: list[str]) -> list[dict]:
     if len(sha256s) == 0:
         return []
 
@@ -85,13 +85,13 @@ async def bulk_get_results(sha256s: List[str]) -> List[dict]:
     return [result for result in results if result is not None]
 
 
-async def get_inquest_verdicts(sha256s: List[str]) -> List[InQuestVerdict]:
+async def get_inquest_verdicts(sha256s: list[str]) -> list[InQuestVerdict]:
     if str(INQUEST_API_KEY) == "":
         return []
 
     results = await bulk_get_results(sha256s)
 
-    verdicts: List[InQuestVerdict] = []
+    verdicts: list[InQuestVerdict] = []
     for result in results:
         verdicts.append(InQuestVerdict.build(result))
 
@@ -99,12 +99,12 @@ async def get_inquest_verdicts(sha256s: List[str]) -> List[InQuestVerdict]:
 
 
 class InQuestVerdictFactory:
-    def __init__(self, sha256s: List[str]):
+    def __init__(self, sha256s: list[str]):
         self.sha256s = sha256s
         self.name = "InQuest"
 
     async def to_model(self) -> Verdict:
-        malicious_verdicts: List[InQuestVerdict] = []
+        malicious_verdicts: list[InQuestVerdict] = []
 
         verdicts = await get_inquest_verdicts(self.sha256s)
         for verdict in verdicts:
@@ -123,7 +123,7 @@ class InQuestVerdictFactory:
                 ],
             )
 
-        details: List[Detail] = []
+        details: list[Detail] = []
         details = [
             Detail(
                 key=verdict.sha256,
@@ -135,6 +135,6 @@ class InQuestVerdictFactory:
         return Verdict(name=self.name, malicious=True, score=100, details=details)
 
     @classmethod
-    async def from_sha256s(cls, sha256s: List[str]) -> Verdict:
+    async def from_sha256s(cls, sha256s: list[str]) -> Verdict:
         obj = cls(sha256s)
         return await obj.to_model()

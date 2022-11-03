@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any, Dict, List
+from typing import Any
 
 import arrow
 import dateparser
@@ -14,8 +14,8 @@ from app.services.validator import is_eml_file
 
 def is_inline_forward_attachment(attachment: dict) -> bool:
     content_header = attachment.get("content_header", {})
-    content_types: List[str] = content_header.get("content-type", [])
-    content_dispositions: List[str] = content_header.get("content-disposition", [])
+    content_types: list[str] = content_header.get("content-type", [])
+    content_dispositions: list[str] = content_header.get("content-disposition", [])
 
     is_rfc822 = False
     for content_type in content_types:
@@ -38,7 +38,7 @@ class EmlFactory:
         parser = EmlParser(include_raw_body=True, include_attachment_data=True)
         self.parsed = parser.decode_email_bytes(eml_file)
 
-    def _normalize_received_date(self, received: Dict):
+    def _normalize_received_date(self, received: dict):
         date = received.get("date", "")
         if date != "":
             return received
@@ -49,7 +49,7 @@ class EmlFactory:
         received["date"] = dateparser.parse(date_)
         return received
 
-    def _normalize_received(self, received: List[Dict]) -> List[Dict]:
+    def _normalize_received(self, received: list[dict]) -> list[dict]:
         if len(received) == 0:
             return []
 
@@ -77,7 +77,7 @@ class EmlFactory:
         header["received"] = self._normalize_received(received)
         self.parsed["header"] = header
 
-    def _normalize_body(self, body: Dict[str, Any]) -> Dict[str, Any]:
+    def _normalize_body(self, body: dict[str, Any]) -> dict[str, Any]:
         content = body.get("content", "")
         content_type = body.get("content_type", "")
         body["urls"] = parse_urls_from_body(content, content_type)

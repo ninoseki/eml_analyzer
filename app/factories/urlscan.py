@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import partial
-from typing import List, Optional
+from typing import Optional
 
 import aiometer
 from loguru import logger
@@ -25,7 +25,7 @@ class UrlscanVerdict:
         return f"{self.url} is malicious."
 
 
-async def bulk_get_results(uuids: List[str]) -> List[dict]:
+async def bulk_get_results(uuids: list[str]) -> list[dict]:
     if len(uuids) == 0:
         return []
 
@@ -34,7 +34,7 @@ async def bulk_get_results(uuids: List[str]) -> List[dict]:
     return [result for result in results if result is not None]
 
 
-async def get_urlscan_verdicts(url: str) -> List[UrlscanVerdict]:
+async def get_urlscan_verdicts(url: str) -> list[UrlscanVerdict]:
     api = Urlscan()
 
     res = await api.search(url)
@@ -45,7 +45,7 @@ async def get_urlscan_verdicts(url: str) -> List[UrlscanVerdict]:
     uuids = [result.get("_id", "") for result in results]
     results = await bulk_get_results(uuids)
 
-    verdicts: List[UrlscanVerdict] = []
+    verdicts: list[UrlscanVerdict] = []
     for result in results:
         score = result.get("verdicts", {}).get("overall", {}).get("score")
         malicous = result.get("verdicts", {}).get("overall", {}).get("malicious")
@@ -56,7 +56,7 @@ async def get_urlscan_verdicts(url: str) -> List[UrlscanVerdict]:
     return verdicts
 
 
-def find_malicous_verdict(verdicts: List[UrlscanVerdict]) -> Optional[UrlscanVerdict]:
+def find_malicous_verdict(verdicts: list[UrlscanVerdict]) -> Optional[UrlscanVerdict]:
     for verdict in verdicts:
         if verdict.malicious:
             return verdict
@@ -64,12 +64,12 @@ def find_malicous_verdict(verdicts: List[UrlscanVerdict]) -> Optional[UrlscanVer
 
 
 class UrlscanVerdictFactory:
-    def __init__(self, urls: List[str]):
+    def __init__(self, urls: list[str]):
         self.urls = urls
         self.name = "urlscan.io"
 
     async def to_model(self) -> Verdict:
-        malicious_verdicts: List[UrlscanVerdict] = []
+        malicious_verdicts: list[UrlscanVerdict] = []
 
         for url in self.urls:
             try:
@@ -93,7 +93,7 @@ class UrlscanVerdictFactory:
                 ],
             )
 
-        details: List[Detail] = []
+        details: list[Detail] = []
         details = [
             Detail(
                 key=verdict.url,
@@ -106,6 +106,6 @@ class UrlscanVerdictFactory:
         return Verdict(name=self.name, malicious=True, score=100, details=details)
 
     @classmethod
-    async def from_urls(cls, urls: List[str]) -> Verdict:
+    async def from_urls(cls, urls: list[str]) -> Verdict:
         obj = cls(urls)
         return await obj.to_model()

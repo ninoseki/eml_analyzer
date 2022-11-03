@@ -1,5 +1,4 @@
 from functools import partial
-from typing import List
 
 import aiometer
 
@@ -19,15 +18,15 @@ from app.schemas.response import Response
 from app.schemas.verdict import Verdict
 
 
-def aggregate_urls_from_bodies(bodies: List[Body]) -> List[str]:
-    urls: List[str] = []
+def aggregate_urls_from_bodies(bodies: list[Body]) -> list[str]:
+    urls: list[str] = []
     for body in bodies:
         urls.extend(body.urls)
     return list(set(urls))
 
 
-def aggregate_sha256s_from_attachments(attachments: List[Attachment]) -> List[str]:
-    sha256s: List[str] = []
+def aggregate_sha256s_from_attachments(attachments: list[Attachment]) -> list[str]:
+    sha256s: list[str] = []
     for attachment in attachments:
         sha256s.append(attachment.hash_.sha256)
     return list(set(sha256s))
@@ -42,7 +41,7 @@ class ResponseFactory:
         urls = aggregate_urls_from_bodies(eml.bodies)
         sha256s = aggregate_sha256s_from_attachments(eml.attachments)
 
-        verdicts: List[Verdict] = []
+        verdicts: list[Verdict] = []
 
         async_tasks = [
             partial(SpamAssassinVerdictFactory.from_bytes, self.eml_file),

@@ -1,5 +1,4 @@
 import base64
-from typing import List
 
 from loguru import logger
 
@@ -9,12 +8,12 @@ from app.services.oleid import OleID
 
 
 class OleIDVerdictFactory:
-    def __init__(self, attachments: List[Attachment]):
+    def __init__(self, attachments: list[Attachment]):
         self.attachments = attachments
         self.name = "oleid"
 
-    def _parse_as_ole_file(self, attachment: Attachment) -> List[Detail]:
-        details: List[Detail] = []
+    def _parse_as_ole_file(self, attachment: Attachment) -> list[Detail]:
+        details: list[Detail] = []
 
         data: bytes = base64.b64decode(attachment.raw)
         oleid = OleID(data)
@@ -52,7 +51,7 @@ class OleIDVerdictFactory:
         return details
 
     def to_model(self) -> Verdict:
-        details: List[Detail] = []
+        details: list[Detail] = []
 
         for attachment in self.attachments:
             try:
@@ -71,6 +70,6 @@ class OleIDVerdictFactory:
         return Verdict(name=self.name, malicious=malicious, details=details)
 
     @classmethod
-    def from_attachments(cls, attachments: List[Attachment]) -> Verdict:
+    def from_attachments(cls, attachments: list[Attachment]) -> Verdict:
         obj = cls(attachments)
         return obj.to_model()

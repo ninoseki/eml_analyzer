@@ -1,5 +1,5 @@
 # build env
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 COPY ./frontend /frontend
 WORKDIR /frontend
@@ -19,7 +19,7 @@ COPY pyproject.toml poetry.lock /backend/
 COPY gunicorn.conf.py /backend
 COPY app /backend/app
 
-RUN pip3 install poetry && poetry config virtualenvs.create false && poetry install --no-dev
+RUN pip3 install poetry==1.1.15 && poetry config virtualenvs.create false && poetry install --no-dev
 
 COPY --from=build /frontend /backend/frontend
 

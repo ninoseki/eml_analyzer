@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from loguru import logger
 
@@ -14,7 +13,7 @@ TIMEOUT = settings.SPAMASSASSIN_TIMEOUT
 
 @dataclass
 class Result:
-    details: List[Detail]
+    details: list[Detail]
     score: float
     malicious: bool
 
@@ -35,7 +34,7 @@ class SpamAssassinVerdictFactory:
             logger.exception(error)
             return Verdict(name=self.name, malicious=False, details=[])
 
-        details: List[Detail] = []
+        details: list[Detail] = []
         details = [
             Detail(key=detail.name, score=detail.score, description=detail.description)
             for detail in report.details
