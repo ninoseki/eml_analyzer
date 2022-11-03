@@ -1,5 +1,3 @@
-from typing import List
-
 from loguru import logger
 
 from app.schemas.verdict import Detail, Verdict
@@ -12,7 +10,7 @@ class EmailRepVerdictFactory:
         self.name = "EmailRep"
 
     async def to_model(self) -> Verdict:
-        details: List[Detail] = []
+        details: list[Detail] = []
         malicious = False
 
         email_rep = EmailRep()

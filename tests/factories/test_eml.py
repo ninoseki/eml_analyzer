@@ -1,5 +1,3 @@
-from typing import List
-
 from app.factories.eml import EmlFactory, is_inline_forward_attachment
 
 
@@ -15,7 +13,7 @@ def test_sample(sample_eml):
 
 def test_cc(cc_eml):
     eml = EmlFactory.from_bytes(cc_eml)
-    assert eml.header.message_id == "<ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com>"
+    assert eml.header.message_id == "ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com"
     assert eml.header.subject == "To and Cc headers"
     assert eml.header.to == ["foo.bar@example.com", "info@example.com"]
 
@@ -49,14 +47,13 @@ def test_encrypted_docx(encrypted_docx_eml):
     )
 
 
-def test_emails(emails: List[bytes]):
+def test_emails(emails: list[bytes]):
     for email in emails:
         try:
             eml = EmlFactory.from_bytes(email)
             assert eml is not None
-        except Exception as e:
-            print(e)
-            print(email.decode())
+        except Exception:
+            pass
 
 
 def test_complete_msg(complete_msg):

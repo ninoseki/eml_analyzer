@@ -1,9 +1,10 @@
 import glob
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import httpx
 import pytest
+import pytest_asyncio
 from aiospamc.header_values import SpamValue
 from aiospamc.responses import Response
 
@@ -47,7 +48,7 @@ def encrypted_docx_eml() -> bytes:
 
 
 @pytest.fixture
-def emails() -> List[bytes]:
+def emails() -> list[bytes]:
     parent = str(Path(__file__).parent.absolute())
     path = parent + "/fixtures/emails/**/*.eml"
     paths = glob.glob(path)
@@ -118,12 +119,12 @@ def docx_attachment(encrypted_docx_eml: bytes) -> Attachment:
 @pytest.fixture
 def spamassassin_response() -> Response:
     body = read_file("sa.txt").encode()
-    headers: Dict[str, Any] = {}
+    headers: dict[str, Any] = {}
     headers["Spam"] = SpamValue(value=True, score=40, threshold=20)
     return Response(headers=headers, body=body)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def client():
     app = create_app()
     async with httpx.AsyncClient(app=app, base_url="http://testserver") as c:

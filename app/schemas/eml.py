@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List, Optional, Union
+from typing import Optional, Union
 
 from fastapi_utils.api_model import APIModel
 
@@ -19,7 +19,7 @@ class Attachment(APIModel):
     hash_: Hash
     mime_type: str
     mime_type_short: str
-    content_header: Dict[str, List[Union[str, int]]]
+    content_header: dict[str, list[Union[str, int]]]
 
     class Config:
         fields = {"hash_": "hash"}
@@ -28,22 +28,22 @@ class Attachment(APIModel):
 class Body(APIModel):
     content_type: Optional[str] = None
     hash_: str
-    content_header: Dict[str, List[Union[str, int]]]
+    content_header: dict[str, list[Union[str, int]]]
     content: str
-    urls: List[str]
-    emails: List[str]
-    domains: List[str]
-    ip_addresses: List[str]
+    urls: list[str]
+    emails: list[str]
+    domains: list[str]
+    ip_addresses: list[str]
 
     class Config:
         fields = {"hash_": "hash"}
 
 
 class Received(APIModel):
-    by: Optional[List[str]] = None
+    by: Optional[list[str]] = None
     date: datetime
-    for_: Optional[List[str]] = None
-    from_: Optional[List[str]] = None
+    for_: Optional[list[str]] = None
+    from_: Optional[list[str]] = None
     src: str
     with_: Optional[str]
     delay: int
@@ -55,26 +55,26 @@ class Received(APIModel):
 class Header(APIModel):
     message_id: Optional[str] = None
     subject: str
-    defect: Optional[List[str]] = None
+    defect: Optional[list[str]] = None
     from_: str
-    to: List[str]
-    cc: Optional[List[str]] = None
+    to: list[str]
+    cc: Optional[list[str]] = None
     date: Optional[datetime]
-    received_email: Optional[List[str]] = None
-    received_foremail: Optional[List[str]] = None
-    received_domain: Optional[List[str]] = None
-    received_ip: Optional[List[str]] = None
+    received_email: Optional[list[str]] = None
+    received_foremail: Optional[list[str]] = None
+    received_domain: Optional[list[str]] = None
+    received_ip: Optional[list[str]] = None
     received_src: Optional[str] = None
-    received: List[Received]
-    header: Dict[str, List[Union[str, int]]]
+    received: list[Received]
+    header: dict[str, list[Union[str, int]]]
 
     class Config:
         fields = {"from_": "from"}
 
 
 class Eml(APIModel):
-    attachments: List[Attachment]
-    bodies: List[Body]
+    attachments: list[Attachment]
+    bodies: list[Body]
     header: Header
 
     class Config:

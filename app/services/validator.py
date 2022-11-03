@@ -1,4 +1,4 @@
-from typing import List, cast
+from typing import cast
 
 import magic
 
@@ -6,7 +6,7 @@ EML_MIME_TYPES = ["message/rfc822", "text/html", "text/plain"]
 MSG_MIME_TYPES = ["application/vnd.ms-outlook"]
 
 
-def check_mime_type(data: bytes, valid_types: List[str]) -> bool:
+def check_mime_type(data: bytes, valid_types: list[str]) -> bool:
     detected = magic.detect_from_content(data)
     mime_type = cast(str, detected.mime_type)
 

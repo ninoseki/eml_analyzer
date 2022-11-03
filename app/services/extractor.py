@@ -1,5 +1,4 @@
 import urllib.parse
-from typing import List
 
 import html2text
 from bs4 import BeautifulSoup
@@ -22,7 +21,7 @@ def unpack_safelink_url(url: str) -> str:
     return url
 
 
-def unpack_safelink_urls(urls: List[str]) -> List[str]:
+def unpack_safelink_urls(urls: list[str]) -> list[str]:
     return [unpack_safelink_url(url) for url in urls]
 
 
@@ -33,14 +32,14 @@ def normalize_url(url: str):
     return url
 
 
-def normalize_urls(urls: List[str]) -> List[str]:
+def normalize_urls(urls: list[str]) -> list[str]:
     unique_urls = list(set(urls))
     return [normalize_url(url) for url in unique_urls]
 
 
-def get_href_links(html: str) -> List[str]:
+def get_href_links(html: str) -> list[str]:
     soup = BeautifulSoup(html, "html.parser")
-    links: List[str] = [str(link.get("href")) for link in soup.findAll("a")]
+    links: list[str] = [str(link.get("href")) for link in soup.findAll("a")]
     return [
         link
         for link in links
@@ -48,8 +47,8 @@ def get_href_links(html: str) -> List[str]:
     ]
 
 
-def parse_urls_from_body(content: str, content_type: str) -> List[str]:
-    urls: List[str] = []
+def parse_urls_from_body(content: str, content_type: str) -> list[str]:
+    urls: list[str] = []
 
     if is_html(content_type):
         # extract href links

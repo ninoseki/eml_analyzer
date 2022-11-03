@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 import aiospamc
 from async_timeout import timeout
@@ -15,7 +15,7 @@ class Detail:
 @dataclass
 class Report:
     score: float
-    details: List[Detail]
+    details: list[Detail]
     level = 5.0
 
     def is_spam(self, level: float = 5.0) -> bool:
@@ -23,11 +23,11 @@ class Report:
 
 
 class Parser:
-    def __init__(self, headers: Dict[str, Any], body: str):
+    def __init__(self, headers: dict[str, Any], body: str):
         self.headers = headers
         self.body = body
         self.score = 0.0
-        self.details: List[Detail] = []
+        self.details: list[Detail] = []
 
     def _parse_headers(self):
         spam_value = self.headers["Spam"]
@@ -40,9 +40,9 @@ class Parser:
         description = " ".join(parts[2:])
         return Detail(name=name, score=score, description=description)
 
-    def _parse_details(self, details: str) -> List[Detail]:
+    def _parse_details(self, details: str) -> list[Detail]:
         lines = details.splitlines()
-        normalized_line: List[str] = []
+        normalized_line: list[str] = []
 
         for line in lines:
             parts = line.split()
