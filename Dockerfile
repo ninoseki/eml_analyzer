@@ -1,5 +1,5 @@
 # build env
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 COPY ./frontend /frontend
 WORKDIR /frontend
