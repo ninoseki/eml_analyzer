@@ -1,8 +1,9 @@
 # build env
-FROM node:18-alpine as build
+FROM node:18-buster-slim as build
 
 COPY ./frontend /frontend
 WORKDIR /frontend
+ENV NODE_OPTIONS --openssl-legacy-provider
 RUN npm install && npm run build && rm -rf node_modules
 
 # prod env
@@ -21,8 +22,8 @@ COPY pyproject.toml poetry.lock /backend/
 COPY gunicorn.conf.py /backend
 COPY app /backend/app
 
-RUN pip3 install poetry==1.1.15 && poetry config virtualenvs.create false && poetry install --no-dev
-RUN pip3 install circus
+RUN pip install poetry==1.1.15 && poetry config virtualenvs.create false && poetry install --no-dev
+RUN pip install circus
 
 COPY circus.ini /etc/circus.ini
 
