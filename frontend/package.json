@@ -26,7 +26,7 @@
     "qs": "6.11.0",
     "regenerator-runtime": "^0.13.11",
     "url-parse": "1.5.10",
-    "vue": "2.6.14",
+    "vue": "2.7.14",
     "vue-concurrency": "2.2.1",
     "vue-markdown": "2.2.4",
     "vue-router": "3.5.2"
@@ -52,6 +52,6 @@
     "eslint-plugin-vue": "7.19.1",
     "prettier": "2.7.1",
     "typescript": "4.7.3",
-    "vue-template-compiler": "2.6.14"
+    "vue-template-compiler": "2.7.14"
   }
 }
