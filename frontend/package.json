@@ -32,7 +32,7 @@
     "vue-router": "3.5.2"
   },
   "devDependencies": {
-    "@types/jest": "27.5.1",
+    "@types/jest": "27.5.2",
     "@types/js-base64": "3.3.1",
     "@types/qs": "6.9.7",
     "@types/url-parse": "1.4.8",
