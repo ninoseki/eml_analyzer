@@ -9,7 +9,7 @@ class Urlscan implements Link {
 
   public constructor() {
     this.baseURL = "https://urlscan.io";
-    this.favicon = "https://www.google.com/s2/favicons?domain=urlscan.io";
+    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`;
     this.name = "urlscan.io";
     this.type = "domain";
   }

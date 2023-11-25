@@ -2,7 +2,7 @@ import httpx
 import pytest
 from respx import MockRouter
 
-from app.services.emailrep import EmailRep
+from backend.services.emailrep import EmailRep
 
 
 @pytest.mark.asyncio

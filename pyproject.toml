@@ -6,66 +6,75 @@ authors = ["Manabu Niseki <manabu.niseki@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-aiofiles = "^0.8.0"
-aiometer = "^0.3.0"
-aiospamc = "^0.9.0"
-arrow = "^1.2.3"
-async-timeout = "^4.0.2"
-beautifulsoup4 = "^4.11.1"
+python = "^3.11"
+aiofiles = "^23.2"
+aiometer = "^0.4"
+aiospamc = "^1.0"
+arrow = "^1.3"
+async-timeout = "^4.0"
+beautifulsoup4 = "^4.12"
+circus = "^0.18"
 compoundfiles = "^0.3"
-compressed-rtf = "^1.0.6"
-dateparser = "^1.1.2"
-eml_parser = {extras = ["filemagic"], version = "1.17.5"}
-fastapi = "^0.85.2"
-fastapi-utils = "^0.2.1"
-gunicorn = "^20.1.0"
-html2text = "^2020.1.16"
+compressed-rtf = "^1.0"
+dateparser = "^1.2"
+eml_parser = { extras = ["filemagic"], version = "^1.17" }
+fastapi = "^0.104"
+gunicorn = "^21.2"
+html2text = "^2020.1"
 httpx = "^0.23.0"
 ioc-finder = "^6.0.1"
-loguru = "^0.6.0"
+loguru = "^0.7"
 oletools = "0.60.1"
-pydantic = "^1.10.2"
-python-multipart = "^0.0.5"
-uvicorn = "^0.19.0"
-vt-py = "^0.17.1"
+pydantic = "^2.5"
+pyhumps = "^3.8.0"
+python-magic = "^0.4.27"
+python-multipart = "^0.0"
+uvicorn = "^0.23"
+vt-py = "^0.17"
 
-[tool.poetry.dev-dependencies]
-aioresponses = "^0.7.3"
-autoflake = "^1.7"
-autopep8 = "^2.0.0"
+[tool.poetry.group.dev.dependencies]
+aioresponses = "^0.7"
 black = "^22.10.0"
 coveralls = "^3.3.1"
-flake8 = "^5.0.4"
-isort = "^5.10.1"
-mypy = "^0.982"
-pre-commit = "^2.20.0"
-pytest = "^7.2.0"
-pytest-asyncio = "^0.20.1"
-pytest-cov = "^4.0.0"
-pytest-env = "^0.8.1"
-pytest-mock = "^3.10.0"
-pytest-parallel = "^0.1.1"
-pytest-randomly = "^3.12.0"
-pytest-sugar = "^0.9.5"
-pytest-timeout = "^2.1.0"
-pyupgrade = "^3.2.0"
-respx = "^0.20.0"
-vcrpy = "^4.2.1"
-py = "^1.11.0"
-
-[tool.isort]
-force_grid_wrap = 0
-include_trailing_comma = true
-known_third_party = ["aiometer", "aioresponses", "aiospamc", "arrow", "async_timeout", "asynctest", "bs4", "compoundfiles", "compressed_rtf", "dateparser", "eml_parser", "fastapi", "fastapi_utils", "html2text", "httpx", "ioc_finder", "loguru", "magic", "olefile", "oletools", "pydantic", "pytest", "pytest_mock", "respx", "starlette", "vcr", "vt"]
-line_length = 88
-multi_line_output = 3
-use_parentheses= true
+mypy = "^1.7"
+pre-commit = "^3.5"
+py = "^1.11"
+pytest = "^7.4"
+pytest-asyncio = "^0.21"
+pytest-cov = "^4.1"
+pytest-env = "^1.1"
+pytest-mock = "^3.12"
+pytest-parallel = "^0.1"
+pytest-pretty = "^1.2"
+pytest-randomly = "^3.15"
+pytest-timeout = "^2.2"
+pyupgrade = "^3.15"
+respx = "^0.20"
+vcrpy = "^5.1"
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+asyncio_mode = "auto"
 env = ["VIRUSTOTAL_API_KEY=foo", "INQUEST_API_KEY=bar", "TESTING=True"]
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = [
+  "ASYNC", # flake8-async
+  "B",     # flake8-bugbear
+  "C",     # flake8-comprehensions
+  "E",     # pycodestyle errors
+  "F",     # pyflakes
+  "I",     # isort
+  "N",     # pep8-naming
+  "RET",   # flake8-return
+  "RUF",   # Ruff-specific rules
+  "SIM",   # flake8-simplify
+  "T20",   # flake8-print
+  "W",     # pycodestyle warnings
+]
+ignore = [
+  "E501", # line too long, handled by black
+]

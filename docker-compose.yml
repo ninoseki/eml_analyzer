@@ -11,7 +11,7 @@ services:
       context: ./
       dockerfile: app.Dockerfile
     ports:
-      - ${PORT:-8000}:8000
+      - ${PORT:-8000}:8001
     environment:
       - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
       - URLSCAN_API_KEY=${URLSCAN_API_KEY}

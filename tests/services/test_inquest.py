@@ -4,7 +4,7 @@ import httpx
 import pytest
 from respx import MockRouter
 
-from app.services.inquest import InQuest
+from backend.services.inquest import InQuest
 
 
 @pytest.mark.asyncio

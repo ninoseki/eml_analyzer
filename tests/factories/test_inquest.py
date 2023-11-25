@@ -4,7 +4,7 @@ import httpx
 import pytest
 from respx import MockRouter
 
-from app.factories.inquest import InQuestVerdict, InQuestVerdictFactory
+from backend.factories.inquest import InQuestVerdict, InQuestVerdictFactory
 
 
 def test_inquest_verdict(inquest_dfi_details_response: str):
@@ -20,7 +20,9 @@ def test_inquest_verdict(inquest_dfi_details_response: str):
 @pytest.mark.asyncio
 async def test_inquest(inquest_dfi_details_response: str, respx_mock: MockRouter):
     sha256 = "e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149"
-    respx_mock.get(f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",).mock(
+    respx_mock.get(
+        f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",
+    ).mock(
         return_value=httpx.Response(200, content=inquest_dfi_details_response),
     )
 

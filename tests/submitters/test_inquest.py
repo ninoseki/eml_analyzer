@@ -2,8 +2,8 @@ import httpx
 import pytest
 from respx import MockRouter
 
-from app.schemas.eml import Attachment
-from app.submitters.inquest import InQuestSubmitter
+from backend.schemas.eml import Attachment
+from backend.submitters.inquest import InQuestSubmitter
 
 
 @pytest.mark.asyncio
