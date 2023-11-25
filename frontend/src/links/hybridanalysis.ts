@@ -9,8 +9,7 @@ export class HybridAnalysis implements Link {
 
   public constructor() {
     this.baseURL = "https://www.hybrid-analysis.com";
-    this.favicon =
-      "https://www.google.com/s2/favicons?domain=hybrid-analysis.com";
+    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`;
     this.name = "Hybrid Analysis";
     this.type = "sha256";
   }

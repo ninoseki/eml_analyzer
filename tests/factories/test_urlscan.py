@@ -2,7 +2,7 @@ import httpx
 import pytest
 from respx import MockRouter
 
-from app.factories.urlscan import UrlscanVerdict, UrlscanVerdictFactory
+from backend.factories.urlscan import UrlscanVerdict, UrlscanVerdictFactory
 
 
 @pytest.mark.asyncio

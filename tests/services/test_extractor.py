@@ -1,4 +1,4 @@
-from app.services.extractor import parse_urls_from_body
+from backend.services.extractor import parse_urls_from_body
 
 
 def test_parse_urls_from_body_with_html(test_html: str):

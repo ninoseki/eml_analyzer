@@ -1,4 +1,4 @@
-from app.services.oleid import OleID
+from backend.services.oleid import OleID
 
 
 def test_encrypted_docx(encrypted_docx: bytes):

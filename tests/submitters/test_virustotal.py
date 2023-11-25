@@ -1,8 +1,8 @@
 import pytest
 from aioresponses import aioresponses
 
-from app.schemas.eml import Attachment
-from app.submitters.virustotal import VirusTotalSubmitter
+from backend.schemas.eml import Attachment
+from backend.submitters.virustotal import VirusTotalSubmitter
 
 
 @pytest.mark.asyncio
@@ -12,13 +12,13 @@ async def test_virustotal(docx_attachment: Attachment):
     with aioresponses() as aiomock:
         aiomock.get(
             "https://www.virustotal.com/api/v3/files/upload_url",
-            payload=dict(data="https://www.virustotal.com/_ah/upload/foo"),
+            payload={"data": "https://www.virustotal.com/_ah/upload/foo"},
         )
 
         analysis_data = {"type": "analysis", "id": "foo"}
         aiomock.post(
             "https://www.virustotal.com/_ah/upload/foo",
-            payload=dict(data=analysis_data),
+            payload={"data": analysis_data},
         )
 
         result = await submitter.submit()

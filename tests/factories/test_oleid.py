@@ -1,6 +1,6 @@
-from app.factories.eml import EmlFactory
-from app.factories.oldid import OleIDVerdictFactory
-from app.schemas.eml import Attachment
+from backend.factories.eml import EmlFactory
+from backend.factories.oldid import OleIDVerdictFactory
+from backend.schemas.eml import Attachment
 
 
 def get_attachments(eml_file: bytes) -> list[Attachment]:

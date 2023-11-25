@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from app.factories.spamassassin import SpamAssassinVerdictFactory
+from backend.factories.spamassassin import SpamAssassinVerdictFactory
 
 
 @pytest.mark.asyncio

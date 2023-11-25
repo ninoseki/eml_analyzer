@@ -1,7 +1,7 @@
 import pytest
 import vcr
 
-from app.factories.virustotal import VirusTotalVerdict, VirusTotalVerdictFactory
+from backend.factories.virustotal import VirusTotalVerdict, VirusTotalVerdictFactory
 
 
 @vcr.use_cassette(

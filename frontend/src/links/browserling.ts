@@ -9,7 +9,7 @@ export class Browserling implements Link {
 
   public constructor() {
     this.baseURL = "https://www.browserling.com";
-    this.favicon = "https://www.google.com/s2/favicons?domain=browserling.com";
+    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`;
     this.name = "Browserling";
     this.type = "url";
   }

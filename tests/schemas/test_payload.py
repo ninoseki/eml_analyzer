@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas.payload import FilePayload
+from backend.schemas.payload import FilePayload
 
 
 def test_sample_eml(sample_eml: bytes):

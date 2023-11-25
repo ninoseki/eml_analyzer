@@ -1,4 +1,4 @@
-from app.factories.eml import EmlFactory, is_inline_forward_attachment
+from backend.factories.eml import EmlFactory, is_inline_forward_attachment
 
 
 def test_sample(sample_eml):
@@ -32,7 +32,7 @@ def test_multipart(multipart_eml):
 
     first = eml.attachments[0]
     assert first.filename == "tired_boot.FJ010019.jpeg"
-    assert first.hash_.md5 == "f561388f7446cedd5b8b480311744b3c"
+    assert first.hash.md5 == "f561388f7446cedd5b8b480311744b3c"
 
 
 def test_encrypted_docx(encrypted_docx_eml):
@@ -42,7 +42,7 @@ def test_encrypted_docx(encrypted_docx_eml):
 
     first = eml.attachments[0]
     assert (
-        first.hash_.sha256
+        first.hash.sha256
         == "28df2d6dfa10dc85c8ebb5defffcb15c196dca7b26d4fd6859b9ec75ac60cf9e"
     )
 

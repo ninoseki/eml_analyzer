@@ -10,8 +10,7 @@ export class SecurityTrails implements Link {
   public constructor() {
     this.name = "SecurityTrails";
     this.baseURL = "https://securitytrails.com";
-    this.favicon =
-      "https://www.google.com/s2/favicons?domain=securitytrails.com";
+    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`;
     this.type = "domain";
   }
 

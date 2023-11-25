@@ -8,9 +8,9 @@ import pytest_asyncio
 from aiospamc.header_values import SpamValue
 from aiospamc.responses import Response
 
-from app import create_app
-from app.factories.eml import EmlFactory
-from app.schemas.eml import Attachment
+from backend.factories.eml import EmlFactory
+from backend.main import create_app
+from backend.schemas.eml import Attachment
 
 
 def read_file(filename) -> str:
@@ -51,8 +51,13 @@ def encrypted_docx_eml() -> bytes:
 def emails() -> list[bytes]:
     parent = str(Path(__file__).parent.absolute())
     path = parent + "/fixtures/emails/**/*.eml"
-    paths = glob.glob(path)
-    return [open(path, "rb").read() for path in paths]
+
+    emails: list[bytes] = []
+    for p in glob.glob(path):
+        with open(p, "rb") as f:
+            emails.append(f.read())
+
+    return emails
 
 
 @pytest.fixture
