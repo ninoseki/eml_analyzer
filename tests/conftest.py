@@ -8,8 +8,8 @@ import pytest_asyncio
 from aiospamc.header_values import SpamValue
 from aiospamc.responses import Response
 
-from backend import create_app
 from backend.factories.eml import EmlFactory
+from backend.main import create_app
 from backend.schemas.eml import Attachment
 
 
