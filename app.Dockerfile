@@ -30,4 +30,4 @@ RUN pip install --no-cache-dir -r requirements.txt \
 ENV PORT 8000
 EXPOSE $PORT
 
-CMD peotry run gunicorn -k uvicorn.workers.UvicornWorker backend.main:app
+CMD poetry run gunicorn -k uvicorn.workers.UvicornWorker backend.main:app

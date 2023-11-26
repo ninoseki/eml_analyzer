@@ -11,7 +11,7 @@ ENV NODE_OPTIONS --openssl-legacy-provider
 RUN npm install && npm run build && rm -rf node_modules
 
 # prod env
-FROM python:3.11-slim-bookworm
+FROM python:3.11-slim-bullseye
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential spamassassin libmagic-dev  \

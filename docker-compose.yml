@@ -1,7 +1,7 @@
 version: "3"
 services:
   spamassassin:
-    image: instantlinux/spamassassin:4.0.0-6
+    image: instantlinux/spamassassin:3.4.6-1
     ports:
       - ${SPAMASSASSIN_PORT:-783}:783
     restart: always
@@ -11,7 +11,7 @@ services:
       context: ./
       dockerfile: app.Dockerfile
     ports:
-      - ${PORT:-8000}:8001
+      - ${PORT:-8000}:8000
     environment:
       - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
       - URLSCAN_API_KEY=${URLSCAN_API_KEY}
