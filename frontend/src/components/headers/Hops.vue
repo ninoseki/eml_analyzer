@@ -30,7 +30,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue"
 
-import H3Component from "@/components/ui/H3.vue"
+import H3Component from "@/components/ui/h3.vue"
 import { Header, Received } from "@/types"
 import { toCommaSeparatedString } from "@/utils/commaSeparated"
 import { secondsToHumanize } from "@/utils/secondsToHumanize"

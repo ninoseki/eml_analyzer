@@ -13,7 +13,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue"
 
-import H2Component from "@/components/ui/H2.vue"
+import H2Component from "@/components/ui/h2.vue"
 import VerdictComponent from "@/components/verdicts/Verdict.vue"
 import { Verdict } from "@/types"
 

@@ -17,7 +17,7 @@ import Hops from "@/components/headers/Hops.vue"
 import OtherHeaders from "@/components/headers/OtherHeaders.vue"
 import SecurityHeaders from "@/components/headers/SecurityHeaders.vue"
 import XHeaders from "@/components/headers/XHeaders.vue"
-import H2Component from "@/components/ui/H2.vue"
+import H2Component from "@/components/ui/h2.vue"
 import { Header } from "@/types"
 
 export default defineComponent({

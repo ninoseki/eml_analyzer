@@ -50,7 +50,7 @@ import { computed, defineComponent, PropType } from "vue"
 
 import ContentComponent from "@/components/bodies/Content.vue"
 import Indicators from "@/components/indicators/Indicators.vue"
-import H3Component from "@/components/ui/H3.vue"
+import H3Component from "@/components/ui/h3.vue"
 import { Body } from "@/types"
 export default defineComponent({
   name: "BodyComponent",

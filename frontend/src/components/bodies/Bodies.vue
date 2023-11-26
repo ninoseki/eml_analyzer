@@ -14,7 +14,7 @@
 import { computed, defineComponent, PropType } from "vue"
 
 import BodyComponent from "@/components/bodies/Body.vue"
-import H2Component from "@/components/ui/H2.vue"
+import H2Component from "@/components/ui/h2.vue"
 import { Body } from "@/types"
 export default defineComponent({
   name: "BodiesComponent",
