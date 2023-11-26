@@ -1,10 +1,5 @@
 <template>
-  <a
-    v-bind:href="link.href(value)"
-    class="button"
-    type="button"
-    target="_blank"
-  >
+  <a :href="link.href(value)" class="button" type="button" target="_blank">
     <span class="icon">
       <img :src="link.favicon" alt="favicon" />
     </span>
@@ -13,23 +8,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue"
 
-import { Link } from "@/types";
+import { Link } from "@/types"
 
 export default defineComponent({
-  name: "Link",
+  name: "LinkComponent",
   props: {
     value: {
       type: String,
-      required: true,
+      required: true
     },
     link: {
       type: Object as PropType<Link>,
-      required: true,
-    },
-  },
-});
+      required: true
+    }
+  }
+})
 </script>
 
 <style scoped>

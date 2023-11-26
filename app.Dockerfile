@@ -14,7 +14,7 @@ RUN npm install && npm run build && rm -rf node_modules
 FROM python:3.11-slim-bookworm
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libmagic-dev  \
+	&& apt-get install -y --no-install-recommends build-essential libmagic-dev  \
 	&& apt-get clean  \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt pyproject.toml poetry.lock gunicorn.conf.py ./
 COPY backend ./backend
-COPY --from=build /frontend ./frontend
+COPY --from=build /usr/src/app/frontend ./frontend
 
 RUN pip install --no-cache-dir -r requirements.txt \
 	&& poetry install --without dev

@@ -6,19 +6,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue"
 
-import Eml from "@/components/Eml.vue";
-import Verdicts from "@/components/verdicts/Verdicts.vue";
-import { Response } from "@/types";
+import Eml from "@/components/Eml.vue"
+import Verdicts from "@/components/verdicts/Verdicts.vue"
+import { Response } from "@/types"
 export default defineComponent({
-  name: "Response",
+  name: "ResponseComponent",
   props: {
     response: {
       type: Object as PropType<Response>,
-      required: true,
-    },
+      required: true
+    }
   },
-  components: { Eml, Verdicts },
-});
+  components: { Eml, Verdicts }
+})
 </script>

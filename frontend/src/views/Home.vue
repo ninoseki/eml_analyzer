@@ -1,9 +1,16 @@
 <template>
-  <div>
+  <div ref="root">
     <div class="box">
       <div class="upload-form">
         <b-message type="is-info" class="content">
-          <VueMarkdown :source="informationMessages" />
+          <ul>
+            <li>EML(<code>.eml</code>) and MSG(<code>.msg</code>) formats are supported.</li>
+            <li>
+              The MSG file will be converted to the EML file before analyzing. The conversion might
+              be lossy.
+            </li>
+            <li>This app doesn't store any information you enter.</li>
+          </ul>
         </b-message>
         <b-field>
           <b-upload v-model="emlFile" drag-drop expanded>
@@ -21,77 +28,61 @@
           <b-button>{{ emlFile.name }}</b-button>
         </div>
       </div>
-
       <div class="has-text-centered">
-        <b-button
-          type="is-light"
-          icon-pack="fas"
-          icon-left="search"
-          @click="parse"
+        <b-button type="is-light" icon-pack="fas" icon-left="search" @click="analyze"
           >Analyze</b-button
         >
       </div>
     </div>
-
-    <ResponseComponent
-      :response="analyzeFileTask.last.value"
-      v-if="analyzeFileTask.last"
-    />
+    <ResponseComponent :response="analyzeFileTask.last.value" v-if="analyzeFileTask.last?.value" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
-import { useAsyncTask } from "vue-concurrency";
-import VueMarkdown from "vue-markdown";
+import Vue from "vue"
+import { defineComponent, ref } from "vue"
+import { useAsyncTask } from "vue-concurrency"
 
-import { API } from "@/api";
-import ResponseComponent from "@/components/Response.vue";
-import { ErrorData, Response } from "@/types";
-import { alertError } from "@/utils/alert";
+import { API } from "@/api"
+import ResponseComponent from "@/components/Response.vue"
+import { ErrorData, Response } from "@/types"
+import { alertError } from "@/utils/alert"
 
 export default defineComponent({
-  name: "Home",
+  name: "HomeView",
   components: {
-    VueMarkdown,
-    ResponseComponent,
+    ResponseComponent
   },
-
-  setup(_, context) {
-    const emlFile = ref<File | undefined>(undefined);
-
-    const informationMessages = [
-      "- EML(`.eml`) and MSG(`.msg`) formats are supported.",
-      "  - The MSG file will be converted to the EML file before analyzing. The conversion might be lossy.",
-      "- This app doesn't store any information you enter.",
-    ].join("\n");
+  setup() {
+    const buefy = Vue.prototype.$buefy
+    const root = ref<HTMLElement>()
+    const emlFile = ref<File | undefined>(undefined)
 
     const analyzeFileTask = useAsyncTask<Response, [File | undefined]>(
       async (_signal, file: File | undefined) => {
-        return await API.analyzeFile(file);
+        return await API.analyzeFile(file)
       }
-    );
+    )
 
-    const parse = async () => {
-      const loadingComponent = context.root.$buefy.loading.open({
-        container: context.root.$el,
-      });
+    const analyze = async () => {
+      const loadingComponent = buefy.loading.open({
+        container: root.value
+      })
 
       try {
-        await analyzeFileTask.perform(emlFile.value);
-        loadingComponent.close();
+        await analyzeFileTask.perform(emlFile.value)
+        loadingComponent.close()
       } catch (error) {
-        loadingComponent.close();
+        loadingComponent.close()
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = (error as any).response.data as ErrorData;
-        alertError(data, context);
+        const data = (error as any).response.data as ErrorData
+        alertError(data, buefy)
       }
-    };
+    }
 
-    return { parse, analyzeFileTask, informationMessages, emlFile };
-  },
-});
+    return { analyze, analyzeFileTask, emlFile, root }
+  }
+})
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <H3>Basic headers</H3>
+    <H3Component>Basic headers</H3Component>
     <table class="table is-fullwidth">
       <tbody>
         <tr>
@@ -35,30 +35,30 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import Indicators from "@/components/indicators/Indicators.vue";
-import H3 from "@/components/ui/h3.vue";
-import UTC from "@/components/ui/UTC.vue";
-import { Header } from "@/types";
-import { toCommaSeparatedString } from "@/utils/commaSeparated";
+import Indicators from "@/components/indicators/Indicators.vue"
+import H3Component from "@/components/ui/H3.vue"
+import UTC from "@/components/ui/UTC.vue"
+import { Header } from "@/types"
+import { toCommaSeparatedString } from "@/utils/commaSeparated"
 
 export default defineComponent({
   name: "BasicHeaders",
   props: {
     header: {
       type: Object as PropType<Header>,
-      required: true,
-    },
+      required: true
+    }
   },
-  components: { Indicators, UTC, H3 },
+  components: { Indicators, UTC, H3Component },
   setup(props) {
-    const emailType = "email";
+    const emailType = "email"
     const emails = computed(() => {
-      return [props.header.from];
-    });
+      return [props.header.from]
+    })
 
-    return { emails, emailType, toCommaSeparatedString };
-  },
-});
+    return { emails, emailType, toCommaSeparatedString }
+  }
+})
 </script>

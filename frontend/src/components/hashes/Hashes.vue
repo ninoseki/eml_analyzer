@@ -24,16 +24,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue"
 
-import { Hash } from "@/types";
+import { Hash } from "@/types"
 export default defineComponent({
-  name: "Hashes",
+  name: "HashesComponent",
   props: {
     hash: {
       type: Object as PropType<Hash>,
-      required: true,
-    },
-  },
-});
+      required: true
+    }
+  }
+})
 </script>

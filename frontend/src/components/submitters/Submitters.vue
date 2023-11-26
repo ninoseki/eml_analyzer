@@ -12,45 +12,41 @@
         :key="submitter.name"
         aria-role="listitem"
       >
-        <SubmitterComponent
-          :submitter="submitter"
-          :value="value"
-          :key="submitter.name"
-        />
+        <SubmitterComponent :submitter="submitter" :value="value" :key="submitter.name" />
       </b-dropdown-item>
     </b-dropdown>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import SubmitterComponent from "@/components/submitters/Submitter.vue";
-import { Submitters } from "@/submitters";
-import { Attachment, SubmitType } from "@/types";
+import SubmitterComponent from "@/components/submitters/Submitter.vue"
+import { Submitters } from "@/submitters"
+import { Attachment, SubmitType } from "@/types"
 
 export default defineComponent({
-  name: "Submitters",
+  name: "SubmittersComponent",
   props: {
     value: {
       type: Object as PropType<Attachment>,
-      required: true,
+      required: true
     },
     type: {
-      type: Object as PropType<SubmitType>,
-      required: true,
-    },
+      type: String as PropType<SubmitType>,
+      required: true
+    }
   },
   components: { SubmitterComponent },
   setup(props) {
     const selectedSubmitters = computed(() => {
       if (props.type === undefined) {
-        return Submitters;
+        return Submitters
       }
-      return Submitters.filter((submitter) => submitter.type === props.type);
-    });
+      return Submitters.filter((submitter) => submitter.type === props.type)
+    })
 
-    return { selectedSubmitters };
-  },
-});
+    return { selectedSubmitters }
+  }
+})
 </script>

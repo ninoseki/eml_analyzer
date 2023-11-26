@@ -1,54 +1,54 @@
-import { Link, LinkType } from "@/types";
-import { buildURL } from "@/utils/urlBuilder";
+import { Link, LinkType } from "@/types"
+import { buildURL } from "@/utils/urlBuilder"
 
 class Urlscan implements Link {
-  public favicon: string;
-  public baseURL: string;
-  public name: string;
-  public type: LinkType;
+  public favicon: string
+  public baseURL: string
+  public name: string
+  public type: LinkType
 
   public constructor() {
-    this.baseURL = "https://urlscan.io";
-    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`;
-    this.name = "urlscan.io";
-    this.type = "domain";
+    this.baseURL = "https://urlscan.io"
+    this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`
+    this.name = "urlscan.io"
+    this.type = "domain"
   }
 
   public href(value: string): string {
-    return value;
+    return value
   }
 }
 
 export class UrlscanForURL extends Urlscan {
   public constructor() {
-    super();
-    this.type = "url";
+    super()
+    this.type = "url"
   }
 
   public href(value: string): string {
-    const query = encodeURIComponent(`task.url:"${value}"`);
-    return buildURL(this.baseURL, `/search/#${query}`);
+    const query = encodeURIComponent(`task.url:"${value}"`)
+    return buildURL(this.baseURL, `/search/#${query}`)
   }
 }
 
 export class UrlscanForDomain extends Urlscan {
   public constructor() {
-    super();
-    this.type = "domain";
+    super()
+    this.type = "domain"
   }
 
   public href(value: string): string {
-    return buildURL(this.baseURL, `/domain/${value}`);
+    return buildURL(this.baseURL, `/domain/${value}`)
   }
 }
 
 export class UrlscanForIP extends Urlscan {
   public constructor() {
-    super();
-    this.type = "ip_address";
+    super()
+    this.type = "ip_address"
   }
 
   public href(value: string): string {
-    return buildURL(this.baseURL, `/ip/${value}`);
+    return buildURL(this.baseURL, `/ip/${value}`)
   }
 }

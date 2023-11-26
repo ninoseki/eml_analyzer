@@ -1,6 +1,6 @@
 <template>
   <div @click="confirm">
-    <span class="icon" @click="confirm">
+    <span class="icon">
       <img :src="submitter.favicon" alt="favicon" />
     </span>
     <span>{{ submitter.name }}</span>
@@ -8,58 +8,61 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import Vue from "vue"
+import { defineComponent, PropType } from "vue"
 
-import { Attachment, ErrorData, Submitter } from "@/types";
-import { alertError } from "@/utils/alert";
+import { Attachment, ErrorData, Submitter } from "@/types"
+import { alertError } from "@/utils/alert"
 
 export default defineComponent({
-  name: "Submitter",
+  name: "SubmitterComponent",
   props: {
     value: {
       type: Object as PropType<Attachment>,
-      required: true,
+      required: true
     },
     submitter: {
       type: Object as PropType<Submitter>,
-      required: true,
-    },
+      required: true
+    }
   },
-  setup(props, context) {
+  setup(props) {
+    const buefy = Vue.prototype.$buefy
+
     const showResult = (url: string) => {
-      const message = `The submission result will be available at <a href="${url}" target="_blank">here</a>. Please wait for a while.`;
-      context.root.$buefy.dialog.alert({
+      const message = `The submission result will be available at <a href="${url}" target="_blank">here</a>. Please wait for a while.`
+      buefy.dialog.alert({
         title: "Submitted successfully",
         message: message,
-        confirmText: "Close",
-      });
-    };
+        confirmText: "Close"
+      })
+    }
 
     const confirm = () => {
-      context.root.$buefy.dialog.confirm({
+      buefy.dialog.confirm({
         message: `Are you sure to submit this attachment to ${props.submitter.name}?`,
-        onConfirm: () => submit(),
-      });
-    };
+        onConfirm: () => submit()
+      })
+    }
 
     const submit = async () => {
-      const loadingComponent = context.root.$buefy.loading.open({
-        container: null,
-      });
+      const loadingComponent = buefy.loading.open({
+        container: null
+      })
       try {
-        const result = await props.submitter.submit(props.value);
-        loadingComponent.close();
-        showResult(result.referenceUrl);
+        const result = await props.submitter.submit(props.value)
+        loadingComponent.close()
+        showResult(result.referenceUrl)
       } catch (error) {
-        loadingComponent.close();
-        const data = error as ErrorData;
-        alertError(data, context);
+        loadingComponent.close()
+        const data = (error as any).response.data as ErrorData
+        alertError(data, buefy)
       }
-    };
+    }
 
-    return { confirm };
-  },
-});
+    return { confirm }
+  }
+})
 </script>
 
 <style scoped>

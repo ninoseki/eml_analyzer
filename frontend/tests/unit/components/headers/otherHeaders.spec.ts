@@ -1,32 +1,29 @@
-import VueCompositionApi from "@vue/composition-api";
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils"
+import { describe, expect, it } from "vitest"
 
-import OtherHeaders from "@/components/headers/OtherHeaders.vue";
-import { securityKeys } from "@/types";
+import OtherHeaders from "@/components/headers/OtherHeaders.vue"
+import { securityKeys } from "@/types"
 
-import { header } from "../../fixtures";
+import { header } from "../../fixtures"
 
-const localVue = createLocalVue();
-localVue.use(VueCompositionApi);
+const localVue = createLocalVue()
 
 describe("OtherHeaders.vue", () => {
   describe("#otherHeaders", () => {
     it("returns other headers", () => {
       const wrapper = shallowMount(OtherHeaders, {
         localVue,
-        propsData: { header },
-      });
+        propsData: { header }
+      })
 
-      const headers = (wrapper.vm as any).otherHeaders;
-      expect(headers.length).toBeGreaterThan(0);
-      const keys = headers.map(
-        (securityHeader) => securityHeader.key
-      ) as string[];
+      const headers = (wrapper.vm as any).otherHeaders
+      expect(headers.length).toBeGreaterThan(0)
+      const keys = headers.map((securityHeader) => securityHeader.key) as string[]
 
       // check security headers
-      keys.forEach((key) => expect(securityKeys).not.toContain(key));
+      keys.forEach((key) => expect(securityKeys).not.toContain(key))
       // check x-headers
-      keys.forEach((key) => expect(key).not.toMatch(/^x-/));
-    });
-  });
-});
+      keys.forEach((key) => expect(key).not.toMatch(/^x-/))
+    })
+  })
+})

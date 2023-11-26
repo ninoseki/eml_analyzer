@@ -21,7 +21,7 @@ def create_app():
 
     # add routes
     app.include_router(api_router, prefix="/api")
-    app.mount("/static", StaticFiles(directory="frontend/dist/static"), name="static")
+    app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
     app.mount("/", StaticFiles(html=True, directory="frontend/dist/"), name="index")
 
     return app
