@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <H2>Attachments</H2>
+    <H2Component>Attachments</H2Component>
     <div v-if="hasAttachments">
       <AttachmentComponent
         v-for="(attachment, index) in attachments"
@@ -16,26 +16,26 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import AttachmentComponent from "@/components/attachments/Attachment.vue";
-import H2 from "@/components/ui/h2.vue";
-import { Attachment } from "@/types";
+import AttachmentComponent from "@/components/attachments/Attachment.vue"
+import H2Component from "@/components/ui/h2.vue"
+import { Attachment } from "@/types"
 
 export default defineComponent({
-  name: "Attachements",
+  name: "AttachmentsComponent",
   props: {
     attachments: {
       type: Array as PropType<Attachment[]>,
-      required: true,
-    },
+      required: true
+    }
   },
-  components: { AttachmentComponent, H2 },
+  components: { AttachmentComponent, H2Component },
   setup(props) {
     const hasAttachments = computed((): boolean => {
-      return props.attachments.length > 0;
-    });
-    return { hasAttachments };
-  },
-});
+      return props.attachments.length > 0
+    })
+    return { hasAttachments }
+  }
+})
 </script>

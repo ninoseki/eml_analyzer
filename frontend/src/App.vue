@@ -3,23 +3,25 @@
     <Navbar />
     <section class="section is-medium">
       <div class="container">
-        <router-view />
+        <Home />
       </div>
     </section>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue"
 
-import Navbar from "@/components/ui/Navbar.vue";
+import Navbar from "@/components/ui/Navbar.vue"
+import Home from "@/views/Home.vue"
 
 export default defineComponent({
   name: "App",
   components: {
     Navbar,
-  },
-});
+    Home
+  }
+})
 </script>
 
 <style>

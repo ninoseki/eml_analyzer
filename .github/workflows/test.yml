@@ -21,7 +21,7 @@ jobs:
         run: poetry install
       - name: Run tests
         run: |
-          mkdir -p frontend/dist/static
+          mkdir -p frontend/dist/assets
           poetry run pytest -v --cov=app --cov-report=term-missing
       - name: Coveralls
         env:

@@ -8,8 +8,7 @@
       </div>
       <div class="navbar-menu">
         <div class="navbar-end">
-          <Submitters v-bind:type="sha256Type" v-bind:value="attachment" />
-
+          <Submitters :type="sha256Type" :value="attachment" />
           <div class="navbar-item">
             <button class="button" @click="confirmDownload">
               <span class="icon"><i class="fas fa-download"></i></span>
@@ -47,54 +46,53 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
-import fileSize from "filesize.js";
-import fileDownload from "js-file-download";
+import fileSize from "filesize.js"
+import fileDownload from "js-file-download"
+import Vue from "vue"
+import { computed, defineComponent, PropType } from "vue"
 
-import Indicators from "@/components/indicators/Indicators.vue";
-import Submitters from "@/components/submitters/Submitters.vue";
-import { Attachment } from "@/types";
-import { b64toBlob } from "@/utils/base64";
+import Indicators from "@/components/indicators/Indicators.vue"
+import Submitters from "@/components/submitters/Submitters.vue"
+import { Attachment, SubmitType } from "@/types"
+import { b64toBlob } from "@/utils/base64"
 
 export default defineComponent({
-  name: "Attachement",
+  name: "AttachmentComponent",
   props: {
     attachment: {
       type: Object as PropType<Attachment>,
-      required: true,
+      required: true
     },
     index: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   components: { Submitters, Indicators },
-  setup(props, context) {
+  setup(props) {
+    const buefy = Vue.prototype.$buefy
+
     const header = computed(() => {
-      return `#${props.index + 1}`;
-    });
+      return `#${props.index + 1}`
+    })
     const values = computed(() => {
-      return [props.attachment.hash.sha256];
-    });
-    const sha256Type = "sha256";
+      return [props.attachment.hash.sha256]
+    })
+    const sha256Type: SubmitType = "sha256"
 
     const download = () => {
-      const decoded = b64toBlob(props.attachment.raw);
-      fileDownload(
-        decoded,
-        props.attachment.filename,
-        props.attachment.mimeTypeShort
-      );
-    };
+      const decoded = b64toBlob(props.attachment.raw)
+      fileDownload(decoded, props.attachment.filename, props.attachment.mimeTypeShort)
+    }
 
     const confirmDownload = () => {
-      context.root.$buefy.dialog.confirm({
+      buefy.dialog.confirm({
         message: `Are you sure to download this attachment? (filename: ${props.attachment.filename})?`,
-        onConfirm: () => download(),
-      });
-    };
+        onConfirm: () => download()
+      })
+    }
 
-    return { header, values, sha256Type, fileSize, confirmDownload };
-  },
-});
+    return { header, values, sha256Type, fileSize, confirmDownload }
+  }
+})
 </script>

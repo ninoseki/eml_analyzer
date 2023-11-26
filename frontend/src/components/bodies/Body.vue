@@ -1,16 +1,19 @@
 <template>
   <div class="table-container">
-    <H3>{{ header }}</H3>
+    <H3Component>{{ header }}</H3Component>
     <table class="table is-narrow is-fullwidth">
       <tbody>
         <tr>
-          <th>Content-Type</th>
-          <td>{{ body.contentType || "N/A" }}</td>
+          <th>ContentComponent-Type</th>
+          <td>{{ body.ContentComponentType || "N/A" }}</td>
         </tr>
         <tr>
-          <th>Content</th>
+          <th>ContentComponent</th>
           <td>
-            <Content :content="body.content" :contentType="body.contentType" />
+            <ContentComponent
+              :ContentComponent="body.ContentComponent"
+              :ContentComponentType="body.ContentComponentType"
+            />
           </td>
         </tr>
         <tr>
@@ -43,35 +46,35 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import Content from "@/components/bodies/Content.vue";
-import Indicators from "@/components/indicators/Indicators.vue";
-import H3 from "@/components/ui/h3.vue";
-import { Body } from "@/types";
+import ContentComponent from "@/components/bodies/Content.vue"
+import Indicators from "@/components/indicators/Indicators.vue"
+import H3Component from "@/components/ui/h3.vue"
+import { Body } from "@/types"
 export default defineComponent({
-  name: "Body",
+  name: "BodyComponent",
   props: {
     body: {
       type: Object as PropType<Body>,
-      required: true,
+      required: true
     },
     index: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
-  components: { H3, Content, Indicators },
+  components: { H3Component, ContentComponent, Indicators },
   setup(props) {
-    const domainType = "domain";
-    const emailType = "email";
-    const ipAddressType = "ip_address";
-    const sha256Type = "sha256";
-    const urlType = "url";
+    const domainType = "domain"
+    const emailType = "email"
+    const ipAddressType = "ip_address"
+    const sha256Type = "sha256"
+    const urlType = "url"
 
     const header = computed(() => {
-      return `#${props.index + 1}`;
-    });
+      return `#${props.index + 1}`
+    })
 
     return {
       header,
@@ -79,8 +82,8 @@ export default defineComponent({
       emailType,
       ipAddressType,
       sha256Type,
-      urlType,
-    };
-  },
-});
+      urlType
+    }
+  }
+})
 </script>

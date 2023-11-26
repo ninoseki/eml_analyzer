@@ -11,32 +11,32 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import Links from "@/components/links/Links.vue";
+import Links from "@/components/links/Links.vue"
 
 export default defineComponent({
-  name: "Indicators",
+  name: "IndicatorsComponent",
   props: {
     values: {
       type: Array as PropType<string[]>,
-      required: true,
+      required: true
     },
     type: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   components: { Links },
 
   setup(props) {
     const hasValues = computed(() => {
-      return props.values.length > 0;
-    });
+      return props.values.length > 0
+    })
 
-    return { hasValues };
-  },
-});
+    return { hasValues }
+  }
+})
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <H3>Hops</H3>
+    <H3Component>Hops</H3Component>
     <div v-if="hasReceivedWithIndex">
       <b-table :data="receivedWithIndex">
         <b-table-column field="index" label="Hop" v-slot="props">
@@ -16,7 +16,7 @@
           {{ props.row.received.with }}
         </b-table-column>
         <b-table-column field="date" label="Date (UTC)" v-slot="props">
-          <UTC v-bind:datetime="props.row.received.date" />
+          <UTC :datetime="props.row.received.date" />
         </b-table-column>
         <b-table-column field="delay" label="Delay" v-slot="props">
           {{ secondsToHumanize(props.row.received.delay) }}
@@ -28,49 +28,47 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue"
 
-import H3 from "@/components/ui/h3.vue";
-import { Header, Received } from "@/types";
-import { toCommaSeparatedString } from "@/utils/commaSeparated";
-import { secondsToHumanize } from "@/utils/secondsToHumanize";
+import H3Component from "@/components/ui/h3.vue"
+import { Header, Received } from "@/types"
+import { toCommaSeparatedString } from "@/utils/commaSeparated"
+import { secondsToHumanize } from "@/utils/secondsToHumanize"
 
 interface ReceivedWithIndex {
-  index: number;
-  received: Received;
+  index: number
+  received: Received
 }
 
 export default defineComponent({
-  name: "Hops",
+  name: "HopsComponent",
   props: {
     header: {
       type: Object as PropType<Header>,
-      required: true,
-    },
+      required: true
+    }
   },
-  components: { H3 },
+  components: { H3Component },
   setup(props) {
     const receivedWithIndex = computed(() => {
-      const received = props.header.received || [];
+      const received = props.header.received || []
 
-      const receivedWithIndex: ReceivedWithIndex[] = received.map(
-        (recived_, index) => {
-          return { index: index + 1, received: recived_ };
-        }
-      );
-      return receivedWithIndex;
-    });
+      const receivedWithIndex: ReceivedWithIndex[] = received.map((recived_, index) => {
+        return { index: index + 1, received: recived_ }
+      })
+      return receivedWithIndex
+    })
 
     const hasReceivedWithIndex = computed(() => {
-      return receivedWithIndex.value.length > 0;
-    });
+      return receivedWithIndex.value.length > 0
+    })
 
     return {
       hasReceivedWithIndex,
       receivedWithIndex,
       toCommaSeparatedString,
-      secondsToHumanize,
-    };
-  },
-});
+      secondsToHumanize
+    }
+  }
+})
 </script>

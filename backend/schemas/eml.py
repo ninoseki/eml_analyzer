@@ -48,7 +48,7 @@ class Header(APIModel):
     message_id: str | None = None
     subject: str
     defect: list[str] | None = None
-    from_: str = Field(..., alias="from")
+    from_: str | None = Field(default=None, alias="from")
     to: list[str]
     cc: list[str] | None = None
     date: datetime | None = None
