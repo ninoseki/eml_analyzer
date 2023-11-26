@@ -1,6 +1,5 @@
 import "@fortawesome/fontawesome-free/css/all.css"
 import "@fortawesome/fontawesome-free/js/all.js"
-import "@mdi/font/css/materialdesignicons.css"
 import "buefy/dist/buefy.css"
 import "highlight.js/styles/androidstudio.css"
 

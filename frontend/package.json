@@ -12,10 +12,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.4.2",
-    "@mdi/font": "7.3.67",
     "axios": "^1.6.2",
     "buefy": "0.9.25",
-    "core-js": "^3.33.3",
     "dayjs": "1.11.10",
     "filesize.js": "2.0.0",
     "highlight.js": "11.9.0",
@@ -23,7 +21,6 @@
     "js-file-download": "^0.4.12",
     "js-sha256": "0.10.1",
     "qs": "6.11.2",
-    "regenerator-runtime": "^0.14.0",
     "url-parse": "1.5.10",
     "vue": "^2.7.15",
     "vue-concurrency": "^4.0.1",
