@@ -27,6 +27,7 @@ COPY backend ./backend
 COPY --from=build /usr/src/app/frontend ./frontend
 
 RUN pip install --no-cache-dir -r requirements.txt \
+  && poetry config virtualenvs.create false \
   && poetry install --without dev
 
 COPY circus.ini /etc/circus.ini
@@ -39,4 +40,4 @@ ENV SPAMASSASSIN_PORT=7833
 ENV PORT=8000
 EXPOSE $PORT
 
-CMD ["poetry", "run", "circusd", "/etc/circus.ini"]
+CMD ["circusd", "/etc/circus.ini"]
