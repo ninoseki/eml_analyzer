@@ -18,7 +18,7 @@ RUN apt-get update \
   && apt-get clean  \
   && rm -rf /var/lib/apt/lists/*
 
-RUN sa-update
+RUN sa-update --no-gpg
 
 WORKDIR /usr/src/app
 
