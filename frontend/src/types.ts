@@ -1,5 +1,5 @@
 export interface Payload {
-  file: File | undefined
+  file: File | null
 }
 
 export interface Hash {
@@ -22,7 +22,7 @@ export interface Attachment {
   raw: string
   filename: string
   size: number
-  extension: string | undefined
+  extension: string | null
   hash: Hash
   mimeType: string
   mimeTypeShort: string
@@ -30,7 +30,7 @@ export interface Attachment {
 }
 
 export interface Body {
-  contentType: string | undefined
+  contentType: string | null
   hash: string
   contentHeader: Dictionary
   content: string
@@ -41,29 +41,29 @@ export interface Body {
 }
 
 export interface Received {
-  by: string[] | undefined
+  by: string[] | null
   date: string
-  for: string[] | undefined
-  from: string[] | undefined
+  for: string[] | null
+  from: string[] | null
   src: string
-  with: string | undefined
+  with: string | null
   delay: number
 }
 
 export interface Header {
-  messageId: string | undefined
+  messageId: string | null
   subject: string
-  defect: string[] | undefined
-  from: string
+  defect: string[] | null
+  from: string | null
   to: string[]
   cc: string[]
   date: string
-  receivedEmail: string[] | undefined
-  receivedForemail: string[] | undefined
-  receivedDomain: string[] | undefined
-  receivedIp: string[] | undefined
-  receivedSrc: string[] | undefined
-  received: Received[] | undefined
+  receivedEmail: string[] | null
+  receivedForemail: string[] | null
+  receivedDomain: string[] | null
+  receivedIp: string[] | null
+  receivedSrc: string[] | null
+  received: Received[] | null
   header: Dictionary
 }
 
@@ -75,15 +75,15 @@ export interface Eml {
 
 export interface Detail {
   key: string
-  score: number | undefined
+  score: number | null
   description: string
-  referenceLink: string | undefined
+  referenceLink: string | null
 }
 
 export interface Verdict {
   name: string
   malicious: boolean
-  score: number | undefined
+  score: number | null
   details: Detail[]
 }
 
@@ -94,7 +94,7 @@ export interface Response {
 
 export interface SubmissionResult {
   referenceUrl: string
-  status: string | undefined
+  status: string | null
 }
 
 export interface ValidationError {
