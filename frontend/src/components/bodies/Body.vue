@@ -4,16 +4,13 @@
     <table class="table is-narrow is-fullwidth">
       <tbody>
         <tr>
-          <th>ContentComponent-Type</th>
-          <td>{{ body.ContentComponentType || "N/A" }}</td>
+          <th>Content-Type</th>
+          <td>{{ body.contentType || "N/A" }}</td>
         </tr>
         <tr>
-          <th>ContentComponent</th>
+          <th>Content</th>
           <td>
-            <ContentComponent
-              :ContentComponent="body.ContentComponent"
-              :ContentComponentType="body.ContentComponentType"
-            />
+            <ContentComponent :content="body.content" :contentType="body.contentType" />
           </td>
         </tr>
         <tr>
