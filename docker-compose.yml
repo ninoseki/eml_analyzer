@@ -18,6 +18,7 @@ services:
       - INQUEST_API_KEY=${INQUEST_API_KEY}
       - SPAMASSASSIN_HOST=spamassassin
       - SPAMASSASSIN_PORT=${SPAMASSASSIN_PORT:-783}
+      - REDIS_HOST=redis
     restart: always
     depends_on:
       - spamassassin
