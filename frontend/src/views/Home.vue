@@ -74,7 +74,7 @@ export default defineComponent({
       })
 
       try {
-        await analyzeFileTask.perform(null, fileIdentifier)
+        await analyzeFileTask.perform({"identifier": fileIdentifier })
         loadingComponent.close()
       } catch (error) {
         loadingComponent.close()
@@ -91,7 +91,7 @@ export default defineComponent({
       })
 
       try {
-        await analyzeFileTask.perform(emlFile.value, null)
+        await analyzeFileTask.perform({"file": emlFile.value })
         loadingComponent.close()
       } catch (error) {
         loadingComponent.close()
