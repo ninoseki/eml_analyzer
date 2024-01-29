@@ -6,7 +6,7 @@ from pydantic import ValidationError
 from backend.factories.response import ResponseFactory
 from backend.schemas.payload import FilePayload, Payload
 from backend.schemas.response import Response
-import backend.core.settings
+from backend.core.settings import REDIS_HOST, REDIS_PASSWORD, REDIS_EXPIRE
 
 router = APIRouter()
 
@@ -22,9 +22,12 @@ async def _analyze(file: bytes) -> Response:
 
     data = await ResponseFactory.from_bytes(payload.file)
 
-    if backend.core.settings.REDIS_HOST:
-        redis_conn = StrictRedis(host=backend.core.settings.REDIS_HOST, password=backend.core.settings.REDIS_PASSWORD)
+    if REDIS_HOST:
+        redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
         redis_conn.hset("results", data.identifier, data.json())
+
+        if REDIS_EXPIRE != -1:
+            redis_conn.expire(name=data.identifier, time=REDIS_EXPIRE)
 
     return data
 

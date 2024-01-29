@@ -26,3 +26,4 @@ INQUEST_API_KEY: Secret = config("INQUEST_API_KEY", cast=Secret, default="")
 
 REDIS_HOST : str = config("REDIS_HOST", cast=str, default="redis")
 REDIS_PASSWORD: str = config("REDIS_PASSWORD", cast=str, default="changeme")
+REDIS_EXPIRE: str = config("REDIS_EXPIRE", cast=int, default=3600)
