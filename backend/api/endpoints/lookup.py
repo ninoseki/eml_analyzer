@@ -1,7 +1,7 @@
 import json
 
 from redis import StrictRedis
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from backend.schemas.response import Response
 from backend.core.settings import REDIS_HOST, REDIS_PASSWORD
@@ -17,11 +17,17 @@ router = APIRouter()
 )
 async def lookup(identifier: str) -> Response:
     if not REDIS_HOST:
-        raise HTTPException(502)
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Redis cache is not enabled",
+        )
 
     redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
     data = redis_conn.hget("results", identifier)
     if not data:
-        raise HTTPException(404)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Analysis cache not found",
+        )
 
     return json.loads(data)
