@@ -65,3 +65,4 @@ class Eml(APIModel):
     attachments: list[Attachment]
     bodies: list[Body]
     header: Header
+    identifier: str

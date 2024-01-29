@@ -1,3 +1,4 @@
+from redis import StrictRedis
 from fastapi import APIRouter, File, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
@@ -5,6 +6,7 @@ from pydantic import ValidationError
 from backend.factories.response import ResponseFactory
 from backend.schemas.payload import FilePayload, Payload
 from backend.schemas.response import Response
+import backend.core.settings
 
 router = APIRouter()
 
@@ -18,7 +20,13 @@ async def _analyze(file: bytes) -> Response:
             detail=jsonable_encoder(exc.errors()),
         ) from exc
 
-    return await ResponseFactory.from_bytes(payload.file)
+    data = await ResponseFactory.from_bytes(payload.file)
+
+    if backend.core.settings.REDIS_HOST:
+        redis_conn = StrictRedis(host=backend.core.settings.REDIS_HOST, password=backend.core.settings.REDIS_PASSWORD)
+        redis_conn.hset("results", data.identifier, data.json())
+
+    return data
 
 
 @router.post(

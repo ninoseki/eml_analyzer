@@ -29,6 +29,7 @@ pydantic = "^2.5"
 pyhumps = "^3.8.0"
 python-magic = "^0.4.27"
 python-multipart = "^0.0"
+redis = "^5.0.0"
 uvicorn = "^0.25"
 vt-py = "^0.18"
 

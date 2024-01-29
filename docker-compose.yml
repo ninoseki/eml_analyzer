@@ -21,3 +21,8 @@ services:
     restart: always
     depends_on:
       - spamassassin
+  redis:
+    image: library/redis
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD:-changeme}"
+    ports:
+      - 6379:6379

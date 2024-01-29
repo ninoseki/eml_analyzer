@@ -17,5 +17,9 @@ export const API = {
       }
     })
     return res.data
+  },
+  async lookupFile(identifier: string) : Promise<Response> {
+    const res = await client.get<Response>(`/api/lookup/${identifier}/`);
+    return res.data
   }
 }

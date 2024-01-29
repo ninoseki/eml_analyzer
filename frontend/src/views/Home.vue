@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { defineComponent, ref } from "vue"
+import { onMounted, defineComponent, ref } from "vue"
 import { useAsyncTask } from "vue-concurrency"
 
 import { API } from "@/api"
@@ -58,19 +58,23 @@ export default defineComponent({
     const root = ref<HTMLElement>()
     const emlFile = ref<File | undefined>(undefined)
 
-    const analyzeFileTask = useAsyncTask<Response, [File | undefined]>(
-      async (_signal, file: File | undefined) => {
-        return await API.analyzeFile(file)
+    const analyzeFileTask = useAsyncTask<Response, [File | undefined, String | undefined]>(
+      async (_signal, file: File | undefined, identifier: String | undefined) => {
+        if(identifier){
+          return await API.lookupFile(identifier)
+        } else {
+          return await API.analyzeFile(file)
+        }
       }
     )
 
-    const analyze = async () => {
+    const lookup = async (fileIdentifier) => {
       const loadingComponent = buefy.loading.open({
         container: root.value
       })
 
       try {
-        await analyzeFileTask.perform(emlFile.value)
+        await analyzeFileTask.perform(null, fileIdentifier)
         loadingComponent.close()
       } catch (error) {
         loadingComponent.close()
@@ -80,7 +84,31 @@ export default defineComponent({
       }
     }
 
-    return { analyze, analyzeFileTask, emlFile, root }
+
+    const analyze = async () => {
+      const loadingComponent = buefy.loading.open({
+        container: root.value
+      })
+
+      try {
+        await analyzeFileTask.perform(emlFile.value, null)
+        loadingComponent.close()
+      } catch (error) {
+        loadingComponent.close()
+
+        const data = (error as any).response.data as ErrorData
+        alertError(data, buefy)
+      }
+    }
+
+    onMounted(() => {
+      const locationHash = location.hash;
+      if(locationHash != ""){
+        lookup(locationHash.substring(1));
+      }
+    })
+
+    return { analyze, lookup, analyzeFileTask, emlFile, root }
   }
 })
 </script>
