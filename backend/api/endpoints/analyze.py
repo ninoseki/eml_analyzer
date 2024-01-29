@@ -24,7 +24,7 @@ async def _analyze(file: bytes) -> Response:
 
     if REDIS_HOST:
         redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
-        redis_conn.hset("results", data.identifier, data.json())
+        redis_conn.hset(data.identifier, "analysis", data.json())
 
         if REDIS_EXPIRE != -1:
             redis_conn.expire(name=data.identifier, time=REDIS_EXPIRE)

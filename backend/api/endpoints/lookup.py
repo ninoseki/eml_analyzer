@@ -23,7 +23,7 @@ async def lookup(identifier: str) -> Response:
         )
 
     redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
-    data = redis_conn.hget("results", identifier)
+    data = redis_conn.hget(identifier, "analysis")
     if not data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
