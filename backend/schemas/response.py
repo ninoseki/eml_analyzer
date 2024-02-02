@@ -7,3 +7,4 @@ from .api_model import APIModel
 class Response(APIModel):
     eml: Eml
     verdicts: list[Verdict]
+    identifier: str

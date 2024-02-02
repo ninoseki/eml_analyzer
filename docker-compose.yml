@@ -18,6 +18,12 @@ services:
       - INQUEST_API_KEY=${INQUEST_API_KEY}
       - SPAMASSASSIN_HOST=spamassassin
       - SPAMASSASSIN_PORT=${SPAMASSASSIN_PORT:-783}
+      - REDIS_HOST=redis
     restart: always
     depends_on:
       - spamassassin
+  redis:
+    image: library/redis
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD:-changeme}"
+    ports:
+      - 6379:6379

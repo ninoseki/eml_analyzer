@@ -1,5 +1,6 @@
 from io import BytesIO
 from typing import Any
+from hashlib import sha256
 
 import arrow
 import dateparser
@@ -37,6 +38,7 @@ class EmlFactory:
         self.eml_file = eml_file
         parser = EmlParser(include_raw_body=True, include_attachment_data=True)
         self.parsed = parser.decode_email_bytes(eml_file)
+        self.parsed["identifier"] = sha256(eml_file).hexdigest()
 
     def _normalize_received_date(self, received: dict):
         date = received.get("date", "")

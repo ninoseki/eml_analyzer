@@ -59,7 +59,7 @@ class ResponseFactory:
         verdicts.append(OleIDVerdictFactory.from_attachments(eml.attachments))
         # Add VT verdict
 
-        return Response(eml=eml, verdicts=verdicts)
+        return Response(eml=eml, verdicts=verdicts, identifier=eml.identifier)
 
     @classmethod
     async def from_bytes(cls, eml_file: bytes) -> Response:
