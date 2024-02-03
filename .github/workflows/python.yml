@@ -1,0 +1,83 @@
+name: Python CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/python.yml"
+      - "backend/**"
+      - "poetry.lock"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "tests/**"
+  pull_request:
+    branches: [master]
+    paths:
+      - ".github/workflows/python.yml"
+      - "backend/**"
+      - "poetry.lock"
+      - "pyproject.toml"
+      - "requirements.txt"
+      - "tests/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+        poetry-version: [1.7.1]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup poetry
+        uses: abatilo/actions-poetry@v3
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+      - name: Install dependencies
+        run: poetry install
+      - name: Ruff check
+        run: poetry run ruff check backend/ tests/
+      - name: Pyupgrade
+        run: poetry run pyupgrade backend/ tests/
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+        poetry-version: [1.7.1]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup poetry
+        uses: abatilo/actions-poetry@v3
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+      - name: Install dependencies
+        run: poetry install
+      - name: Make dummy frontend directory
+        run: mkdir -p frontend/dist/
+      - name: Run tests
+        run: poetry run pytest -v --cov=app --cov-report=term-missing
+      - name: Coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: poetry run coveralls --service=github
+  coveralls:
+    name: Indicate completion to coveralls.io
+    needs: test
+    runs-on: ubuntu-latest
+    container: python:3-slim
+    steps:
+      - name: Finished
+        run: |
+          pip3 install --upgrade coveralls
+          coveralls --finish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
