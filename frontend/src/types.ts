@@ -56,7 +56,7 @@ export interface Header {
   defect: string[] | null
   from: string | null
   to: string[]
-  cc: string[]
+  cc: string[] | null
   date: string
   receivedEmail: string[] | null
   receivedForemail: string[] | null
@@ -71,6 +71,7 @@ export interface Eml {
   attachments: Attachment[]
   bodies: Body[]
   header: Header
+  id: string
 }
 
 export interface Detail {
@@ -88,6 +89,7 @@ export interface Verdict {
 }
 
 export interface Response {
+  id: string
   eml: Eml
   verdicts: Verdict[]
 }
@@ -108,15 +110,16 @@ export interface ErrorData {
 }
 
 export const securityKeys = [
-  "received-spm",
-  "authentication-results",
-  "dkim-signature",
-  "arc-authentication-results"
+  'received-spm',
+  'authentication-results',
+  'dkim-signature',
+  'arc-authentication-results'
 ]
 
-export const basicKeys = ["cc", "date", "from", "message-id", "received", "subject", "to"]
+export const basicKeys = ['cc', 'date', 'from', 'message-id', 'received', 'subject', 'to']
 
-export type LinkType = "url" | "email" | "ip_address" | "domain" | "sha256"
+export type LinkType = 'url' | 'email' | 'ip' | 'domain' | 'sha256'
+export type IndicatorType = 'url' | 'email' | 'ip' | 'domain' | 'sha256'
 
 export interface Link {
   name: string
@@ -126,7 +129,7 @@ export interface Link {
   href(hostname: string): string
 }
 
-export type SubmitType = "sha256"
+export type SubmitType = 'sha256'
 
 export interface Submitter {
   name: string

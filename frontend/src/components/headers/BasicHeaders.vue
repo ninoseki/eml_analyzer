@@ -1,11 +1,11 @@
 <template>
-  <div class="table-container">
-    <H3Component>Basic headers</H3Component>
-    <table class="table is-fullwidth">
+  <div class="block">
+    <h3 class="is-size-5 has-text-weight-bold">Basic headers</h3>
+    <table class="table is-fullwidth is-completely-borderless">
       <tbody>
         <tr>
           <th>Message ID</th>
-          <td>{{ header.messageId || "N/A" }}</td>
+          <td>{{ header.messageId || 'N/A' }}</td>
         </tr>
         <tr>
           <th>Subject</th>
@@ -13,21 +13,41 @@
         </tr>
         <tr>
           <th>Date (UTC)</th>
-          <td><UTC :datetime="header.date" /></td>
-        </tr>
-        <tr>
-          <th>From</th>
           <td>
-            <Indicators :type="emailType" :values="emails" />
+            {{ toUTC(header.date) }}
           </td>
         </tr>
-        <tr>
-          <th>To</th>
-          <td>{{ toCommaSeparatedString(header.to) }}</td>
+        <tr v-if="header.from">
+          <th>From</th>
+          <td>
+            <div class="dropdowns">
+              <IndicatorButton :value="header.from"></IndicatorButton>
+            </div>
+          </td>
         </tr>
-        <tr>
+        <tr v-if="header.to.length > 0">
+          <th>To</th>
+          <td>
+            <div class="dropdowns">
+              <IndicatorButton
+                :value="email"
+                v-for="email in header.to"
+                :key="email"
+              ></IndicatorButton>
+            </div>
+          </td>
+        </tr>
+        <tr v-if="(header.cc || []).length > 0">
           <th>Cc</th>
-          <td>{{ toCommaSeparatedString(header.cc) }}</td>
+          <td>
+            <div class="dropdowns">
+              <IndicatorButton
+                :value="email"
+                v-for="email in header.cc"
+                :key="email"
+              ></IndicatorButton>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,30 +55,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
 
-import Indicators from "@/components/indicators/Indicators.vue"
-import H3Component from "@/components/ui/h3.vue"
-import UTC from "@/components/ui/UTC.vue"
-import { Header } from "@/types"
-import { toCommaSeparatedString } from "@/utils/commaSeparated"
+import IndicatorButton from '@/components/IndicatorButton.vue'
+import type { Header } from '@/types'
+import { toUTC } from '@/utils'
 
 export default defineComponent({
-  name: "BasicHeaders",
+  name: 'BasicHeaders',
   props: {
     header: {
       type: Object as PropType<Header>,
       required: true
     }
   },
-  components: { Indicators, UTC, H3Component },
-  setup(props) {
-    const emailType = "email"
-    const emails = computed(() => {
-      return [props.header.from]
-    })
-
-    return { emails, emailType, toCommaSeparatedString }
+  components: { IndicatorButton },
+  setup() {
+    return { toUTC }
   }
 })
 </script>

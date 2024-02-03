@@ -1,17 +1,17 @@
-import { Link, LinkType } from "@/types"
-import { buildURL } from "@/utils/urlBuilder"
+import type { IndicatorType, Link } from '@/types'
+import { buildURL } from '@/utils'
 
 class Urlscan implements Link {
   public favicon: string
   public baseURL: string
   public name: string
-  public type: LinkType
+  public type: IndicatorType
 
   public constructor() {
-    this.baseURL = "https://urlscan.io"
+    this.baseURL = 'https://urlscan.io'
     this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`
-    this.name = "urlscan.io"
-    this.type = "domain"
+    this.name = 'urlscan.io'
+    this.type = 'domain'
   }
 
   public href(value: string): string {
@@ -22,7 +22,7 @@ class Urlscan implements Link {
 export class UrlscanForURL extends Urlscan {
   public constructor() {
     super()
-    this.type = "url"
+    this.type = 'url'
   }
 
   public href(value: string): string {
@@ -34,7 +34,7 @@ export class UrlscanForURL extends Urlscan {
 export class UrlscanForDomain extends Urlscan {
   public constructor() {
     super()
-    this.type = "domain"
+    this.type = 'domain'
   }
 
   public href(value: string): string {
@@ -45,7 +45,7 @@ export class UrlscanForDomain extends Urlscan {
 export class UrlscanForIP extends Urlscan {
   public constructor() {
     super()
-    this.type = "ip_address"
+    this.type = 'ip'
   }
 
   public href(value: string): string {

@@ -1,25 +1,21 @@
 <template>
-  <div id="app">
-    <Navbar />
-    <section class="section is-medium">
-      <div class="container">
-        <Home />
-      </div>
-    </section>
-  </div>
+  <Navbar></Navbar>
+  <section class="section is-medium">
+    <div class="container">
+      <router-view />
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from 'vue'
 
-import Navbar from "@/components/ui/Navbar.vue"
-import Home from "@/views/Home.vue"
+import Navbar from '@/components/Navbar.vue'
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
   components: {
-    Navbar,
-    Home
+    Navbar
   }
 })
 </script>
@@ -29,10 +25,6 @@ html {
   background-color: #fafafa !important;
 }
 
-.header {
-  margin-bottom: 10px;
-}
-
 pre {
   white-space: pre;
   white-space: pre-wrap;
@@ -40,12 +32,15 @@ pre {
   word-wrap: break-word;
 }
 
-.container .navbar {
-  margin-bottom: 10px;
-  border-bottom: 2px solid lightgray;
-}
-
 table.is-fullwidth th {
   width: 360px;
+}
+
+.dropdowns .dropdown {
+  margin-bottom: 0.5rem;
+}
+
+.dropdowns .dropdown:not(:last-child):not(.is-fullwidth) {
+  margin-right: 0.5rem;
 }
 </style>

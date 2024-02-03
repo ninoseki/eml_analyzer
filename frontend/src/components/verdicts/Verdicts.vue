@@ -1,36 +1,25 @@
 <template>
-  <div class="box">
-    <H2Component>Verdicts</H2Component>
-    <div v-if="hasVerdicts">
-      <VerdictComponent v-for="verdict in verdicts" :key="verdict.name" :verdict="verdict" />
-    </div>
-    <div v-else>
-      <p>N/A</p>
-    </div>
+  <div class="block">
+    <h2 class="is-size-4 has-text-weight-bold middle">Verdicts</h2>
+    <VerdictComponent v-for="verdict in verdicts" :key="verdict.name" :verdict="verdict" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
 
-import H2Component from "@/components/ui/h2.vue"
-import VerdictComponent from "@/components/verdicts/Verdict.vue"
-import { Verdict } from "@/types"
+import VerdictComponent from '@/components/verdicts/Verdict.vue'
+import type { Verdict } from '@/types'
 
 export default defineComponent({
-  name: "VerdictsComponent",
+  name: 'VerdictsComponent',
   props: {
     verdicts: {
       type: Array as PropType<Verdict[]>,
       required: true
     }
   },
-  components: { VerdictComponent, H2Component },
-  setup(props) {
-    const hasVerdicts = computed((): boolean => {
-      return props.verdicts.length > 0
-    })
-    return { hasVerdicts }
-  }
+  components: { VerdictComponent },
+  setup() {}
 })
 </script>

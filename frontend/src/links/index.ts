@@ -1,20 +1,20 @@
-import { Link } from "@/types"
+import type { Link } from '@/types'
 
-import { AnyRun } from "./anyrun"
-import { Browserling } from "./browserling"
-import { Crtsh } from "./crtsh"
-import { EmailRep } from "./emailrep"
-import { HybridAnalysis } from "./hybridanalysis"
-import { InQuest } from "./inquest"
-import { SecurityTrails } from "./securitytrails"
-import { Shodan } from "./shodan"
-import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from "./urlscan"
+import { AnyRun } from './anyrun'
+import { Browserling } from './browserling'
+import { Crtsh } from './crtsh'
+import { EmailRep } from './emailrep'
+import { HybridAnalysis } from './hybridanalysis'
+import { InQuest } from './inquest'
+import { SecurityTrails } from './securitytrails'
+import { Shodan } from './shodan'
+import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from './urlscan'
 import {
   VirusTotalForDomain,
   VirusTotalForIP,
   VirusTotalForSHA256,
   VirusTotalForURL
-} from "./virustotal"
+} from './virustotal'
 
 export const Links: Link[] = [
   new AnyRun(),

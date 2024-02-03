@@ -1,21 +1,21 @@
-import { fileURLToPath, URL } from "node:url";
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from "vite";
-import { createVuePlugin } from "vite-plugin-vue2";
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 
-const env = process.env;
-const target = env.BACKEND_URL || "http://localhost:8000/";
+const env = process.env
+const target = env.BACKEND_URL || 'http://localhost:8000/'
 
 export default defineConfig({
-  plugins: [createVuePlugin()],
+  plugins: [vue()],
   server: {
     proxy: {
-      "/api": target,
-    },
+      '/api': target
+    }
   },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
-});
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
+})

@@ -1,36 +1,27 @@
 <template>
   <li>
-    {{ detail.description }} (score: {{ detail.score || "N/A" }})
-    <a class="reference" target="_blank" :href="detail.referenceLink" v-if="hasReferenceLink">
-      <b-icon pack="fas" icon="link" size="is-small"> </b-icon>
+    {{ detail.description }} (score: {{ detail.score || 'N/A' }})
+    <a target="_blank" :href="detail.referenceLink" v-if="detail.referenceLink">
+      <span class="icon is-small">
+        <font-awesome-icon icon="link"></font-awesome-icon>
+      </span>
     </a>
   </li>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
 
-import { Detail } from "@/types"
+import type { Detail } from '@/types'
 
 export default defineComponent({
-  name: "DetailComponent",
+  name: 'DetailComponent',
   props: {
     detail: {
       type: Object as PropType<Detail>,
       required: true
     }
   },
-  setup(props) {
-    const hasReferenceLink = computed(() => {
-      return props.detail.referenceLink !== null
-    })
-    return { hasReferenceLink }
-  }
+  setup() {}
 })
 </script>
-
-<style scoped>
-.reference {
-  margin-left: 5px;
-}
-</style>

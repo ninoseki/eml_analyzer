@@ -1,39 +1,38 @@
 <template>
-  <div class="table-container">
-    <H3Component>Hops</H3Component>
-    <div v-if="hasReceivedWithIndex">
-      <b-table :data="receivedWithIndex">
-        <b-table-column field="index" label="Hop" v-slot="props">
-          {{ props.row.index }}
-        </b-table-column>
-        <b-table-column field="from" label="From" v-slot="props">
-          {{ toCommaSeparatedString(props.row.received.from) }}
-        </b-table-column>
-        <b-table-column field="by" label="By" v-slot="props">
-          {{ toCommaSeparatedString(props.row.received.by) }}
-        </b-table-column>
-        <b-table-column field="with" label="With" v-slot="props">
-          {{ props.row.received.with }}
-        </b-table-column>
-        <b-table-column field="date" label="Date (UTC)" v-slot="props">
-          <UTC :datetime="props.row.received.date" />
-        </b-table-column>
-        <b-table-column field="delay" label="Delay" v-slot="props">
-          {{ secondsToHumanize(props.row.received.delay) }}
-        </b-table-column>
-      </b-table>
+  <div class="block" v-if="receivedWithIndexes.length > 0">
+    <h3 class="is-size-5 has-text-weight-bold">Hops</h3>
+    <div class="table-container">
+      <table class="table is-fullwidth is-completely-borderless">
+        <thead>
+          <tr>
+            <th>Hop</th>
+            <th>From</th>
+            <th>By</th>
+            <th>With</th>
+            <th>Date (UTC)</th>
+            <th>Delay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="index in receivedWithIndexes" :key="index.index">
+            <td>{{ index.index }}</td>
+            <td>{{ toCSV(index.received.from || []) }}</td>
+            <td>{{ toCSV(index.received.by || []) }}</td>
+            <td>{{ index.received.with }}</td>
+            <td>{{ toUTC(index.received.date) }}</td>
+            <td>{{ humanizeSeconds(index.received.delay) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div v-else>N/A</div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { computed, defineComponent, type PropType } from 'vue'
 
-import H3Component from "@/components/ui/h3.vue"
-import { Header, Received } from "@/types"
-import { toCommaSeparatedString } from "@/utils/commaSeparated"
-import { secondsToHumanize } from "@/utils/secondsToHumanize"
+import type { Header, Received } from '@/types'
+import { humanizeSeconds, toCSV, toUTC } from '@/utils'
 
 interface ReceivedWithIndex {
   index: number
@@ -41,16 +40,15 @@ interface ReceivedWithIndex {
 }
 
 export default defineComponent({
-  name: "HopsComponent",
+  name: 'HopsComponent',
   props: {
     header: {
       type: Object as PropType<Header>,
       required: true
     }
   },
-  components: { H3Component },
   setup(props) {
-    const receivedWithIndex = computed(() => {
+    const receivedWithIndexes = computed(() => {
       const received = props.header.received || []
 
       const receivedWithIndex: ReceivedWithIndex[] = received.map((recived_, index) => {
@@ -59,15 +57,11 @@ export default defineComponent({
       return receivedWithIndex
     })
 
-    const hasReceivedWithIndex = computed(() => {
-      return receivedWithIndex.value.length > 0
-    })
-
     return {
-      hasReceivedWithIndex,
-      receivedWithIndex,
-      toCommaSeparatedString,
-      secondsToHumanize
+      receivedWithIndexes,
+      humanizeSeconds,
+      toCSV,
+      toUTC
     }
   }
 })

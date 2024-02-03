@@ -1,63 +1,75 @@
 <template>
-  <div>
-    <nav class="navbar">
-      <div class="navbar-brand">
-        <h3 class="is-size-5 has-text-weight-bold">
-          {{ header }}
-        </h3>
-      </div>
-      <div class="navbar-menu">
-        <div class="navbar-end">
-          <Submitters :type="sha256Type" :value="attachment" />
-          <div class="navbar-item">
-            <button class="button" @click="confirmDownload">
-              <span class="icon"><i class="fas fa-download"></i></span>
-              <span>Download</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="table-container">
-      <table class="table is-fullwidth">
-        <tbody>
-          <tr>
-            <th>Filename</th>
-            <td>{{ attachment.filename }}</td>
-          </tr>
-          <tr>
-            <th>Size</th>
-            <td>{{ fileSize(attachment.size) }}</td>
-          </tr>
-          <tr>
-            <th>MIME type</th>
-            <td>{{ attachment.mimeType || "N/A" }}</td>
-          </tr>
-          <tr>
-            <th>Hash</th>
-            <td>
-              <Indicators :type="sha256Type" v-bind:values="values" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="block">
+    <h3 class="is-size-5 has-text-weight-bold">{{ header }}</h3>
+    <table class="table is-fullwidth is-completely-borderless">
+      <tbody>
+        <tr>
+          <th>Filename</th>
+          <td>{{ attachment.filename }}</td>
+        </tr>
+        <tr>
+          <th>Size</th>
+          <td>{{ fileSize(attachment.size) }}</td>
+        </tr>
+        <tr>
+          <th>MIME type</th>
+          <td>{{ attachment.mimeType || 'N/A' }}</td>
+        </tr>
+        <tr>
+          <th>SHA256</th>
+          <td>
+            <IndicatorButton :value="attachment.hash.sha256"></IndicatorButton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="is-clearfix">
+      <span class="buttons are-small is-pulled-right">
+        <AttachmentSubmissionButton
+          :attachment="attachment"
+          :submitter="vt"
+          @set-error="onSetError"
+          @set-reference-url="onSetReferenceUrl"
+        />
+        <AttachmentSubmissionButton
+          :attachment="attachment"
+          :submitter="inquest"
+          @set-error="onSetError"
+          @set-reference-url="onSetReferenceUrl"
+        />
+        <AttachmentDownloadButton :attachment="attachment" />
+      </span>
+    </p>
+    <AttachmentSubmissionNotification
+      class="mt-1"
+      :referenceUrl="referenceUrl"
+      v-if="referenceUrl"
+    />
+    <ErrorMessage
+      class="mt-1"
+      :error="error"
+      :disposable="true"
+      @dispose="onDisposeError"
+      v-if="error"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import fileSize from "filesize.js"
-import fileDownload from "js-file-download"
-import Vue from "vue"
-import { computed, defineComponent, PropType } from "vue"
+import type { AxiosError } from 'axios'
+import fileSize from 'filesize.js'
+import { computed, defineComponent, type PropType, ref } from 'vue'
 
-import Indicators from "@/components/indicators/Indicators.vue"
-import Submitters from "@/components/submitters/Submitters.vue"
-import { Attachment, SubmitType } from "@/types"
-import { b64toBlob } from "@/utils/base64"
+import AttachmentDownloadButton from '@/components/attachments/AttachmentDownloadButton.vue'
+import AttachmentSubmissionButton from '@/components/attachments/AttachmentSubmissionButton.vue'
+import AttachmentSubmissionNotification from '@/components/attachments/AttachmentSubmissionNotification.vue'
+import ErrorMessage from '@/components/ErrorMessage.vue'
+import IndicatorButton from '@/components/IndicatorButton.vue'
+import { InQuest, VirusTotal } from '@/submitters'
+import type { Attachment } from '@/types'
 
 export default defineComponent({
-  name: "AttachmentComponent",
+  name: 'AttachmentComponent',
   props: {
     attachment: {
       type: Object as PropType<Attachment>,
@@ -68,31 +80,47 @@ export default defineComponent({
       required: true
     }
   },
-  components: { Submitters, Indicators },
+  components: {
+    AttachmentDownloadButton,
+    AttachmentSubmissionButton,
+    ErrorMessage,
+    AttachmentSubmissionNotification,
+    IndicatorButton
+  },
   setup(props) {
-    const buefy = Vue.prototype.$buefy
+    const error = ref<AxiosError>()
+    const referenceUrl = ref<string>()
+
+    const onDisposeError = () => {
+      error.value = undefined
+    }
+
+    const onSetError = (newError: AxiosError) => {
+      error.value = newError
+    }
+
+    const onSetReferenceUrl = (newReferenceUrl: string) => {
+      referenceUrl.value = newReferenceUrl
+    }
 
     const header = computed(() => {
       return `#${props.index + 1}`
     })
-    const values = computed(() => {
-      return [props.attachment.hash.sha256]
-    })
-    const sha256Type: SubmitType = "sha256"
 
-    const download = () => {
-      const decoded = b64toBlob(props.attachment.raw)
-      fileDownload(decoded, props.attachment.filename, props.attachment.mimeTypeShort)
+    const vt = new VirusTotal()
+    const inquest = new InQuest()
+
+    return {
+      header,
+      fileSize,
+      vt,
+      inquest,
+      onSetError,
+      onSetReferenceUrl,
+      error,
+      referenceUrl,
+      onDisposeError
     }
-
-    const confirmDownload = () => {
-      buefy.dialog.confirm({
-        message: `Are you sure to download this attachment? (filename: ${props.attachment.filename})?`,
-        onConfirm: () => download()
-      })
-    }
-
-    return { header, values, sha256Type, fileSize, confirmDownload }
   }
 })
 </script>

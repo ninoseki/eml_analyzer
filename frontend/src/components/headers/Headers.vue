@@ -1,6 +1,6 @@
 <template>
-  <div class="box">
-    <H2Component>Headers</H2Component>
+  <div class="block">
+    <h2 class="is-size-4 has-text-weight-bold middle">Headers</h2>
     <BasicHeaders :header="header" />
     <Hops :header="header" />
     <SecurityHeaders :header="header" />
@@ -10,18 +10,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
 
-import BasicHeaders from "@/components/headers/BasicHeaders.vue"
-import Hops from "@/components/headers/Hops.vue"
-import OtherHeaders from "@/components/headers/OtherHeaders.vue"
-import SecurityHeaders from "@/components/headers/SecurityHeaders.vue"
-import XHeaders from "@/components/headers/XHeaders.vue"
-import H2Component from "@/components/ui/h2.vue"
-import { Header } from "@/types"
+import BasicHeaders from '@/components/headers/BasicHeaders.vue'
+import Hops from '@/components/headers/Hops.vue'
+import OtherHeaders from '@/components/headers/OtherHeaders.vue'
+import SecurityHeaders from '@/components/headers/SecurityHeaders.vue'
+import XHeaders from '@/components/headers/XHeaders.vue'
+import type { Header } from '@/types'
 
 export default defineComponent({
-  name: "HeadersComponent",
+  name: 'HeadersComponent',
   props: {
     header: {
       type: Object as PropType<Header>,
@@ -31,7 +30,6 @@ export default defineComponent({
   components: {
     BasicHeaders,
     Hops,
-    H2Component,
     OtherHeaders,
     SecurityHeaders,
     XHeaders

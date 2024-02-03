@@ -1,32 +1,31 @@
 <template>
-  <div class="table-container">
-    <H3Component>Other headers</H3Component>
+  <div class="block" v-if="otherHeaders.length > 0">
+    <h3 class="is-size-5 has-text-weight-bold">Other headers</h3>
     <FlattenHeaders :headers="otherHeaders" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { computed, defineComponent, type PropType } from 'vue'
 
-import FlattenHeaders from "@/components/headers/FlattenHeaders.vue"
-import H3Component from "@/components/ui/h3.vue"
-import { basicKeys, Header, HeaderItem, securityKeys } from "@/types"
+import FlattenHeaders from '@/components/headers/FlattenHeaders.vue'
+import { basicKeys, type Header, type HeaderItem, securityKeys } from '@/types'
 
 export default defineComponent({
-  name: "OtherHeaders",
+  name: 'OtherHeaders',
   props: {
     header: {
       type: Object as PropType<Header>,
       required: true
     }
   },
-  components: { FlattenHeaders, H3Component },
+  components: { FlattenHeaders },
   setup(props) {
     const otherHeaders = computed(() => {
       const header = props.header.header
       const keys = Object.keys(header)
       const otherKeys = keys
-        .filter((key) => !key.startsWith("x-"))
+        .filter((key) => !key.startsWith('x-'))
         .filter((key) => securityKeys.indexOf(key) == -1)
         .filter((key) => basicKeys.indexOf(key) == -1)
 
