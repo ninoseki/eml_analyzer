@@ -20,12 +20,12 @@ def _get_optional_redis(
 ) -> typing.Generator[Redis | None, None, None]:
     if redis_url is None:
         yield None
-
-    redis: Redis = Redis.from_url(redis_url)  # type: ignore
-    try:
-        yield redis
-    finally:
-        redis.close()
+    else:
+        redis: Redis = Redis.from_url(redis_url)  # type: ignore
+        try:
+            yield redis
+        finally:
+            redis.close()
 
 
 def get_optional_redis(redis_url: str | None = cast_optional_str(settings.REDIS_URL)):
