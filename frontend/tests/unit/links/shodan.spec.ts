@@ -1,20 +1,20 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it } from 'vitest'
 
-import { Shodan } from "@/links/shodan"
+import { Shodan } from '@/links/shodan'
 
-describe("Shodan", function () {
+describe('Shodan', function () {
   const subject = new Shodan()
 
-  describe("#type", function () {
-    it("equals to ip_address", function () {
-      expect(subject.type).toEqual("ip_address")
+  describe('#type', function () {
+    it('equals to ip_address', function () {
+      expect(subject.type).toEqual('ip')
     })
   })
 
-  describe("#href", function () {
-    it("returns URL", function () {
-      const value = "1.1.1.1"
-      expect(subject.href(value)).toEqual("https://www.shodan.io/host/1.1.1.1")
+  describe('#href', function () {
+    it('returns URL', function () {
+      const value = '1.1.1.1'
+      expect(subject.href(value)).toEqual('https://www.shodan.io/host/1.1.1.1')
     })
   })
 })
