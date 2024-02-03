@@ -1,4 +1,4 @@
-import type { IndicatorType,Link } from '@/types'
+import type { IndicatorType, Link } from '@/types'
 
 export class EmailRep implements Link {
   public baseURL: string

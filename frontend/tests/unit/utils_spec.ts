@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { humanizeSeconds,toCSV } from '@/utils'
+import { humanizeSeconds, toCSV } from '@/utils'
 
 describe('toCSV', function () {
   it.each([

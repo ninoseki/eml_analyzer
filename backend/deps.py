@@ -16,7 +16,7 @@ def cast_optional_str(v: typing.Any | None) -> str | None:
 
 @contextmanager
 def _get_optional_redis(
-    redis_url: str | None = cast_optional_str(settings.REDIS_URL)
+    redis_url: str | None = cast_optional_str(settings.REDIS_URL),
 ) -> typing.Generator[Redis | None, None, None]:
     if redis_url is None:
         yield None

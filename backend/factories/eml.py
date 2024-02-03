@@ -1,6 +1,6 @@
+from hashlib import sha256
 from io import BytesIO
 from typing import Any
-from hashlib import sha256
 
 import arrow
 import dateparser
