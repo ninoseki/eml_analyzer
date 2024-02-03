@@ -8,14 +8,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
-import { defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
+import { useAsyncTask } from 'vue-concurrency'
 
-import { Attachment, ErrorData, Submitter } from "@/types"
-import { alertError } from "@/utils/alert"
+import type { Attachment, SubmissionResult, Submitter } from '@/types'
 
 export default defineComponent({
-  name: "SubmitterComponent",
+  name: 'SubmitterComponent',
   props: {
     value: {
       type: Object as PropType<Attachment>,
@@ -27,40 +26,25 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const buefy = Vue.prototype.$buefy
-
-    const showResult = (url: string) => {
-      const message = `The submission result will be available at <a href="${url}" target="_blank">here</a>. Please wait for a while.`
-      buefy.dialog.alert({
-        title: "Submitted successfully",
-        message: message,
-        confirmText: "Close"
-      })
-    }
-
     const confirm = () => {
-      buefy.dialog.confirm({
-        message: `Are you sure to submit this attachment to ${props.submitter.name}?`,
-        onConfirm: () => submit()
-      })
-    }
+      const confirmed = window.confirm(
+        `Are you sure to submit this attachment to ${props.submitter.name}?`
+      )
 
-    const submit = async () => {
-      const loadingComponent = buefy.loading.open({
-        container: null
-      })
-      try {
-        const result = await props.submitter.submit(props.value)
-        loadingComponent.close()
-        showResult(result.referenceUrl)
-      } catch (error) {
-        loadingComponent.close()
-        const data = (error as any).response.data as ErrorData
-        alertError(data, buefy)
+      if (confirmed) {
+        submit()
       }
     }
 
-    return { confirm }
+    const submitTask = useAsyncTask<SubmissionResult, [Attachment]>(async (_, attachment) => {
+      return await props.submitter.submit(attachment)
+    })
+
+    const submit = async () => {
+      submitTask.perform(props.value)
+    }
+
+    return { confirm, submitTask }
   }
 })
 </script>

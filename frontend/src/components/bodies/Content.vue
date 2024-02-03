@@ -1,22 +1,18 @@
 <template>
-  <pre>
-    <code :class="codeType" ref="code">{{ content }}</code>
-  </pre>
+  <pre v-html="html" v-if="html"></pre>
+  <pre v-else>{{ content }}</pre>
 </template>
 
 <script lang="ts">
-import hljs from "highlight.js/lib/core"
-import javascript from "highlight.js/lib/languages/javascript"
-import xml from "highlight.js/lib/languages/xml"
+import '@wooorm/starry-night/style/both'
 
-// register highlight languages
-hljs.registerLanguage("javascript", javascript)
-hljs.registerLanguage("xml", xml)
-
-import { computed, defineComponent, onMounted, ref } from "vue"
+import { createStarryNight } from '@wooorm/starry-night'
+import textHtmlBasic from '@wooorm/starry-night/text.html.basic'
+import { toHtml } from 'hast-util-to-html'
+import { defineComponent, onMounted, ref } from 'vue'
 
 export default defineComponent({
-  name: "ContentComponent",
+  name: 'ContentComponent',
   props: {
     content: {
       type: String,
@@ -27,35 +23,20 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const code = ref<HTMLElement>()
+    const html = ref<string>()
 
-    const codeType = computed(() => {
-      if (props.contentType?.includes("html")) {
-        return "html"
-      }
-      return "plaintext hljs"
-    })
-
-    const highlightCodeBlocks = () => {
-      if (code.value) {
-        if (code.value.textContent === "") {
-          return
-        }
-        if (code.value.className === "html") {
-          hljs.highlightBlock(code.value)
-        }
-        const parent = code.value.parentElement
-        if (parent !== null) {
-          parent.style.backgroundColor = "#282b2e"
+    onMounted(async () => {
+      if (props.contentType === 'text/html') {
+        const starryNight = await createStarryNight([textHtmlBasic])
+        const scope = starryNight.flagToScope('html')
+        if (scope) {
+          const tree = starryNight.highlight(props.content, scope)
+          html.value = toHtml(tree)
         }
       }
-    }
-
-    onMounted(() => {
-      highlightCodeBlocks()
     })
 
-    return { codeType, code }
+    return { html }
   }
 })
 </script>

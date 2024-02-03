@@ -1,17 +1,26 @@
-import "@fortawesome/fontawesome-free/css/all.css"
-import "@fortawesome/fontawesome-free/js/all.js"
-import "buefy/dist/buefy.css"
-import "highlight.js/styles/androidstudio.css"
+import 'bulma/css/bulma.css'
+import 'bulma-helpers/css/bulma-helpers.min.css'
+import 'font-awesome-animation/css/font-awesome-animation.min.css'
 
-import Buefy from "buefy"
-import Vue from "vue"
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faAngleDown,
+  faDownload,
+  faInfoCircle,
+  faLink,
+  faSearch,
+  faSpinner,
+  faUpload
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { createApp } from 'vue'
 
-import App from "@/App.vue"
+import router from '@/router'
 
-Vue.use(Buefy)
+library.add(faAngleDown, faLink, faSearch, faUpload, faSpinner, faDownload, faUpload, faInfoCircle)
 
-Vue.config.productionTip = false
+import App from '@/App.vue'
 
-new Vue({
-  render: (h) => h(App)
-}).$mount("#app")
+const app = createApp(App)
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.use(router).mount('#app')

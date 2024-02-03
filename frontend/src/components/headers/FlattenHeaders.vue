@@ -1,21 +1,20 @@
 <template>
-  <table class="table is-fullwidth" v-if="hasFlattenHeaders">
-    <tbody>
-      <tr v-for="header in flattenHeaders" :key="header.id">
-        <th>{{ header.key }}</th>
-        <td>{{ header.value }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <div v-else>
-    <p>N/A</p>
+  <div class="table-container">
+    <table class="table is-fullwidth is-completely-borderless" v-if="flattenHeaders.length > 0">
+      <tbody>
+        <tr v-for="header in flattenHeaders" :key="header.id">
+          <th>{{ header.key }}</th>
+          <td>{{ header.value }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { computed, defineComponent, type PropType } from 'vue'
 
-import { HeaderItem } from "@/types"
+import type { HeaderItem } from '@/types'
 
 interface FlattenHeader {
   id: string
@@ -24,7 +23,7 @@ interface FlattenHeader {
 }
 
 export default defineComponent({
-  name: "FlattenHeaders",
+  name: 'FlattenHeaders',
   props: {
     headers: {
       type: Array as PropType<HeaderItem[]>,
@@ -50,11 +49,7 @@ export default defineComponent({
       return headers
     })
 
-    const hasFlattenHeaders = computed(() => {
-      return flattenHeaders.value.length > 0
-    })
-
-    return { hasFlattenHeaders, flattenHeaders }
+    return { flattenHeaders }
   }
 })
 </script>

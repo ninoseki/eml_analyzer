@@ -1,33 +1,29 @@
-import json
-
-from redis import StrictRedis
 from fastapi import APIRouter, HTTPException, status
 
-from backend.schemas.response import Response
-from backend.core.settings import REDIS_HOST, REDIS_PASSWORD
+from backend import deps, schemas
+from backend.core import settings
 
 router = APIRouter()
 
+
 @router.get(
-    "/{identifier}/",
+    "/{id}",
     response_description="Return an analysis result",
     summary="Lookup cached analysis",
     description="Try to fetch existing analysis from database",
-    status_code=200,
 )
-async def lookup(identifier: str) -> Response:
-    if not REDIS_HOST:
+async def lookup(id: str, *, optional_redis: deps.OptionalRedis) -> schemas.Response:
+    if optional_redis is None:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
             detail="Redis cache is not enabled",
         )
 
-    redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
-    data = redis_conn.hget(identifier, "analysis")
-    if not data:
+    got: bytes | None = optional_redis.hget(name=id, key=settings.REDIS_FIELD)  # type: ignore
+    if got is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Analysis cache not found",
+            detail="Cache not found",
         )
 
-    return json.loads(data)
+    return schemas.Response.model_validate_json(got.decode())

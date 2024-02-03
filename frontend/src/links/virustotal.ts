@@ -1,20 +1,20 @@
-import { sha256 } from "js-sha256"
-import URL from "url-parse"
+import { sha256 } from 'js-sha256'
+import URL from 'url-parse'
 
-import { Link, LinkType } from "@/types"
-import { buildURL } from "@/utils/urlBuilder"
+import type { IndicatorType, Link } from '@/types'
+import { buildURL } from '@/utils'
 
 class VirusTotal implements Link {
   public favicon: string
   public baseURL: string
   public name: string
-  public type: LinkType
+  public type: IndicatorType
 
   public constructor() {
-    this.name = "VirusTotal"
-    this.baseURL = "https://www.virustotal.com"
+    this.name = 'VirusTotal'
+    this.baseURL = 'https://www.virustotal.com'
     this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`
-    this.type = "url"
+    this.type = 'url'
   }
 
   public href(value: string): string {
@@ -25,7 +25,7 @@ class VirusTotal implements Link {
 export class VirusTotalForSHA256 extends VirusTotal {
   public constructor() {
     super()
-    this.type = "sha256"
+    this.type = 'sha256'
   }
 
   public href(value: string): string {
@@ -36,12 +36,12 @@ export class VirusTotalForSHA256 extends VirusTotal {
 export class VirusTotalForURL extends VirusTotal {
   public constructor() {
     super()
-    this.type = "url"
+    this.type = 'url'
   }
 
   private normalizeURL(uri: string): string {
     const parsedUrl = new URL(uri)
-    if (parsedUrl.pathname === "/" && !uri.endsWith("/")) {
+    if (parsedUrl.pathname === '/' && !uri.endsWith('/')) {
       return `${uri}/`
     }
     return uri
@@ -56,7 +56,7 @@ export class VirusTotalForURL extends VirusTotal {
 export class VirusTotalForDomain extends VirusTotal {
   public constructor() {
     super()
-    this.type = "domain"
+    this.type = 'domain'
   }
 
   public href(value: string): string {
@@ -67,7 +67,7 @@ export class VirusTotalForDomain extends VirusTotal {
 export class VirusTotalForIP extends VirusTotal {
   public constructor() {
     super()
-    this.type = "ip_address"
+    this.type = 'ip'
   }
 
   public href(value: string): string {

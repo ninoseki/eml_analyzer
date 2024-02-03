@@ -13,8 +13,8 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error'
+    'simple-import-sort/imports': 'warn',
+    'simple-import-sort/exports': 'warn'
   },
   parserOptions: {
     ecmaVersion: 'latest'

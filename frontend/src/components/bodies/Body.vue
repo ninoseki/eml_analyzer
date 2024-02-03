@@ -1,40 +1,63 @@
 <template>
-  <div class="table-container">
-    <H3Component>{{ header }}</H3Component>
-    <table class="table is-narrow is-fullwidth">
+  <div class="block">
+    <h3 class="is-size-5 has-text-weight-bold">{{ header }}</h3>
+    <table class="table is-fullwidth is-completely-borderless">
       <tbody>
         <tr>
           <th>Content-Type</th>
-          <td>{{ body.contentType || "N/A" }}</td>
+          <td>{{ body.contentType || 'N/A' }}</td>
         </tr>
         <tr>
           <th>Content</th>
           <td>
-            <ContentComponent :content="body.content" :contentType="body.contentType" />
+            <ContentComponent
+              :content="body.content"
+              :contentType="body.contentType || undefined"
+            />
           </td>
         </tr>
-        <tr>
+        <tr v-if="body.urls.length > 0">
           <th>Extracted URLs</th>
           <td>
-            <Indicators :type="urlType" :values="body.urls" />
+            <div class="dropdowns">
+              <IndicatorButton :value="url" v-for="url in body.urls" :key="url"></IndicatorButton>
+            </div>
           </td>
         </tr>
-        <tr>
+        <tr v-if="body.emails.length > 0">
           <th>Extracted emails</th>
           <td>
-            <Indicators :type="emailType" :values="body.emails" />
+            <div class="dropdowns">
+              <IndicatorButton
+                :value="email"
+                v-for="email in body.emails"
+                :key="email"
+              ></IndicatorButton>
+            </div>
           </td>
         </tr>
-        <tr>
+        <tr v-if="body.domains.length > 0">
           <th>Extracted domains</th>
           <td>
-            <Indicators :type="domainType" :values="body.domains" />
+            <div class="dropdowns">
+              <IndicatorButton
+                :value="domain"
+                v-for="domain in body.domains"
+                :key="domain"
+              ></IndicatorButton>
+            </div>
           </td>
         </tr>
-        <tr>
+        <tr v-if="body.ipAddresses.length > 0">
           <th>Extracted IPv4s</th>
           <td>
-            <Indicators :type="ipAddressType" :values="body.ipAddresses" />
+            <div class="dropdowns">
+              <IndicatorButton
+                :value="ip"
+                v-for="ip in body.ipAddresses"
+                :key="ip"
+              ></IndicatorButton>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -43,14 +66,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import truncate from 'just-truncate'
+import { computed, defineComponent, type PropType } from 'vue'
 
-import ContentComponent from "@/components/bodies/Content.vue"
-import Indicators from "@/components/indicators/Indicators.vue"
-import H3Component from "@/components/ui/h3.vue"
-import { Body } from "@/types"
+import ContentComponent from '@/components/bodies/Content.vue'
+import IndicatorButton from '@/components/IndicatorButton.vue'
+import type { Body } from '@/types'
 export default defineComponent({
-  name: "BodyComponent",
+  name: 'BodyComponent',
   props: {
     body: {
       type: Object as PropType<Body>,
@@ -61,26 +84,13 @@ export default defineComponent({
       required: true
     }
   },
-  components: { H3Component, ContentComponent, Indicators },
+  components: { ContentComponent, IndicatorButton },
   setup(props) {
-    const domainType = "domain"
-    const emailType = "email"
-    const ipAddressType = "ip_address"
-    const sha256Type = "sha256"
-    const urlType = "url"
-
     const header = computed(() => {
       return `#${props.index + 1}`
     })
 
-    return {
-      header,
-      domainType,
-      emailType,
-      ipAddressType,
-      sha256Type,
-      urlType
-    }
+    return { header, truncate }
   }
 })
 </script>

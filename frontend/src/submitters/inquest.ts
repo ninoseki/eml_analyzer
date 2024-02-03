@@ -1,6 +1,6 @@
-import axios from "axios"
+import axios from 'axios'
 
-import { Attachment, SubmissionResult, Submitter, SubmitType } from "@/types"
+import type { Attachment, SubmissionResult, Submitter, SubmitType } from '@/types'
 
 export class InQuest implements Submitter {
   public favicon: string
@@ -8,13 +8,13 @@ export class InQuest implements Submitter {
   public type: SubmitType
 
   public constructor() {
-    this.favicon = "https://www.google.com/s2/favicons?domain=inquest.net"
-    this.name = "InQuest"
-    this.type = "sha256"
+    this.favicon = 'https://www.google.com/s2/favicons?domain=inquest.net'
+    this.name = 'InQuest'
+    this.type = 'sha256'
   }
 
   public async submit(attachment: Attachment): Promise<SubmissionResult> {
-    const res = await axios.post<SubmissionResult>("/api/submit/inquest", attachment)
+    const res = await axios.post<SubmissionResult>('/api/submit/inquest', attachment)
     return res.data
   }
 }

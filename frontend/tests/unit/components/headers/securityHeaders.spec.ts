@@ -1,18 +1,15 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
-import { describe, expect, it } from "vitest"
+import { shallowMount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 
-import SecurityHeaders from "@/components/headers/SecurityHeaders.vue"
-import { securityKeys } from "@/types"
+import SecurityHeaders from '@/components/headers/SecurityHeaders.vue'
+import { securityKeys } from '@/types'
 
-import { header } from "../../fixtures"
+import { header } from '../../fixtures'
 
-const localVue = createLocalVue()
-
-describe("SecurityHeaders.vue", () => {
-  describe("#securityHeaders", () => {
-    it("returns security headers", () => {
+describe('SecurityHeaders.vue', () => {
+  describe('#securityHeaders', () => {
+    it('returns security headers', () => {
       const wrapper = shallowMount(SecurityHeaders, {
-        localVue,
         propsData: { header }
       })
 

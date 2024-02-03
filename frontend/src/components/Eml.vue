@@ -1,20 +1,19 @@
 <template>
-  <div>
-    <Headers :header="eml.header" />
-    <Bodies :bodies="eml.bodies" />
-    <Attachments :attachments="eml.attachments" />
-  </div>
+  <Headers :header="eml.header" />
+  <Bodies :bodies="eml.bodies" v-if="eml.bodies.length > 0" />
+  <Attachments :attachments="eml.attachments" v-if="eml.attachments.length > 0" />
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue"
+import { defineComponent, type PropType } from 'vue'
 
-import Attachments from "@/components/attachments/Attachments.vue"
-import Bodies from "@/components/bodies/Bodies.vue"
-import Headers from "@/components/headers/Headers.vue"
-import { Eml } from "@/types"
+import Attachments from '@/components/attachments/Attachments.vue'
+import Bodies from '@/components/bodies/Bodies.vue'
+import Headers from '@/components/headers/Headers.vue'
+import type { Eml } from '@/types'
+
 export default defineComponent({
-  name: "DnsRecords",
+  name: 'EmlComponent',
   props: {
     eml: {
       type: Object as PropType<Eml>,

@@ -1,31 +1,30 @@
 <template>
-  <div class="table-container">
-    <H3Component>X headers</H3Component>
+  <div class="block" v-if="xHeaders.length > 0">
+    <h3 class="is-size-5 has-text-weight-bold">X headers</h3>
     <FlattenHeaders :headers="xHeaders" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue"
+import { computed, defineComponent, type PropType } from 'vue'
 
-import FlattenHeaders from "@/components/headers/FlattenHeaders.vue"
-import H3Component from "@/components/ui/h3.vue"
-import { Header, HeaderItem } from "@/types"
+import FlattenHeaders from '@/components/headers/FlattenHeaders.vue'
+import type { Header, HeaderItem } from '@/types'
 
 export default defineComponent({
-  name: "XHeaders",
+  name: 'XHeaders',
   props: {
     header: {
       type: Object as PropType<Header>,
       required: true
     }
   },
-  components: { FlattenHeaders, H3Component },
+  components: { FlattenHeaders },
   setup(props) {
     const xHeaders = computed(() => {
       const header = props.header.header
       const keys = Object.keys(header)
-      const xKeys = keys.filter((key) => key.startsWith("x-"))
+      const xKeys = keys.filter((key) => key.startsWith('x-'))
 
       const items = xKeys.map((key) => {
         if (key in header) {
