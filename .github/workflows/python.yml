@@ -42,7 +42,7 @@ jobs:
       - name: Ruff check
         run: poetry run ruff check backend/ tests/
       - name: Pyupgrade
-        run: poetry run pyupgrade backend/ tests/
+        run: poetry run pyupgrade --py311-plus **/*.py
   test:
     runs-on: ubuntu-latest
     strategy:
