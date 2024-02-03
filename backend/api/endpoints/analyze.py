@@ -1,35 +1,37 @@
-from redis import StrictRedis
-from fastapi import APIRouter, File, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, File, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
+from redis import Redis
 
+from backend import deps, schemas
+from backend.core import settings
 from backend.factories.response import ResponseFactory
-from backend.schemas.payload import FilePayload, Payload
-from backend.schemas.response import Response
-from backend.core.settings import REDIS_HOST, REDIS_PASSWORD, REDIS_EXPIRE
 
 router = APIRouter()
 
 
-async def _analyze(file: bytes) -> Response:
+async def _analyze(file: bytes) -> schemas.Response:
     try:
-        payload = FilePayload(file=file)
+        payload = schemas.FilePayload(file=file)
     except ValidationError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(exc.errors()),
         ) from exc
 
-    data = await ResponseFactory.from_bytes(payload.file)
+    return await ResponseFactory.from_bytes(payload.file)
 
-    if REDIS_HOST:
-        redis_conn = StrictRedis(host=REDIS_HOST, password=REDIS_PASSWORD)
-        redis_conn.hset(data.identifier, "analysis", data.json())
 
-        if REDIS_EXPIRE != -1:
-            redis_conn.expire(name=data.identifier, time=REDIS_EXPIRE)
+def cache_response(
+    redis: Redis,
+    response: schemas.Response,
+    expire: int = settings.REDIS_EXPIRE,
+    field: str = settings.REDIS_FIELD,
+):
+    redis.hset(name=response.id, key=field, value=response.model_dump_json())
 
-    return data
+    if expire > 0:
+        redis.expire(name=response.id, time=expire)
 
 
 @router.post(
@@ -37,10 +39,21 @@ async def _analyze(file: bytes) -> Response:
     response_description="Return an analysis result",
     summary="Analyze an eml",
     description="Analyze an eml and return an analysis result",
-    status_code=200,
 )
-async def analyze(payload: Payload) -> Response:
-    return await _analyze(payload.file.encode())
+async def analyze(
+    payload: schemas.Payload,
+    *,
+    background_tasks: BackgroundTasks,
+    optional_redis: deps.OptionalRedis,
+) -> schemas.Response:
+    response = await _analyze(payload.file.encode())
+
+    if optional_redis is not None:
+        background_tasks.add_task(
+            cache_response, redis=optional_redis, response=response
+        )
+
+    return response
 
 
 @router.post(
@@ -48,7 +61,18 @@ async def analyze(payload: Payload) -> Response:
     response_description="Return an analysis result",
     summary="Analyze an eml",
     description="Analyze an eml and return an analysis result",
-    status_code=200,
 )
-async def analyze_file(file: bytes = File(...)) -> Response:
-    return await _analyze(file)
+async def analyze_file(
+    file: bytes = File(...),
+    *,
+    background_tasks: BackgroundTasks,
+    optional_redis: deps.OptionalRedis,
+) -> schemas.Response:
+    response = await _analyze(file)
+
+    if optional_redis is not None:
+        background_tasks.add_task(
+            cache_response, redis=optional_redis, response=response
+        )
+
+    return response

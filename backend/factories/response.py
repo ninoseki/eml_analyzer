@@ -1,3 +1,4 @@
+import hashlib
 from functools import partial
 
 import aiometer
@@ -38,6 +39,8 @@ class ResponseFactory:
 
     async def to_model(self) -> Response:
         eml = EmlFactory.from_bytes(self.eml_file)
+        id_ = hashlib.sha256(self.eml_file).hexdigest()
+
         urls = aggregate_urls_from_bodies(eml.bodies)
         sha256s = aggregate_sha256s_from_attachments(eml.attachments)
 
@@ -57,9 +60,8 @@ class ResponseFactory:
         verdicts = await aiometer.run_all(async_tasks)
         # Add OleID verdict
         verdicts.append(OleIDVerdictFactory.from_attachments(eml.attachments))
-        # Add VT verdict
 
-        return Response(eml=eml, verdicts=verdicts, identifier=eml.identifier)
+        return Response(eml=eml, verdicts=verdicts, id=id_)
 
     @classmethod
     async def from_bytes(cls, eml_file: bytes) -> Response:
