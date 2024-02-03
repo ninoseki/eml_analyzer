@@ -26,16 +26,16 @@ ioc-finder = "^6.0"
 loguru = "^0.7"
 oletools = "0.60.1"
 pydantic = "^2.5"
-pyhumps = "^3.8.0"
-python-magic = "^0.4.27"
+pyhumps = "^3.8"
+python-magic = "^0.4"
 python-multipart = "^0.0"
-redis = "^5.0.0"
+redis = "^5.0"
 uvicorn = "^0.25"
 vt-py = "^0.18"
 
 [tool.poetry.group.dev.dependencies]
 aioresponses = "^0.7"
-black = "^23.12"
+black = "^24.1"
 coveralls = "^3.3"
 mypy = "^1.8"
 pre-commit = "^3.6"
@@ -51,7 +51,7 @@ pytest-randomly = "^3.15"
 pytest-timeout = "^2.2"
 pyupgrade = "^3.15"
 respx = "^0.20"
-vcrpy = "^5.1"
+vcrpy = "^6.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -75,7 +75,4 @@ select = [
   "SIM",   # flake8-simplify
   "T20",   # flake8-print
   "W",     # pycodestyle warnings
-]
-ignore = [
-  "E501", # line too long, handled by black
 ]
