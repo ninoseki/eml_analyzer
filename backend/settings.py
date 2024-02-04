@@ -24,7 +24,7 @@ SPAMASSASSIN_TIMEOUT: int = config("SPAMASSASSIN_TIMEOUT", cast=int, default=10)
 # Redis
 REDIS_URL: DatabaseURL | None = config("REDIS_URL", cast=DatabaseURL, default=None)
 REDIS_EXPIRE: int = config("REDIS_EXPIRE", cast=int, default=3600)
-REDIS_FIELD: str = config("REDIS_FIELD", cast=str, default="analysis")
+REDIS_KEY_PREFIX: str = config("REDIS_KEY_PREFIX", cast=str, default="analysis")
 
 # 3rd party API keys
 VIRUSTOTAL_API_KEY: Secret | None = config(

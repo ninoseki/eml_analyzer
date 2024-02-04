@@ -4,7 +4,7 @@
     <Loading v-if="getCacheKeysTask.isRunning"></Loading>
     <ErrorMessage :error="getCacheKeysTask.last?.error" v-if="getCacheKeysTask.isError" />
     <div class="block" v-if="getCacheKeysTask.last?.value && !getCacheKeysTask.last.isRunning">
-      <div class="buttons">
+      <div class="buttons" v-if="getCacheKeysTask.last.value.length > 0">
         <router-link
           class="button is-link is-light"
           :to="{ name: 'Lookup', params: { id: key } }"
@@ -13,6 +13,9 @@
           >{{ key }}</router-link
         >
       </div>
+      <article class="message is-info" v-else>
+        <div class="message-body">There is no cache.</div>
+      </article>
     </div>
   </div>
 </template>
