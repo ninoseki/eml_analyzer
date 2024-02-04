@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 
+import Cache from '@/views/Cache.vue'
 import Home from '@/views/Home.vue'
 import Lookup from '@/views/Lookup.vue'
 
@@ -14,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Lookup',
     component: Lookup,
     props: true
+  },
+  {
+    path: '/cache',
+    name: 'Cache',
+    component: Cache
   }
 ]
 

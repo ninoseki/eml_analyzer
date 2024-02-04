@@ -7,6 +7,7 @@
       <div class="navbar-start"></div>
       <div class="navbar-end">
         <router-link class="navbar-item" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="navbar-item" :to="{ name: 'Cache' }">Cache</router-link>
         <a class="navbar-item"><a href="/docs" target="_blank" class="navbar-item">API</a></a>
         <a class="navbar-item"
           ><a href="https://github.com/ninoseki/eml_analyzer" target="_blank" class="navbar-item"
