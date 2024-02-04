@@ -2,68 +2,140 @@ import hashlib
 from functools import partial
 
 import aiometer
+from loguru import logger
+from returns.functions import raise_exception
+from returns.future import FutureResultE, future_safe
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.unsafe import unsafe_perform_io
 
-from backend.core.utils import (
-    has_inquest_api_key,
-    has_urlscan_api_key,
-    has_virustotal_api_key,
-)
-from backend.factories.eml import EmlFactory
-from backend.factories.inquest import InQuestVerdictFactory
-from backend.factories.oldid import OleIDVerdictFactory
-from backend.factories.spamassassin import SpamAssassinVerdictFactory
-from backend.factories.urlscan import UrlscanVerdictFactory
-from backend.factories.virustotal import VirusTotalVerdictFactory
-from backend.schemas.eml import Attachment, Body
-from backend.schemas.response import Response
-from backend.schemas.verdict import Verdict
+from backend import clients, schemas, types
 
-
-def aggregate_urls_from_bodies(bodies: list[Body]) -> list[str]:
-    urls: list[str] = []
-    for body in bodies:
-        urls.extend(body.urls)
-    return list(set(urls))
+from .abstract import AbstractAsyncFactory
+from .emailrep import EmailRepVerdictFactory
+from .eml import EmlFactory
+from .inquest import InQuestVerdictFactory
+from .oldid import OleIDVerdictFactory
+from .spamassassin import SpamAssassinVerdictFactory
+from .urlscan import UrlScanVerdictFactory
+from .virustotal import VirusTotalVerdictFactory
 
 
-def aggregate_sha256s_from_attachments(attachments: list[Attachment]) -> list[str]:
-    sha256s: list[str] = []
-    for attachment in attachments:
-        sha256s.append(attachment.hash.sha256)
-    return list(set(sha256s))
+def log_exception(exception: Exception):
+    logger.exception(exception)
 
 
-class ResponseFactory:
-    def __init__(self, eml_file: bytes):
-        self.eml_file = eml_file
+@future_safe
+async def parse(eml_file: bytes) -> schemas.Response:
+    return schemas.Response(
+        eml=EmlFactory.call(eml_file), id=hashlib.sha256(eml_file).hexdigest()
+    )
 
-    async def to_model(self) -> Response:
-        eml = EmlFactory.from_bytes(self.eml_file)
-        id_ = hashlib.sha256(self.eml_file).hexdigest()
 
-        urls = aggregate_urls_from_bodies(eml.bodies)
-        sha256s = aggregate_sha256s_from_attachments(eml.attachments)
+@future_safe
+async def get_spam_assassin_verdict(
+    eml_file: bytes, *, client: clients.SpamAssassin
+) -> schemas.Verdict:
+    return await SpamAssassinVerdictFactory.call(eml_file, client=client)
 
-        verdicts: list[Verdict] = []
 
-        async_tasks = [
-            partial(SpamAssassinVerdictFactory.from_bytes, self.eml_file),
-        ]
-        if has_urlscan_api_key():
-            async_tasks.append(partial(UrlscanVerdictFactory.from_urls, urls))
-        if has_virustotal_api_key():
-            async_tasks.append(partial(VirusTotalVerdictFactory.from_sha256s, sha256s))
-        if has_inquest_api_key():
-            async_tasks.append(partial(InQuestVerdictFactory.from_sha256s, sha256s))
+@future_safe
+async def get_oleid_verdict(attachments: list[schemas.Attachment]) -> schemas.Verdict:
+    return OleIDVerdictFactory.call(attachments)
 
-        # Add SpamAsassin, urlscan, virustotal verdicts
-        verdicts = await aiometer.run_all(async_tasks)
-        # Add OleID verdict
-        verdicts.append(OleIDVerdictFactory.from_attachments(eml.attachments))
 
-        return Response(eml=eml, verdicts=verdicts, id=id_)
+@future_safe
+async def get_email_rep_verdicts(from_, *, client: clients.EmailRep) -> schemas.Verdict:
+    return await EmailRepVerdictFactory.call(from_, client=client)
 
+
+@future_safe
+async def get_urlscan_verdict(
+    urls: types.ListSet[str], *, client: clients.UrlScan
+) -> schemas.Verdict:
+    return await UrlScanVerdictFactory.call(urls, client=client)
+
+
+@future_safe
+async def get_inquest_verdict(
+    sha256s: types.ListSet[str], *, client: clients.InQuest
+) -> schemas.Verdict:
+    return await InQuestVerdictFactory.call(sha256s, client=client)
+
+
+@future_safe
+async def get_vt_verdict(
+    sha256s: types.ListSet[str], *, client: clients.VirusTotal
+) -> schemas.Verdict:
+    return await VirusTotalVerdictFactory.call(sha256s, client=client)
+
+
+@future_safe
+async def set_verdicts(
+    response: schemas.Response,
+    *,
+    eml_file: bytes,
+    email_rep: clients.EmailRep,
+    spam_assassin: clients.SpamAssassin,
+    optional_vt: clients.VirusTotal | None = None,
+    optional_urlscan: clients.UrlScan | None = None,
+    optional_inquest: clients.InQuest | None = None,
+) -> schemas.Response:
+    f_results: list[FutureResultE[schemas.Verdict]] = [
+        get_spam_assassin_verdict(eml_file, client=spam_assassin),
+        get_oleid_verdict(response.eml.attachments),
+    ]
+
+    if response.eml.header.from_ is not None:
+        f_results.append(
+            get_email_rep_verdicts(response.eml.header.from_, client=email_rep)
+        )
+
+    if optional_vt is not None:
+        f_results.append(get_vt_verdict(response.sha256s, client=optional_vt))
+
+    if optional_inquest is not None:
+        f_results.append(get_inquest_verdict(response.sha256s, client=optional_inquest))
+
+    if optional_urlscan is not None:
+        f_results.append(get_urlscan_verdict(response.urls, client=optional_urlscan))
+
+    results = await aiometer.run_all([f_result.awaitable for f_result in f_results])
+    values = [
+        unsafe_perform_io(result.alt(log_exception).value_or(None))
+        for result in results
+    ]
+    response.verdicts = [value for value in values if value is not None]
+    return response
+
+
+class ResponseFactory(
+    AbstractAsyncFactory,
+):
     @classmethod
-    async def from_bytes(cls, eml_file: bytes) -> Response:
-        obj = cls(eml_file)
-        return await obj.to_model()
+    async def call(
+        cls,
+        eml_file: bytes,
+        *,
+        email_rep: clients.EmailRep,
+        spam_assassin: clients.SpamAssassin,
+        optional_vt: clients.VirusTotal | None = None,
+        optional_urlscan: clients.UrlScan | None = None,
+        optional_inquest: clients.InQuest | None = None,
+    ) -> schemas.Response:
+        f_result: FutureResultE[schemas.Response] = flow(
+            parse(eml_file),
+            bind(
+                partial(
+                    set_verdicts,
+                    eml_file=eml_file,
+                    email_rep=email_rep,
+                    spam_assassin=spam_assassin,
+                    optional_vt=optional_vt,
+                    optional_urlscan=optional_urlscan,
+                    optional_inquest=optional_inquest,
+                )
+            ),
+        )
+        result = await f_result.awaitable()
+        return unsafe_perform_io(result.alt(raise_exception).unwrap())

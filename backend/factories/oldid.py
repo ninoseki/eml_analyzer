@@ -1,75 +1,98 @@
 import base64
+import itertools
 
-from loguru import logger
+from returns.result import safe
 
-from backend.schemas.eml import Attachment
-from backend.schemas.verdict import Detail, Verdict
-from backend.services.oleid import OleID
+from backend import schemas
+from backend.oleid import OleID
+
+from .abstract import AbstractFactory
+
+NAME = "oleid"
 
 
-class OleIDVerdictFactory:
-    def __init__(self, attachments: list[Attachment]):
-        self.attachments = attachments
-        self.name = "oleid"
+@safe
+def parse(attachment: schemas.Attachment) -> OleID:
+    data: bytes = base64.b64decode(attachment.raw)
+    return OleID(data)
 
-    def _parse_as_ole_file(self, attachment: Attachment) -> list[Detail]:
-        details: list[Detail] = []
 
-        data: bytes = base64.b64decode(attachment.raw)
-        oleid = OleID(data)
-        file_info = f"{attachment.filename}({attachment.hash.sha256})"
-        if oleid.has_vba_macros():
-            key = "vba"
-            description = f"{file_info} contains VBA macros."
-            details.append(Detail(key=key, description=description))
+@safe
+def attachment_to_details(
+    attachment: schemas.Attachment,
+) -> list[schemas.VerdictDetail]:
+    details: list[schemas.VerdictDetail] = []
+    file_info = f"{attachment.filename}({attachment.hash.sha256})"
 
-        if oleid.has_xlm_macros():
-            key = "xlm"
-            description = f"{file_info} contains XLM macros."
-            details.append(Detail(key=key, description=description))
+    def inner(oleid: OleID):
+        if oleid.has_vba_macros:
+            details.append(
+                schemas.VerdictDetail(
+                    key="vba", description=f"{file_info} contains VBA macros."
+                )
+            )
 
-        if oleid.has_flash_objects():
-            key = "flash"
-            description = f"{file_info} contains Flash objects."
-            details.append(Detail(key=key, description=description))
+        if oleid.has_xlm_macros:
+            details.append(
+                schemas.VerdictDetail(
+                    key="xlm", description=f"{file_info} contains XLM macros."
+                )
+            )
 
-        if oleid.is_encrypted():
-            key = "encrypted"
-            description = f"{file_info} is encrypted."
-            details.append(Detail(key=key, description=description))
+        if oleid.has_flash_objects:
+            details.append(
+                schemas.VerdictDetail(
+                    key="flash", description=f"{file_info} contains Flash objects."
+                )
+            )
 
-        if oleid.has_external_relationships():
-            key = "ext_rels"
-            description = f"{file_info} contains external relationships."
-            details.append(Detail(key=key, description=description))
+        if oleid.has_encrypted:
+            details.append(
+                schemas.VerdictDetail(
+                    key="encrypted", description=f"{file_info} is encrypted."
+                )
+            )
 
-        if oleid.has_object_pool():
-            key = "ObjectPool"
-            description = f"{file_info} contains an ObjectPool stream."
-            details.append(Detail(key=key, description=description))
+        if oleid.has_external_relationships:
+            details.append(
+                schemas.VerdictDetail(
+                    key="ext_rels",
+                    description=f"{file_info} contains external relationships.",
+                )
+            )
 
-        return details
+        if oleid.has_object_pool:
+            details.append(
+                schemas.VerdictDetail(
+                    key="ObjectPool",
+                    description=f"{file_info} contains an ObjectPool stream.",
+                )
+            )
 
-    def to_model(self) -> Verdict:
-        details: list[Detail] = []
+    parse(attachment).map(inner)
+    return details
 
-        for attachment in self.attachments:
-            try:
-                details.extend(self._parse_as_ole_file(attachment))
-            except Exception as error:
-                logger.exception(error)
+
+class OleIDVerdictFactory(AbstractFactory):
+    @classmethod
+    def call(
+        cls, attachments: list[schemas.Attachment], *, name: str = NAME
+    ) -> schemas.Verdict:
+        details = list(
+            itertools.chain.from_iterable(
+                [
+                    attachment_to_details(attachment).value_or([])
+                    for attachment in attachments
+                ]
+            )
+        )
 
         malicious = len(details) > 0
         if not malicious:
             details.append(
-                Detail(
+                schemas.VerdictDetail(
                     key="benign",
                     description="There is no suspicious OLE file in attachments.",
                 )
             )
-        return Verdict(name=self.name, malicious=malicious, details=details)
-
-    @classmethod
-    def from_attachments(cls, attachments: list[Attachment]) -> Verdict:
-        obj = cls(attachments)
-        return obj.to_model()
+        return schemas.Verdict(name=name, malicious=malicious, details=details)

@@ -1,0 +1,103 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - labs.inquest.net
+      user-agent:
+      - python-httpx/0.26.0
+    method: GET
+    uri: https://labs.inquest.net/api/dfi/details?sha256=e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 04 Feb 2024 09:45:33 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

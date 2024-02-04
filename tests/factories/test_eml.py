@@ -1,8 +1,11 @@
-from backend.factories.eml import EmlFactory, is_inline_forward_attachment
+import pytest
+
+from backend import factories
+from backend.factories.eml import is_inline_forward_attachment
 
 
-def test_sample(sample_eml):
-    eml = EmlFactory.from_bytes(sample_eml)
+def test_sample(sample_eml: bytes):
+    eml = factories.EmlFactory.call(sample_eml)
     assert eml.header.message_id is None
     assert eml.header.subject == "Winter promotions"
     assert eml.header.to == ["foo.bar@example.com"]
@@ -11,8 +14,8 @@ def test_sample(sample_eml):
     assert len(eml.bodies) == 2
 
 
-def test_cc(cc_eml):
-    eml = EmlFactory.from_bytes(cc_eml)
+def test_cc(cc_eml: bytes):
+    eml = factories.EmlFactory.call(cc_eml)
     assert eml.header.message_id == "ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com"
     assert eml.header.subject == "To and Cc headers"
     assert eml.header.to == ["foo.bar@example.com", "info@example.com"]
@@ -25,8 +28,8 @@ def test_cc(cc_eml):
     assert eml.attachments == []
 
 
-def test_multipart(multipart_eml):
-    eml = EmlFactory.from_bytes(multipart_eml)
+def test_multipart(multipart_eml: bytes):
+    eml = factories.EmlFactory.call(multipart_eml)
     assert eml.attachments is not None
     assert len(eml.attachments) == 1
 
@@ -35,8 +38,8 @@ def test_multipart(multipart_eml):
     assert first.hash.md5 == "f561388f7446cedd5b8b480311744b3c"
 
 
-def test_encrypted_docx(encrypted_docx_eml):
-    eml = EmlFactory.from_bytes(encrypted_docx_eml)
+def test_encrypted_docx(encrypted_docx_eml: bytes):
+    eml = factories.EmlFactory.call(encrypted_docx_eml)
     assert eml.attachments is not None
     assert len(eml.attachments) == 1
 
@@ -49,33 +52,38 @@ def test_encrypted_docx(encrypted_docx_eml):
 
 def test_emails(emails: list[bytes]):
     for email in emails:
-        try:
-            eml = EmlFactory.from_bytes(email)
-            assert eml is not None
-        except Exception:
-            pass
+        eml = factories.EmlFactory.call(email)
+        assert eml is not None
 
 
-def test_complete_msg(complete_msg):
-    eml = EmlFactory.from_bytes(complete_msg)
-
+def test_complete_msg(complete_msg: bytes):
+    eml = factories.EmlFactory.call(complete_msg)
     assert eml.header.subject == "Test Multiple attachments complete email!!"
 
 
-def test_is_inline_forward_attachment():
-    inline_forward = {
-        "content_header": {
-            "content-type": ['message/rfc822; name="Fwd: foo"'],
-            "content-disposition": ['inline; filename="Fwd: foo"'],
-        }
-    }
-    assert is_inline_forward_attachment(inline_forward) is True
-
-    zip_ = {
-        "content_header": {
-            "content-type": ['application/x-zip-compressed; name="foo.zip"'],
-            "content-transfer-encoding": ["base64"],
-            "content-disposition": ['attachment; filename="foo.zip"'],
-        }
-    }
-    assert is_inline_forward_attachment(zip_) is False
+@pytest.mark.parametrize(
+    "attachment,expected",
+    [
+        (
+            {
+                "content_header": {
+                    "content-type": ['message/rfc822; name="Fwd: foo"'],
+                    "content-disposition": ['inline; filename="Fwd: foo"'],
+                }
+            },
+            True,
+        ),
+        (
+            {
+                "content_header": {
+                    "content-type": ['application/x-zip-compressed; name="foo.zip"'],
+                    "content-transfer-encoding": ["base64"],
+                    "content-disposition": ['attachment; filename="foo.zip"'],
+                }
+            },
+            False,
+        ),
+    ],
+)
+def test_is_inline_forward_attachment(attachment: dict, expected: bool):
+    assert is_inline_forward_attachment(attachment) is expected

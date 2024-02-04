@@ -1,40 +1,32 @@
-import pytest
-from httpx import AsyncClient
-
-from tests.conftest import read_file
+from fastapi import status
+from fastapi.testclient import TestClient
 
 
-@pytest.mark.asyncio
-async def test_analyze(client: AsyncClient):
-    payload = {"file": read_file("sample.eml")}
-    response = await client.post("/api/analyze/", json=payload)
+def test_analyze(client: TestClient, sample_eml: bytes):
+    payload = {"file": sample_eml.decode()}
+    response = client.post("/api/analyze/", json=payload)
 
     json = response.json()
     assert json.get("eml", {}).get("header", {}).get("subject") == "Winter promotions"
     assert json.get("eml", {}).get("header", {}).get("from") == "no-reply@example.com"
 
 
-@pytest.mark.asyncio
-async def test_analyze_with_invalid_file(client: AsyncClient):
+def test_analyze_with_invalid_file(client: TestClient):
     payload = {"file": ""}
-    response = await client.post("/api/analyze/", json=payload)
+    response = client.post("/api/analyze/", json=payload)
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    assert response.status_code == 422
 
-
-@pytest.mark.asyncio
-async def test_analyze_file(client: AsyncClient):
-    data = {"file": read_file("sample.eml").encode()}
-    response = await client.post("/api/analyze/file", files=data)
+def test_analyze_file(client: TestClient, sample_eml: bytes):
+    data = {"file": sample_eml}
+    response = client.post("/api/analyze/file", files=data)
 
     json = response.json()
     assert json.get("eml", {}).get("header", {}).get("subject") == "Winter promotions"
     assert json.get("eml", {}).get("header", {}).get("from") == "no-reply@example.com"
 
 
-@pytest.mark.asyncio
-async def test_analyze_file_with_invalid_file(client: AsyncClient):
+def test_analyze_file_with_invalid_file(client: TestClient):
     data = {"file": b""}
-    response = await client.post("/api/analyze/file", files=data)
-
-    assert response.status_code == 422
+    response = client.post("/api/analyze/file", files=data)
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

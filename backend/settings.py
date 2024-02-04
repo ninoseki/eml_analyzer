@@ -27,6 +27,14 @@ REDIS_EXPIRE: int = config("REDIS_EXPIRE", cast=int, default=3600)
 REDIS_FIELD: str = config("REDIS_FIELD", cast=str, default="analysis")
 
 # 3rd party API keys
-URLSCAN_API_KEY: Secret = config("URLSCAN_API_KEY", cast=Secret, default="")
-VIRUSTOTAL_API_KEY: Secret = config("VIRUSTOTAL_API_KEY", cast=Secret, default="")
-INQUEST_API_KEY: Secret = config("INQUEST_API_KEY", cast=Secret, default="")
+VIRUSTOTAL_API_KEY: Secret | None = config(
+    "VIRUSTOTAL_API_KEY", cast=Secret, default=None
+)
+INQUEST_API_KEY: Secret | None = config("INQUEST_API_KEY", cast=Secret, default=None)
+URLSCAN_API_KEY: Secret | None = config("URLSCAN_API_KEY", cast=Secret, default=None)
+
+# Async/aiometer
+ASYNC_MAX_AT_ONCE: int | None = config("ASYNC_MAX_AT_ONCE", cast=int, default=None)
+ASYNC_MAX_PER_SECOND: float | None = config(
+    "ASYNC_MAX_PER_SECOND", cast=float, default=None
+)

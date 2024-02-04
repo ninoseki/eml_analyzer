@@ -3,14 +3,21 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from redis import Redis
 
-from backend import deps, schemas
-from backend.core import settings
+from backend import clients, deps, schemas, settings
 from backend.factories.response import ResponseFactory
 
 router = APIRouter()
 
 
-async def _analyze(file: bytes) -> schemas.Response:
+async def _analyze(
+    file: bytes,
+    *,
+    spam_assassin: clients.SpamAssassin,
+    email_rep: clients.EmailRep,
+    optional_inquest: clients.InQuest | None = None,
+    optional_vt: clients.VirusTotal | None = None,
+    optional_urlscan: clients.UrlScan | None = None,
+) -> schemas.Response:
     try:
         payload = schemas.FilePayload(file=file)
     except ValidationError as exc:
@@ -19,7 +26,14 @@ async def _analyze(file: bytes) -> schemas.Response:
             detail=jsonable_encoder(exc.errors()),
         ) from exc
 
-    return await ResponseFactory.from_bytes(payload.file)
+    return await ResponseFactory.call(
+        payload.file,
+        email_rep=email_rep,
+        spam_assassin=spam_assassin,
+        optional_inquest=optional_inquest,
+        optional_urlscan=optional_urlscan,
+        optional_vt=optional_vt,
+    )
 
 
 def cache_response(
@@ -45,8 +59,20 @@ async def analyze(
     *,
     background_tasks: BackgroundTasks,
     optional_redis: deps.OptionalRedis,
+    spam_assassin: deps.SpamAssassin,
+    email_rep: deps.EmailRep,
+    optional_inquest: deps.OptionalInQuest,
+    optional_vt: deps.OptionalVirusTotal,
+    optional_urlscan: deps.OptionalUrlScan,
 ) -> schemas.Response:
-    response = await _analyze(payload.file.encode())
+    response = await _analyze(
+        payload.file.encode(),
+        email_rep=email_rep,
+        spam_assassin=spam_assassin,
+        optional_inquest=optional_inquest,
+        optional_urlscan=optional_urlscan,
+        optional_vt=optional_vt,
+    )
 
     if optional_redis is not None:
         background_tasks.add_task(
@@ -67,8 +93,20 @@ async def analyze_file(
     *,
     background_tasks: BackgroundTasks,
     optional_redis: deps.OptionalRedis,
+    spam_assassin: deps.SpamAssassin,
+    email_rep: deps.EmailRep,
+    optional_inquest: deps.OptionalInQuest,
+    optional_vt: deps.OptionalVirusTotal,
+    optional_urlscan: deps.OptionalUrlScan,
 ) -> schemas.Response:
-    response = await _analyze(file)
+    response = await _analyze(
+        file,
+        email_rep=email_rep,
+        spam_assassin=spam_assassin,
+        optional_inquest=optional_inquest,
+        optional_urlscan=optional_urlscan,
+        optional_vt=optional_vt,
+    )
 
     if optional_redis is not None:
         background_tasks.add_task(

@@ -3,7 +3,7 @@ from typing import Any
 from .api_model import APIModel
 
 
-class EmailRepResponse(APIModel):
+class EmailRepLookup(APIModel):
     email: str
     reputation: str
     suspicious: bool

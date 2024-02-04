@@ -1,139 +1,90 @@
-from dataclasses import dataclass, field
 from functools import partial
 
 import aiometer
-from loguru import logger
+from returns.functions import raise_exception
+from returns.future import FutureResultE, future_safe
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.unsafe import unsafe_perform_io
 
-from backend.core.settings import INQUEST_API_KEY
-from backend.schemas.verdict import Detail, Verdict
-from backend.services.inquest import InQuest
+from backend import clients, schemas, settings, types
 
-
-@dataclass
-class InQuestAlert:
-    category: str
-    description: str
-    title: str
-    reference: str | None
-
-    @classmethod
-    def build(cls, dicts: list[dict]) -> list["InQuestAlert"]:
-        return [
-            cls(
-                category=d.get("category", ""),
-                description=d.get("description", ""),
-                title=d.get("title", ""),
-                reference=d.get("reference"),
-            )
-            for d in dicts
-        ]
+NAME = "InQuest"
 
 
-@dataclass
-class InQuestVerdict:
-    sha256: str
-    classification: str
-    alerts: list[InQuestAlert] = field(default_factory=list)
+@future_safe
+async def lookup(sha256: str, *, client: clients.InQuest) -> schemas.InQuestLookup:
+    return await client.lookup(sha256)
 
-    @property
-    def malicious(self) -> bool:
-        return self.classification == "MALICIOUS"
 
-    @property
-    def reference_link(self) -> str:
-        return f"https://labs.inquest.net/dfi/sha256/{self.sha256}"
+@future_safe
+async def bulk_lookup(
+    sha256s: types.ListSet[str],
+    *,
+    client: clients.InQuest,
+    max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+    max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+) -> list[schemas.InQuestLookup]:
+    f_results = [lookup(sha256, client=client) for sha256 in set(sha256s)]
+    results = await aiometer.run_all(
+        [f_result.awaitable for f_result in f_results],
+        max_at_once=max_at_once,
+        max_per_second=max_per_second,
+    )
+    values = [unsafe_perform_io(result.value_or(None)) for result in results]
+    return [value for value in values if value is not None]
 
-    @property
-    def description(self) -> str:
-        malicious_alerts = [
-            alert for alert in self.alerts if alert.category == "malicious"
-        ]
-        descriptions = [alert.description for alert in malicious_alerts]
-        return " / ".join(descriptions)
 
-    @classmethod
-    def build(cls, dict_: dict) -> "InQuestVerdict":
-        data = dict_.get("data", {})
-        sha256 = data.get("sha256", "")
-        classification = data.get("classification", "")
-        alerts = data.get("inquest_alerts", [])
+@future_safe
+async def transform(lookups: list[schemas.InQuestLookup], *, name: str = NAME):
+    malicious_lookups = [lookup for lookup in lookups if lookup.malicious]
 
-        return cls(
-            sha256=sha256,
-            classification=classification,
-            alerts=InQuestAlert.build(alerts),
+    if len(malicious_lookups) == 0:
+        return schemas.Verdict(
+            name=name,
+            malicious=False,
+            details=[
+                schemas.VerdictDetail(
+                    key="benign",
+                    description="There is no malicious attachment or InQuest doesn't have information about the attachments.",
+                )
+            ],
         )
 
-
-async def get_result(client: InQuest, sha256: str) -> dict | None:
-    try:
-        return await client.dfi_details(sha256)
-    except Exception as e:
-        logger.exception(e)
-    return None
-
-
-async def bulk_get_results(sha256s: list[str]) -> list[dict]:
-    if len(sha256s) == 0:
-        return []
-
-    client = InQuest()
-    results = await aiometer.run_all(
-        [partial(get_result, client, sha256) for sha256 in sha256s]
+    return schemas.Verdict(
+        name=name,
+        malicious=True,
+        score=100,
+        details=[
+            schemas.VerdictDetail(
+                key=lookup.data.sha256,
+                description=lookup.description,
+                reference_link=lookup.reference_link,
+            )
+            for lookup in malicious_lookups
+        ],
     )
-    return [result for result in results if result is not None]
-
-
-async def get_inquest_verdicts(sha256s: list[str]) -> list[InQuestVerdict]:
-    if str(INQUEST_API_KEY) == "":
-        return []
-
-    results = await bulk_get_results(sha256s)
-
-    verdicts: list[InQuestVerdict] = []
-    for result in results:
-        verdicts.append(InQuestVerdict.build(result))
-
-    return verdicts
 
 
 class InQuestVerdictFactory:
-    def __init__(self, sha256s: list[str]):
-        self.sha256s = sha256s
-        self.name = "InQuest"
-
-    async def to_model(self) -> Verdict:
-        malicious_verdicts: list[InQuestVerdict] = []
-
-        verdicts = await get_inquest_verdicts(self.sha256s)
-        for verdict in verdicts:
-            if verdict.malicious:
-                malicious_verdicts.append(verdict)
-
-        if len(malicious_verdicts) == 0:
-            return Verdict(
-                name=self.name,
-                malicious=False,
-                details=[
-                    Detail(
-                        key="benign",
-                        description="There is no malicious attachment or InQuest doesn't have information about the attachments.",
-                    )
-                ],
-            )
-
-        details: list[Detail] = []
-        details = [
-            Detail(
-                key=verdict.sha256,
-                description=verdict.description,
-                reference_link=verdict.reference_link,
-            )
-            for verdict in malicious_verdicts
-        ]
-        return Verdict(name=self.name, malicious=True, score=100, details=details)
-
     @classmethod
-    async def from_sha256s(cls, sha256s: list[str]) -> Verdict:
-        obj = cls(sha256s)
-        return await obj.to_model()
+    async def call(
+        cls,
+        sha256s: types.ListSet[str],
+        *,
+        client: clients.InQuest,
+        name: str = NAME,
+        max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+        max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+    ) -> schemas.Verdict:
+        f_result: FutureResultE[schemas.Verdict] = flow(
+            bulk_lookup(
+                sha256s,
+                client=client,
+                max_at_once=max_at_once,
+                max_per_second=max_per_second,
+            ),
+            bind(partial(transform, name=name)),
+        )
+        result = await f_result.awaitable()
+        return unsafe_perform_io(result.alt(raise_exception).unwrap())

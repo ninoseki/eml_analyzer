@@ -1,59 +1,80 @@
 import glob
-from pathlib import Path
-from typing import Any
+import os
 
-import httpx
+import aiospamc
+import ci
 import pytest
-import pytest_asyncio
-from aiospamc.header_values import SpamValue
-from aiospamc.responses import Response
+from fastapi.testclient import TestClient
+from pytest_docker.plugin import Services
+from syncer import sync
 
-from backend.factories.eml import EmlFactory
+from backend import clients, factories, schemas
 from backend.main import create_app
-from backend.schemas.eml import Attachment
 
 
-def read_file(filename) -> str:
-    parent = Path(__file__).parent.absolute()
-    path = parent / f"fixtures/{filename}"
-    with open(path) as f:
-        return f.read()
+@pytest.fixture(scope="session")
+def docker_compose_file(pytestconfig):
+    return os.path.join(str(pytestconfig.rootdir), "test.docker-compose.yml")
 
 
-def read_file_as_binary(filename) -> bytes:
-    parent = Path(__file__).parent.absolute()
-    path = parent / f"fixtures/{filename}"
-    with open(path, "rb") as f:
-        return f.read()
+@sync
+async def is_spam_assassin_responsive(port: int) -> bool:
+    try:
+        res = await aiospamc.ping(port=port)
+        return res is not None
+    except Exception:
+        return False
+
+
+if not ci.is_ci():
+
+    @pytest.fixture(scope="session", autouse=True)
+    def docker_compose(docker_ip: str, docker_services: Services):  # type: ignore
+        port = docker_services.port_for("spamassassin", 783)
+        docker_services.wait_until_responsive(
+            timeout=60.0, pause=0.1, check=lambda: is_spam_assassin_responsive(port)
+        )
+
+else:
+
+    @pytest.fixture
+    def docker_compose():
+        return
+
+
+@pytest.fixture
+def spam_assassin() -> clients.SpamAssassin:
+    return clients.SpamAssassin()
 
 
 @pytest.fixture
 def sample_eml() -> bytes:
-    return read_file("sample.eml").encode()
+    with open("tests/fixtures/sample.eml", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def cc_eml() -> bytes:
-    return read_file("cc.eml").encode()
+    with open("tests/fixtures/cc.eml", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def multipart_eml() -> bytes:
-    return read_file("multipart.eml").encode()
+    with open("tests/fixtures/multipart.eml", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def encrypted_docx_eml() -> bytes:
-    return read_file("encrypted_docx.eml").encode()
+    with open("tests/fixtures/encrypted_docx.eml", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def emails() -> list[bytes]:
-    parent = str(Path(__file__).parent.absolute())
-    path = parent + "/fixtures/emails/**/*.eml"
-
     emails: list[bytes] = []
-    for p in glob.glob(path):
+    for p in glob.glob("tests/fixtures/emails/**/*.eml"):
         with open(p, "rb") as f:
             emails.append(f.read())
 
@@ -62,75 +83,47 @@ def emails() -> list[bytes]:
 
 @pytest.fixture
 def outer_msg() -> bytes:
-    return read_file_as_binary("outer.msg")
+    with open("tests/fixtures/outer.msg", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def other_msg() -> bytes:
-    return read_file_as_binary("other.msg")
-
-
-@pytest.fixture
-def emailrep_response() -> str:
-    return read_file("emailrep.json")
-
-
-@pytest.fixture
-def urlscan_search_response() -> str:
-    return read_file("urlscan_search.json")
-
-
-@pytest.fixture
-def urlscan_result_response() -> str:
-    return read_file("urlscan_result.json")
-
-
-@pytest.fixture
-def inquest_dfi_details_response() -> str:
-    return read_file("inquest_dfi_details.json")
-
-
-@pytest.fixture
-def inquest_dfi_upload_response() -> str:
-    return read_file("inquest_dfi_upload.json")
+    with open("tests/fixtures/other.msg", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def encrypted_docx() -> bytes:
-    return read_file_as_binary("encrypted.docx")
+    with open("tests/fixtures/encrypted.docx", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def xls_with_macro() -> bytes:
-    return read_file_as_binary("macro.xls")
+    with open("tests/fixtures/macro.xls", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def complete_msg() -> bytes:
-    return read_file_as_binary("complete.msg")
+    with open("tests/fixtures/complete.msg", "rb") as f:
+        return f.read()
 
 
 @pytest.fixture
 def test_html() -> str:
-    return read_file("test.html")
+    with open("tests/fixtures/test.html") as f:
+        return f.read()
 
 
 @pytest.fixture
-def docx_attachment(encrypted_docx_eml: bytes) -> Attachment:
-    eml = EmlFactory.from_bytes(encrypted_docx_eml)
+def docx_attachment(encrypted_docx_eml: bytes) -> schemas.Attachment:
+    eml = factories.EmlFactory.call(encrypted_docx_eml)
     return eml.attachments[0]
 
 
 @pytest.fixture
-def spamassassin_response() -> Response:
-    body = read_file("sa.txt").encode()
-    headers: dict[str, Any] = {}
-    headers["Spam"] = SpamValue(value=True, score=40, threshold=20)
-    return Response(headers=headers, body=body)
-
-
-@pytest_asyncio.fixture
-async def client():
+def client() -> TestClient:
     app = create_app()
-    async with httpx.AsyncClient(app=app, base_url="http://testserver") as c:
-        yield c
+    return TestClient(app)

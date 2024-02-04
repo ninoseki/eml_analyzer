@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - urlscan.io
+      user-agent:
+      - python-httpx/0.26.0
+    method: GET
+    uri: https://urlscan.io/api/v1/search/?q=task.url%3A%22http%3A%2F%2Fexample.com%22%20AND%20task.domain%3A%22example.com%22%20AND%20verdicts.malicious%3Atrue&size=1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6vmUlBQKkotLs0pKVayUoiO1QEJlOSXJOYAuQZQXn42kGNmBOZlJBbH5+YXpQJF
+        0hJzilO5agHQgV8gRAAAAA==
+    headers:
+      Cache-Control:
+      - private, max-age=10
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'default-src ''self'' data:; script-src ''self'' data: developers.google.com
+        www.google.com www.gstatic.com; style-src ''self'' fonts.googleapis.com www.google.com;
+        img-src * data:; font-src ''self'' fonts.gstatic.com; child-src ''self'';
+        frame-src https://www.google.com/recaptcha/; form-action ''self''; connect-src
+        ''self''; upgrade-insecure-requests; frame-ancestors ''none'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 04 Feb 2024 10:03:02 GMT
+      ETag:
+      - W/"44-94b5SgxOGo7bqoy7V0TqAHYl4XI"
+      Referrer-Policy:
+      - unsafe-url
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Proxy-Cache:
+      - MISS
+      X-Rate-Limit-Action:
+      - search
+      X-Rate-Limit-Limit:
+      - '50000'
+      X-Rate-Limit-Remaining:
+      - '49996'
+      X-Rate-Limit-Reset:
+      - '2024-02-04T11:00:00.000Z'
+      X-Rate-Limit-Reset-After:
+      - '3417'
+      X-Rate-Limit-Scope:
+      - team
+      X-Rate-Limit-Window:
+      - hour
+      X-Robots-Tag:
+      - all
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

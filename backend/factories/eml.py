@@ -1,4 +1,3 @@
-from hashlib import sha256
 from io import BytesIO
 from typing import Any
 
@@ -6,11 +5,17 @@ import arrow
 import dateparser
 from eml_parser import EmlParser
 from ioc_finder import parse_domain_names, parse_email_addresses, parse_ipv4_addresses
+from returns.functions import raise_exception
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.result import ResultE, safe
 
-from backend.schemas.eml import Eml
-from backend.services.extractor import parse_urls_from_body
-from backend.services.outlookmsgfile import Message
-from backend.services.validator import is_eml_file
+from backend import schemas
+from backend.outlookmsgfile import Message
+from backend.utils import parse_urls_from_body
+from backend.validator import is_eml_file
+
+from .abstract import AbstractFactory
 
 
 def is_inline_forward_attachment(attachment: dict) -> bool:
@@ -33,102 +38,119 @@ def is_inline_forward_attachment(attachment: dict) -> bool:
     return is_rfc822 and is_inline
 
 
-class EmlFactory:
-    def __init__(self, eml_file: bytes):
-        self.eml_file = eml_file
-        parser = EmlParser(include_raw_body=True, include_attachment_data=True)
-        self.parsed = parser.decode_email_bytes(eml_file)
-        self.parsed["identifier"] = sha256(eml_file).hexdigest()
+@safe
+def to_eml(data: bytes) -> bytes:
+    if is_eml_file(data):
+        return data
 
-    def _normalize_received_date(self, received: dict):
-        date = received.get("date", "")
-        if date != "":
-            return received
+    # assume data is a msg file
+    file = BytesIO(data)
+    message = Message(file)
+    email = message.to_email()
+    return email.as_bytes()
 
-        src = received.get("src", "")
-        parts = src.split(";")
-        date_ = parts[-1].strip()
-        received["date"] = dateparser.parse(date_)
+
+@safe
+def parse(data: bytes) -> dict:
+    parser = EmlParser(include_raw_body=True, include_attachment_data=True)
+    return parser.decode_email_bytes(data)
+
+
+def _normalize_received_date(received: dict):
+    date = received.get("date", "")
+    if date != "":
         return received
 
-    def _normalize_received(self, received: list[dict]) -> list[dict]:
-        if len(received) == 0:
-            return []
+    src = received.get("src", "")
+    parts = src.split(";")
+    date_ = parts[-1].strip()
+    received["date"] = dateparser.parse(date_)
+    return received
 
-        received = [self._normalize_received_date(r) for r in received]
-        received.reverse()
 
-        first = received[0]
-        base_date = arrow.get(first.get("date", ""))
-        for r in received:
-            date = arrow.get(r.get("date", ""))
-            delay = (date - base_date).seconds
-            r["delay"] = delay
-            base_date = date
+def _normalize_received(received: list[dict]) -> list[dict]:
+    if len(received) == 0:
+        return []
 
-        return received
+    received = [_normalize_received_date(r) for r in received]
+    received.reverse()
 
-    def _normalize_header(self):
-        header = self.parsed.get("header", {})
-        # set message-id as a top-level attribute
-        message_id = header.get("header", {}).get("message-id", [])
-        if len(message_id) > 0:
-            header["message_id"] = message_id[0]
+    first = received[0]
+    base_date = arrow.get(first.get("date", ""))
+    for r in received:
+        date = arrow.get(r.get("date", ""))
+        delay = (date - base_date).seconds
+        r["delay"] = delay
+        base_date = date
 
-        received = header.get("received", [])
-        header["received"] = self._normalize_received(received)
-        self.parsed["header"] = header
+    return received
 
-    def _normalize_body(self, body: dict[str, Any]) -> dict[str, Any]:
-        content = body.get("content", "")
-        content_type = body.get("content_type", "")
-        body["urls"] = parse_urls_from_body(content, content_type)
-        body["emails"] = parse_email_addresses(content)
-        body["domains"] = parse_domain_names(content)
-        body["ip_addresses"] = parse_ipv4_addresses(content)
 
-        for key in ["uri", "email", "domain", "ip"]:
-            if key in body:
-                del body[key]
+@safe
+def normalize_header(parsed: dict) -> dict:
+    header = parsed.get("header", {})
+    # set message-id as a top-level attribute
+    message_id = header.get("header", {}).get("message-id", [])
+    if len(message_id) > 0:
+        header["message_id"] = message_id[0]
 
-        return body
+    received = header.get("received", [])
+    header["received"] = _normalize_received(received)
+    parsed["header"] = header
+    return parsed
 
-    def _normalize_bodies(self):
-        bodies = self.parsed.get("body", [])
-        self.parsed["bodies"] = [self._normalize_body(body) for body in bodies]
-        del self.parsed["body"]
 
-    def _normalize_attachments(self):
-        # change "attachment" to "attachments"
-        attachments = self.parsed.get("attachment", [])
+def _normalize_body(body: dict[str, Any]) -> dict[str, Any]:
+    content = body.get("content", "")
+    content_type = body.get("content_type", "")
+    body["urls"] = parse_urls_from_body(content, content_type)
+    body["emails"] = parse_email_addresses(content)
+    body["domains"] = parse_domain_names(content)
+    body["ip_addresses"] = parse_ipv4_addresses(content)
 
-        non_inline_forward_attachments = []
-        for attachment in attachments:
-            if not is_inline_forward_attachment(attachment):
-                non_inline_forward_attachments.append(attachment)
+    for key in ["uri", "email", "domain", "ip"]:
+        body.pop(key, None)
 
-        self.parsed["attachments"] = non_inline_forward_attachments
-        if "attachment" in self.parsed:
-            del self.parsed["attachment"]
+    return body
 
-    def normalize(self):
-        self._normalize_header()
-        self._normalize_attachments()
-        self._normalize_bodies()
 
-    def to_model(self) -> Eml:
-        self.normalize()
-        return Eml.model_validate(self.parsed)
+@safe
+def normalize_bodies(parsed: dict) -> dict:
+    bodies = parsed.get("body", [])
+    parsed["bodies"] = [_normalize_body(body) for body in bodies]
+    parsed.pop("body", None)
+    return parsed
 
+
+@safe
+def normalize_attachments(parsed: dict) -> dict:
+    # change "attachment" to "attachments"
+    attachments = parsed.get("attachment", [])
+
+    non_inline_forward_attachments = []
+    for attachment in attachments:
+        if not is_inline_forward_attachment(attachment):
+            non_inline_forward_attachments.append(attachment)
+
+    parsed["attachments"] = non_inline_forward_attachments
+    parsed.pop("attachment", None)
+    return parsed
+
+
+@safe
+def transform(parsed: dict) -> schemas.Eml:
+    return schemas.Eml.model_validate(parsed)
+
+
+class EmlFactory(AbstractFactory):
     @classmethod
-    def from_bytes(cls, data: bytes) -> Eml:
-        if is_eml_file(data):
-            obj = cls(data)
-            return obj.to_model()
-
-        # assume data is a msg file
-        file = BytesIO(data)
-        message = Message(file)
-        email = message.to_email()
-        obj = cls(email.as_bytes())
-        return obj.to_model()
+    def call(cls, data: bytes) -> schemas.Eml:
+        result: ResultE[schemas.Eml] = flow(
+            to_eml(data),
+            bind(parse),
+            bind(normalize_attachments),
+            bind(normalize_bodies),
+            bind(normalize_header),
+            bind(transform),
+        )
+        return result.alt(raise_exception).unwrap()

@@ -1,110 +1,94 @@
-from dataclasses import dataclass
+import itertools
 from functools import partial
 
 import aiometer
-from loguru import logger
+from returns.functions import raise_exception
+from returns.future import FutureResultE, future_safe
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.unsafe import unsafe_perform_io
 
-from backend.schemas.verdict import Detail, Verdict
-from backend.services.urlscan import Urlscan
+from backend import clients, schemas, settings, types
 
+from .abstract import AbstractAsyncFactory
 
-@dataclass
-class UrlscanVerdict:
-    score: int
-    malicious: bool
-    uuid: str
-    url: str
-
-    @property
-    def reference_link(self) -> str:
-        return f"https://urlscan.io/result/{self.uuid}/"
-
-    @property
-    def description(self) -> str:
-        return f"{self.url} is malicious."
+NAME = "urlscan.io"
 
 
-async def bulk_get_results(uuids: list[str]) -> list[dict]:
-    if len(uuids) == 0:
-        return []
-
-    api = Urlscan()
-    results = await aiometer.run_all([partial(api.result, uuid) for uuid in uuids])
-    return [result for result in results if result is not None]
+@future_safe
+async def lookup(url: str, *, client: clients.UrlScan) -> schemas.UrlScanLookup:
+    return await client.lookup(url)
 
 
-async def get_urlscan_verdicts(url: str) -> list[UrlscanVerdict]:
-    api = Urlscan()
+@future_safe
+async def bulk_lookup(
+    urls: types.ListSet[str],
+    *,
+    client: clients.UrlScan,
+    max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+    max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+) -> list[schemas.UrlScanLookup]:
+    f_results = [lookup(url, client=client) for url in set(urls)]
+    results = await aiometer.run_all(
+        [f_result.awaitable for f_result in f_results],
+        max_at_once=max_at_once,
+        max_per_second=max_per_second,
+    )
+    values = [unsafe_perform_io(result.value_or(None)) for result in results]
+    return [value for value in values if value is not None]
 
-    res = await api.search(url)
-    if res is None:
-        return []
 
-    results = res.get("results", [])
-    uuids = [result.get("_id", "") for result in results]
-    results = await bulk_get_results(uuids)
+@future_safe
+async def transform(lookups: list[schemas.UrlScanLookup], *, name: str = NAME):
+    results = itertools.chain.from_iterable([lookup.results for lookup in lookups])
+    malicious_results = [result for result in results if result.verdicts.malicious]
 
-    verdicts: list[UrlscanVerdict] = []
-    for result in results:
-        score = result.get("verdicts", {}).get("overall", {}).get("score")
-        malicous = result.get("verdicts", {}).get("overall", {}).get("malicious")
-        uuid = result.get("task", {}).get("uuid", "")
-        verdicts.append(
-            UrlscanVerdict(score=score, malicious=malicous, uuid=uuid, url=url)
+    if len(malicious_results) == 0:
+        return schemas.Verdict(
+            name=name,
+            malicious=False,
+            details=[
+                schemas.VerdictDetail(
+                    key="benign",
+                    description="There is no malicious URL in bodies.",
+                )
+            ],
         )
-    return verdicts
 
-
-def find_malicous_verdict(verdicts: list[UrlscanVerdict]) -> UrlscanVerdict | None:
-    for verdict in verdicts:
-        if verdict.malicious:
-            return verdict
-    return None
-
-
-class UrlscanVerdictFactory:
-    def __init__(self, urls: list[str]):
-        self.urls = urls
-        self.name = "urlscan.io"
-
-    async def to_model(self) -> Verdict:
-        malicious_verdicts: list[UrlscanVerdict] = []
-
-        for url in self.urls:
-            try:
-                verdicts = await get_urlscan_verdicts(url)
-                malicious_verdict = find_malicous_verdict(verdicts)
-                if malicious_verdict is not None:
-                    malicious_verdicts.append(malicious_verdict)
-            except Exception as e:
-                logger.exception(e)
-                continue
-
-        if len(malicious_verdicts) == 0:
-            return Verdict(
-                name=self.name,
-                malicious=False,
-                details=[
-                    Detail(
-                        key="benign",
-                        description="There is no malicious URL in bodies.",
-                    )
-                ],
+    return schemas.Verdict(
+        name=name,
+        malicious=True,
+        score=100,
+        details=[
+            schemas.VerdictDetail(
+                key=result.task.url,
+                description=f"{result.task.url} is malicious.",
+                reference_link=result.link,
             )
+            for result in malicious_results
+        ],
+    )
 
-        details: list[Detail] = []
-        details = [
-            Detail(
-                key=verdict.url,
-                score=verdict.score,
-                description=verdict.description,
-                reference_link=verdict.reference_link,
-            )
-            for verdict in malicious_verdicts
-        ]
-        return Verdict(name=self.name, malicious=True, score=100, details=details)
 
+class UrlScanVerdictFactory(AbstractAsyncFactory):
     @classmethod
-    async def from_urls(cls, urls: list[str]) -> Verdict:
-        obj = cls(urls)
-        return await obj.to_model()
+    async def call(
+        cls,
+        urls: types.ListSet[str],
+        *,
+        client: clients.UrlScan,
+        name: str = NAME,
+        max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+        max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+    ):
+        f_result: FutureResultE[schemas.Verdict] = flow(
+            bulk_lookup(
+                urls,
+                client=client,
+                max_at_once=max_at_once,
+                max_per_second=max_per_second,
+            ),
+            bind(partial(transform, name=name)),
+        )
+        result = await f_result.awaitable()
+        return unsafe_perform_io(result.alt(raise_exception).unwrap())

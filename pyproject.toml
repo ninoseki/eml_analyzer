@@ -30,17 +30,18 @@ pyhumps = "^3.8"
 python-magic = "^0.4"
 python-multipart = "^0.0"
 redis = "^5.0"
+returns = { extras = ["compatible-mypy"], version = "^0.22" }
 uvicorn = "^0.25"
 vt-py = "^0.18"
 
 [tool.poetry.group.dev.dependencies]
-aioresponses = "^0.7"
 black = "^24.1"
+ci-py = "^1.0.0"
 coveralls = "^3.3"
-mypy = "^1.8"
 pytest = "^7.4"
 pytest-asyncio = "^0.23"
 pytest-cov = "^4.1"
+pytest-docker = "^3.1"
 pytest-env = "^1.1"
 pytest-mock = "^3.12"
 pytest-parallel = "^0.1"
@@ -48,13 +49,12 @@ pytest-pretty = "^1.2"
 pytest-randomly = "^3.15"
 pytest-timeout = "^2.2"
 pyupgrade = "^3.15"
-respx = "^0.20"
 ruff = "^0.2"
+syncer = "^2.0"
 vcrpy = "^6.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-env = ["VIRUSTOTAL_API_KEY=foo", "INQUEST_API_KEY=bar", "TESTING=True"]
 
 [build-system]
 requires = ["poetry-core"]
@@ -78,3 +78,7 @@ select = [
 ignore = [
   "E501", # line too long
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
+plugins = ["pydantic.mypy", "returns.contrib.mypy.returns_plugin"]

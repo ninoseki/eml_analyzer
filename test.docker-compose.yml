@@ -1,0 +1,8 @@
+version: "3"
+services:
+  spamassassin:
+    image: instantlinux/spamassassin:4.0.0-6
+    platform: linux/x86_64
+    ports:
+      - ${SPAMASSASSIN_PORT:-783}:783
+    restart: always
