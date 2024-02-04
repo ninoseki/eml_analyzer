@@ -41,13 +41,9 @@ RUN sa-update --no-gpg
 
 WORKDIR /usr/src/app
 
-ARG USERNAME=nobody
-
-USER $USERNAME
-
-COPY --chown=$USERNAME gunicorn.conf.py circus.ini ./
-COPY --chown=$USERNAME backend ./backend
-COPY --chown=$USERNAME --from=frontend /usr/src/app/frontend ./frontend
+COPY gunicorn.conf.py circus.ini ./
+COPY backend ./backend
+COPY --from=frontend /usr/src/app/frontend ./frontend
 
 ENV SPAMD_MAX_CHILDREN=1
 ENV SPAMD_PORT=7833
