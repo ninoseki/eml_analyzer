@@ -40,9 +40,9 @@ def cache_response(
     redis: Redis,
     response: schemas.Response,
     expire: int = settings.REDIS_EXPIRE,
-    field: str = settings.REDIS_HSET_KEY,
+    name: str = settings.REDIS_HSET_KEY,
 ):
-    redis.hset(name=field, key=response.id, value=response.model_dump_json())
+    redis.hset(name=name, key=response.id, value=response.model_dump_json())
 
     if expire > 0:
         redis.expire(name=response.id, time=expire)
