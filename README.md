@@ -48,6 +48,26 @@ Alternatively, you can deploy the application on Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ninoseki/eml_analyzer)
 
+## Configuration
+
+Configuration can be done via environment variables.
+
+Alternatively you can set values through `.env` file. Values in `.env` file will be automatically loaded.
+
+| Key                    | Desc.                                           | Default     |
+| ---------------------- | ----------------------------------------------- | ----------- |
+| `INQUEST_API_KEY`      | InQuest API key                                 | -           |
+| `REDIS_EXPIRE`         | Redis cache expiration time (in seconds)        | 3600        |
+| `REDIS_HSET_KEY`       | Redis HSET key                                  | `analysis`  |
+| `REDIS_URL`            | Redis URL                                       | -           |
+| `SPAMASSASSIN_HOST`    | SpamAssassin host                               | `127.0.0.1` |
+| `SPAMASSASSIN_PORT`    | SpamAssassin port                               | 783         |
+| `SPAMASSASSIN_TIMEOUT` | SpamAssassin timeout (in seconds)               | 10          |
+| `URLSCAN_API_KEY`      | urlscan.io API Key                              | -           |
+| `VIRUSTOTAL_API_KEY`   | VirusTotal API Key                              | -           |
+| `ASYNC_MAX_AT_ONCE`    | Max number of concurrently running lookup tasks | `None`      |
+| `ASYNC_MAX_PER_SECOND` | Max number of tasks spawned per second          | `None`      |
+
 ## ToDo
 
 - [x] Support MSG format.
