@@ -46,7 +46,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      redis:
+      spamassassin:
         image: instantlinux/spamassassin:4.0.0-6
         ports:
           - 783:783
@@ -73,6 +73,8 @@ jobs:
         run: poetry install
       - name: Make dummy frontend directory
         run: mkdir -p frontend/dist/
+      - name: Wait until SpamAssasin ready
+        run: poetry run python scripts/ping.py
       - name: Run tests
         run: poetry run pytest -v --cov=app --cov-report=term-missing
       - name: Coveralls

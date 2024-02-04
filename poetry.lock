@@ -2384,6 +2384,26 @@ files = [
 ]
 
 [[package]]
+name = "stamina"
+version = "24.2.0"
+description = "Production-grade retries made easy."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "stamina-24.2.0-py3-none-any.whl", hash = "sha256:4dbd8076d2cb4e228046833e4507af3406cc31b9b6046e8a6729ffde934b2526"},
+    {file = "stamina-24.2.0.tar.gz", hash = "sha256:8db72126f2342e428b153cbcf837f8a90f89b783aa55e19d4a17193116ee35ee"},
+]
+
+[package.dependencies]
+tenacity = "*"
+
+[package.extras]
+dev = ["nox", "prometheus-client", "stamina[tests,typing]", "structlog", "tomli", "trio"]
+docs = ["furo", "myst-parser", "prometheus-client", "sphinx (>=7.2.2)", "sphinx-copybutton", "sphinx-notfound-page", "structlog"]
+tests = ["anyio", "pytest"]
+typing = ["mypy (>=1.4)"]
+
+[[package]]
 name = "starlette"
 version = "0.35.1"
 description = "The little ASGI library that shines."
@@ -2434,6 +2454,20 @@ files = [
     {file = "tblib-3.0.0-py3-none-any.whl", hash = "sha256:80a6c77e59b55e83911e1e607c649836a69c103963c5f28a46cbeef44acf8129"},
     {file = "tblib-3.0.0.tar.gz", hash = "sha256:93622790a0a29e04f0346458face1e144dc4d32f493714c6c3dff82a4adb77e6"},
 ]
+
+[[package]]
+name = "tenacity"
+version = "8.2.3"
+description = "Retry code until it succeeds"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tenacity-8.2.3-py3-none-any.whl", hash = "sha256:ce510e327a630c9e1beaf17d42e6ffacc88185044ad85cf74c0a8887c6a0f88c"},
+    {file = "tenacity-8.2.3.tar.gz", hash = "sha256:5398ef0d78e63f40007c1fb4c0bff96e1911394d2fa8d194f77619c05ff6cc8a"},
+]
+
+[package.extras]
+doc = ["reno", "sphinx", "tornado (>=4.5)"]
 
 [[package]]
 name = "tokenize-rt"
@@ -2816,4 +2850,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "135d71c9e1f8805335f83078114fcc0e155fd51399df2ee5268c645df78e50b4"
+content-hash = "329b3ff6e2a7ca8ff985cca96a226ac7f4b3db2b85f473e33b84ee22f17da52f"
