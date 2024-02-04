@@ -1,10 +1,20 @@
 version: "3"
 services:
   spamassassin:
-    image: instantlinux/spamassassin:3.4.6-1
+    image: instantlinux/spamassassin:4.0.0-6
+    platform: linux/x86_64
     ports:
       - ${SPAMASSASSIN_PORT:-783}:783
     restart: always
+
+  redis:
+    image: "redis/redis-stack:7.2.0-v8"
+    restart: always
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+      - ${REDIS_INSIGHT_PORT:-8001}:8001
+    volumes:
+      - redis-data:/data
 
   eml_analyzer:
     build:
@@ -13,17 +23,13 @@ services:
     ports:
       - ${PORT:-8000}:8000
     environment:
-      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
-      - URLSCAN_API_KEY=${URLSCAN_API_KEY}
-      - INQUEST_API_KEY=${INQUEST_API_KEY}
       - SPAMASSASSIN_HOST=spamassassin
       - SPAMASSASSIN_PORT=${SPAMASSASSIN_PORT:-783}
-      - REDIS_HOST=redis
+      - REDIS_URL=redis://redis:${REDIS_PORT:-6379}
     restart: always
     depends_on:
       - spamassassin
-  redis:
-    image: library/redis
-    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD:-changeme}"
-    ports:
-      - 6379:6379
+      - redis
+
+volumes:
+  redis-data:
