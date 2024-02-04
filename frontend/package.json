@@ -32,6 +32,8 @@
     "js-file-download": "^0.4.12",
     "js-sha256": "0.11.0",
     "just-truncate": "^2.2.0",
+    "linkify-string": "^4.1.3",
+    "linkifyjs": "^4.1.3",
     "qs": "6.11.2",
     "url-parse": "1.5.10",
     "vue": "^3.4.15",
