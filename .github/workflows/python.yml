@@ -45,6 +45,11 @@ jobs:
         run: poetry run pyupgrade --py311-plus **/*.py
   test:
     runs-on: ubuntu-latest
+    services:
+      spamassassin:
+        image: instantlinux/spamassassin:4.0.0-6
+        ports:
+          - 783:783
     strategy:
       matrix:
         python-version: [3.11]
@@ -63,6 +68,8 @@ jobs:
         run: poetry install
       - name: Make dummy frontend directory
         run: mkdir -p frontend/dist/
+      - name: Wait until SpamAssasin ready
+        run: poetry run python scripts/ping.py
       - name: Run tests
         run: poetry run pytest -v --cov=app --cov-report=term-missing
       - name: Coveralls

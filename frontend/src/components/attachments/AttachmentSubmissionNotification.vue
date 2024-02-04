@@ -2,7 +2,7 @@
   <div class="notification is-info is-light">
     <button class="delete" v-if="disposable" @click="dispose"></button>
     The submission result will be available at <a :href="referenceUrl" target="_blank">here</a>.
-    Please wait for a while.`
+    Please wait for a while.
   </div>
 </template>
 

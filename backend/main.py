@@ -3,8 +3,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 
+from backend import settings
 from backend.api.api import api_router
-from backend.core import settings
 
 
 def create_app():

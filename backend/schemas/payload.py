@@ -1,6 +1,6 @@
 from pydantic import field_validator
 
-from backend.services.validator import is_eml_or_msg_file
+from backend.validator import is_eml_or_msg_file
 
 from .api_model import APIModel
 

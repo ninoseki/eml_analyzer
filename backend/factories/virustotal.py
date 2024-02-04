@@ -1,103 +1,96 @@
-from dataclasses import dataclass
 from functools import partial
 
 import aiometer
 import vt
-from loguru import logger
+from returns.functions import raise_exception
+from returns.future import FutureResultE, future_safe
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.unsafe import unsafe_perform_io
 
-from backend.core.settings import VIRUSTOTAL_API_KEY
-from backend.schemas.verdict import Detail, Verdict
+from backend import clients, schemas, settings, types
 
+from .abstract import AbstractAsyncFactory
 
-@dataclass
-class VirusTotalVerdict:
-    malicious: int
-    sha256: str
-
-    @property
-    def reference_link(self) -> str:
-        return f"https://www.virustotal.com/gui/file/{self.sha256}/detection"
-
-    @property
-    def description(self) -> str:
-        return f"{self.malicious} reports say {self.sha256} is malicious."
+NAME = "VirusTotal"
 
 
-async def get_file(client: vt.Client, sha256: str) -> vt.Object | None:
-    try:
-        return await client.get_object_async(f"/files/{sha256}")
-    except Exception as e:
-        logger.exception(e)
-    return None
+@future_safe
+async def get_file_object(sha256: str, *, client: clients.VirusTotal) -> vt.Object:
+    return await client.get_object_async(f"/files/{sha256}")
 
 
-async def bulk_get_files(sha256s: list[str]) -> list[vt.Object]:
-    if str(VIRUSTOTAL_API_KEY) == "":
-        return []
+@future_safe
+async def bulk_get_file_objects(
+    sha256s: types.ListSet[str],
+    *,
+    client: clients.VirusTotal,
+    max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+    max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+) -> list[vt.Object]:
+    f_results = [get_file_object(sha256, client=client) for sha256 in set(sha256s)]
+    results = await aiometer.run_all(
+        [f_result.awaitable for f_result in f_results],
+        max_at_once=max_at_once,
+        max_per_second=max_per_second,
+    )
+    values = [unsafe_perform_io(result.value_or(None)) for result in results]
+    return [value for value in values if value is not None]
 
-    if len(sha256s) == 0:
-        return []
 
-    async with vt.Client(str(VIRUSTOTAL_API_KEY)) as client:
-        files = await aiometer.run_all(
-            [partial(get_file, client, sha256) for sha256 in sha256s]
+@future_safe
+async def transform(objects: list[vt.Object], *, name: str = NAME) -> schemas.Verdict:
+    details: list[schemas.VerdictDetail] = []
+
+    for obj in objects:
+        malicious = int(obj.last_analysis_stats.get("malicious", 0))
+        sha256 = str(obj.sha256)
+        if malicious == 0:
+            continue
+
+        details.append(
+            schemas.VerdictDetail(
+                key=sha256,
+                score=malicious,
+                description=f"{malicious} reports say {sha256} is malicious.",
+                reference_link=f"https://www.virustotal.com/gui/file/{sha256}/detection",
+            )
         )
-        return [file_ for file_ in files if file_ is not None]
+
+    if len(details) == 0:
+        return schemas.Verdict(
+            name=name,
+            malicious=False,
+            details=[
+                schemas.VerdictDetail(
+                    key="benign",
+                    description="There is no malicious attachment or VirusTotal doesn't have information about the attachments.",
+                )
+            ],
+        )
+
+    return schemas.Verdict(name=name, malicious=True, score=100, details=details)
 
 
-async def get_virustotal_verdicts(sha256s: list[str]) -> list[VirusTotalVerdict]:
-    if str(VIRUSTOTAL_API_KEY) == "":
-        return []
-
-    files = await bulk_get_files(sha256s)
-
-    verdicts: list[VirusTotalVerdict] = []
-    for file_ in files:
-        malicious = int(file_.last_analysis_stats.get("malicious", 0))
-        sha256 = str(file_.sha256)
-        verdicts.append(VirusTotalVerdict(malicious=malicious, sha256=sha256))
-
-    return verdicts
-
-
-class VirusTotalVerdictFactory:
-    def __init__(self, sha256s: list[str]):
-        self.sha256s = sha256s
-        self.name = "VirusTotal"
-
-    async def to_model(self) -> Verdict:
-        malicious_verdicts: list[VirusTotalVerdict] = []
-
-        verdicts = await get_virustotal_verdicts(self.sha256s)
-        for verdict in verdicts:
-            if verdict.malicious > 0:
-                malicious_verdicts.append(verdict)
-
-        if len(malicious_verdicts) == 0:
-            return Verdict(
-                name=self.name,
-                malicious=False,
-                details=[
-                    Detail(
-                        key="benign",
-                        description="There is no malicious attachment or VirusTotal doesn't have information about the attachments.",
-                    )
-                ],
-            )
-
-        details: list[Detail] = []
-        details = [
-            Detail(
-                key=verdict.sha256,
-                score=verdict.malicious,
-                description=verdict.description,
-                reference_link=verdict.reference_link,
-            )
-            for verdict in malicious_verdicts
-        ]
-        return Verdict(name=self.name, malicious=True, score=100, details=details)
-
+class VirusTotalVerdictFactory(AbstractAsyncFactory):
     @classmethod
-    async def from_sha256s(cls, sha256s: list[str]) -> Verdict:
-        obj = cls(sha256s)
-        return await obj.to_model()
+    async def call(
+        cls,
+        sha256s: types.ListSet[str],
+        *,
+        client: clients.VirusTotal,
+        name: str = NAME,
+        max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
+        max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
+    ) -> schemas.Verdict:
+        f_result: FutureResultE[schemas.Verdict] = flow(
+            bulk_get_file_objects(
+                sha256s,
+                client=client,
+                max_at_once=max_at_once,
+                max_per_second=max_per_second,
+            ),
+            bind(partial(transform, name=name)),
+        )
+        result = await f_result.awaitable()
+        return unsafe_perform_io(result.alt(raise_exception).unwrap())

@@ -1,54 +1,50 @@
-from dataclasses import dataclass
+from returns.functions import raise_exception
+from returns.future import FutureResultE, future_safe
+from returns.pipeline import flow
+from returns.pointfree import bind
+from returns.unsafe import unsafe_perform_io
 
-from loguru import logger
+from backend import clients, schemas
 
-from backend.core import settings
-from backend.schemas.verdict import Detail, Verdict
-from backend.services.spamassassin import SpamAssassin
+from .abstract import AbstractAsyncFactory
 
-HOST = settings.SPAMASSASSIN_HOST
-PORT = settings.SPAMASSASSIN_PORT
-TIMEOUT = settings.SPAMASSASSIN_TIMEOUT
-
-
-@dataclass
-class Result:
-    details: list[Detail]
-    score: float
-    malicious: bool
+NAME = "SpamAssassin"
 
 
-class SpamAssassinVerdictFactory:
-    def __init__(self, eml_file: bytes):
-        self.eml_file = eml_file
-        self.name = "SpamAssassin"
+@future_safe
+async def report(
+    eml_file: bytes, *, client: clients.SpamAssassin
+) -> schemas.SpamAssassinReport:
+    return await client.report(eml_file)
 
-    async def _get_spam_assassin_report(self):
-        assassin = SpamAssassin(host=HOST, port=PORT, timeout=TIMEOUT)
-        return await assassin.report(self.eml_file)
 
-    async def to_model(self) -> Verdict:
-        try:
-            report = await self._get_spam_assassin_report()
-        except Exception as error:
-            logger.exception(error)
-            return Verdict(name=self.name, malicious=False, details=[])
-
-        details: list[Detail] = []
-        details = [
-            Detail(key=detail.name, score=detail.score, description=detail.description)
-            for detail in report.details
-        ]
-        score = report.score
-        malicious = report.is_spam()
-        return Verdict(
-            name=self.name,
-            malicious=malicious,
-            score=score,
-            details=details,
+@future_safe
+async def transform(
+    report: schemas.SpamAssassinReport, *, name: str = NAME
+) -> schemas.Verdict:
+    details = [
+        schemas.VerdictDetail(
+            key=detail.name, score=detail.score, description=detail.description
         )
+        for detail in report.details
+    ]
+    score = report.score
+    malicious = report.is_spam()
+    return schemas.Verdict(
+        name=name,
+        malicious=malicious,
+        score=score,
+        details=details,
+    )
 
+
+class SpamAssassinVerdictFactory(AbstractAsyncFactory):
     @classmethod
-    async def from_bytes(cls, eml_file: bytes) -> Verdict:
-        obj = cls(eml_file)
-        return await obj.to_model()
+    async def call(
+        cls, eml_file: bytes, *, client: clients.SpamAssassin
+    ) -> schemas.Verdict:
+        f_result: FutureResultE[schemas.Verdict] = flow(
+            report(eml_file, client=client), bind(transform)
+        )
+        result = await f_result.awaitable()
+        return unsafe_perform_io(result.alt(raise_exception).unwrap())

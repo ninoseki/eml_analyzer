@@ -1,30 +1,25 @@
-import json
-
-import httpx
 import pytest
-from respx import MockRouter
+import vcr
+from starlette.datastructures import Secret
 
-from backend.factories.inquest import InQuestVerdict, InQuestVerdictFactory
-
-
-def test_inquest_verdict(inquest_dfi_details_response: str):
-    sha256 = "e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149"
-    dict_ = json.loads(inquest_dfi_details_response)
-
-    verdict = InQuestVerdict.build(dict_)
-    assert verdict.sha256 == sha256
-    assert verdict.malicious is True
-    assert verdict.reference_link == f"https://labs.inquest.net/dfi/sha256/{sha256}"
+from backend import clients, factories, settings
 
 
+@pytest.fixture
+async def client():
+    async with clients.InQuest(
+        api_key=settings.INQUEST_API_KEY or Secret("")
+    ) as client:
+        yield client
+
+
+@vcr.use_cassette(
+    "tests/fixtures/vcr_cassettes/inquest.yaml", filter_headers=["authorization"]
+)  # type: ignore
 @pytest.mark.asyncio
-async def test_inquest(inquest_dfi_details_response: str, respx_mock: MockRouter):
-    sha256 = "e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149"
-    respx_mock.get(
-        f"https://labs.inquest.net/api/dfi/details?sha256={sha256}",
-    ).mock(
-        return_value=httpx.Response(200, content=inquest_dfi_details_response),
+async def test_inquest_factory(client: clients.InQuest):
+    verdict = await factories.InQuestVerdictFactory.call(
+        ["e86c5988a3a6640fb90b90b9e9200e4cce0669594dbb5422622946208c124149"],
+        client=client,
     )
-
-    verdict = await InQuestVerdictFactory.from_sha256s([sha256])
     assert verdict.malicious is True

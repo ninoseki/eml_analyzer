@@ -1,15 +1,17 @@
+from pydantic import Field
+
 from .api_model import APIModel
 
 
-class Detail(APIModel):
+class VerdictDetail(APIModel):
     key: str
-    score: float | int | None = None
+    score: float | int | None = Field(default=None)
     description: str
-    reference_link: str | None = None
+    reference_link: str | None = Field(default=None)
 
 
 class Verdict(APIModel):
     name: str
     malicious: bool
-    score: float | int | None = None
-    details: list[Detail]
+    score: float | int | None = Field(default=None)
+    details: list[VerdictDetail] = Field(default_factory=list)

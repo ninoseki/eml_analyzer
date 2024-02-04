@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from backend import deps, schemas
-from backend.core import settings
+from backend import deps, schemas, settings
 
 router = APIRouter()
 
