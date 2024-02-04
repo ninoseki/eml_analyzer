@@ -58,7 +58,7 @@ Alternatively you can set values through `.env` file. Values in `.env` file will
 | ---------------------- | ----------------------------------------------- | ----------- |
 | `INQUEST_API_KEY`      | InQuest API key                                 | -           |
 | `REDIS_EXPIRE`         | Redis cache expiration time (in seconds)        | 3600        |
-| `REDIS_HSET_KEY`       | Redis HSET key                                  | `analysis`  |
+| `REDIS_KEY_PREFIX`     | Redis key prefix                                | `analysis`  |
 | `REDIS_URL`            | Redis URL                                       | -           |
 | `SPAMASSASSIN_HOST`    | SpamAssassin host                               | `127.0.0.1` |
 | `SPAMASSASSIN_PORT`    | SpamAssassin port                               | 783         |

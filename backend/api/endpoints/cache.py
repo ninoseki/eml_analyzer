@@ -18,4 +18,8 @@ async def cache_keys(optional_redis: deps.OptionalRedis) -> list[str]:
             detail="Redis cache is not enabled",
         )
 
-    return optional_redis.hkeys(settings.REDIS_HSET_KEY)  # type: ignore
+    byte_keys: list[bytes] = optional_redis.keys(f"{settings.REDIS_KEY_PREFIX}:*")  # type: ignore
+    return [
+        byte_key.decode().removeprefix(f"{settings.REDIS_KEY_PREFIX}:")
+        for byte_key in byte_keys
+    ]

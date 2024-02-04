@@ -40,12 +40,10 @@ def cache_response(
     redis: Redis,
     response: schemas.Response,
     expire: int = settings.REDIS_EXPIRE,
-    name: str = settings.REDIS_HSET_KEY,
+    key_prefix: str = settings.REDIS_KEY_PREFIX,
 ):
-    redis.hset(name=name, key=response.id, value=response.model_dump_json())
-
-    if expire > 0:
-        redis.expire(name=response.id, time=expire)
+    ex = expire if expire > 0 else None
+    redis.set(f"{key_prefix}:{response.id}", value=response.model_dump_json(), ex=ex)
 
 
 @router.post(
