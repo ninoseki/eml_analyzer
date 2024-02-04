@@ -18,7 +18,7 @@ async def lookup(id: str, *, optional_redis: deps.OptionalRedis) -> schemas.Resp
             detail="Redis cache is not enabled",
         )
 
-    got: bytes | None = optional_redis.hget(name=id, key=settings.REDIS_FIELD)  # type: ignore
+    got: bytes | None = optional_redis.hget(name=id, key=settings.REDIS_HSET_KEY)  # type: ignore
     if got is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

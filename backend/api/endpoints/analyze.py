@@ -40,7 +40,7 @@ def cache_response(
     redis: Redis,
     response: schemas.Response,
     expire: int = settings.REDIS_EXPIRE,
-    field: str = settings.REDIS_FIELD,
+    field: str = settings.REDIS_HSET_KEY,
 ):
     redis.hset(name=response.id, key=field, value=response.model_dump_json())
 
