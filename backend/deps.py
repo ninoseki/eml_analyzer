@@ -16,7 +16,7 @@ def _get_optional_redis(
     if redis_url is None:
         yield None
     else:
-        redis: Redis = Redis.from_url(redis_url)  # type: ignore
+        redis: Redis = Redis.from_url(str(redis_url))  # type: ignore
         try:
             yield redis
         finally:
