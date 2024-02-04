@@ -18,5 +18,9 @@ export const API = {
   async lookup(id: string): Promise<Response> {
     const res = await client.get<Response>(`/api/lookup/${id}`)
     return res.data
+  },
+  async getCacheKeys(): Promise<string[]> {
+    const res = await client.get<string[]>(`/api/cache/`)
+    return res.data
   }
 }
