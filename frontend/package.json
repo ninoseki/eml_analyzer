@@ -27,7 +27,7 @@
     "font-awesome-animation": "^1.1.1",
     "hast-util-to-html": "^9.0.0",
     "highlight.js": "11.9.0",
-    "ioc-extractor": "^6.0.1",
+    "ioc-extractor": "^7.0.0",
     "js-base64": "3.7.6",
     "js-file-download": "^0.4.12",
     "js-sha256": "0.11.0",
