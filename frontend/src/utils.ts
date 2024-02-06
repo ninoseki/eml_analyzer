@@ -2,14 +2,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
-import {
-  isDomain,
-  isEmail,
-  isIPv4,
-  isIPv6,
-  isSHA256,
-  isURL
-} from 'ioc-extractor/dist/aux/validators'
+import { isDomain, isEmail, isIPv4, isIPv6, isSHA256, isURL } from 'ioc-extractor'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 
