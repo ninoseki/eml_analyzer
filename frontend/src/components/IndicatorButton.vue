@@ -10,6 +10,14 @@
     </div>
     <div class="dropdown-menu">
       <div class="dropdown-content">
+        <div class="dropdown-item">
+          <button class="button is-borderless is-small" @click="copyToClipboard">
+            <span class="icon">
+              <font-awesome-icon icon="copy"></font-awesome-icon>
+            </span>
+            <span>Copy to clipboard</span>
+          </button>
+        </div>
         <div class="dropdown-item" v-for="(link, index) in links" :key="index">
           <a :href="link.href(value)" class="button is-borderless is-small" target="_blank">
             <span class="icon">
@@ -24,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import { useClipboard } from '@vueuse/core'
 import truncate from 'just-truncate'
 import { computed, defineComponent } from 'vue'
 
@@ -48,7 +57,12 @@ export default defineComponent({
       return Links.filter((link) => link.type === indicatorType.value)
     })
 
-    return { truncate, links, indicatorType }
+    const copyToClipboard = () => {
+      const { copy } = useClipboard()
+      copy(props.value)
+    }
+
+    return { truncate, links, indicatorType, copyToClipboard }
   }
 })
 </script>
