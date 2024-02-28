@@ -5,6 +5,7 @@ import 'font-awesome-animation/css/font-awesome-animation.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faAngleDown,
+  faCopy,
   faDownload,
   faInfoCircle,
   faLink,
@@ -17,7 +18,17 @@ import { createApp } from 'vue'
 
 import router from '@/router'
 
-library.add(faAngleDown, faLink, faSearch, faUpload, faSpinner, faDownload, faUpload, faInfoCircle)
+library.add(
+  faAngleDown,
+  faLink,
+  faSearch,
+  faUpload,
+  faSpinner,
+  faDownload,
+  faUpload,
+  faInfoCircle,
+  faCopy
+)
 
 import App from '@/App.vue'
 
