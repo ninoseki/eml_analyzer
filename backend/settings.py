@@ -5,7 +5,10 @@ from starlette.datastructures import Secret
 
 from .datastructures import DatabaseURL
 
-config = Config(".env")
+try:
+    config = Config(".env")
+except Exception:
+    config = Config()
 
 PROJECT_NAME: str = config("PROJECT_NAME", default="eml_analyzer")
 

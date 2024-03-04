@@ -1,11 +1,12 @@
+import datetime
 from io import BytesIO
 from typing import Any
 
-import arrow
 import dateparser
 from eml_parser import EmlParser
 from ioc_finder import parse_domain_names, parse_email_addresses, parse_ipv4_addresses
 from returns.functions import raise_exception
+from returns.maybe import Maybe
 from returns.pipeline import flow
 from returns.pointfree import bind
 from returns.result import ResultE, safe
@@ -56,15 +57,27 @@ def parse(data: bytes) -> dict:
     return parser.decode_email_bytes(data)
 
 
-def _normalize_received_date(received: dict):
-    date = received.get("date", "")
-    if date != "":
-        return received
+def parse_datetime(dt: str | datetime.datetime | None) -> datetime.datetime | None:
+    if isinstance(dt, str):
+        return dateparser.parse(dt)
 
+    if isinstance(dt, datetime.datetime):
+        return dt
+
+    return None
+
+
+def _normalize_received_date(received: dict):
     src = received.get("src", "")
-    parts = src.split(";")
-    date_ = parts[-1].strip()
-    received["date"] = dateparser.parse(date_)
+    parts: list[str] = src.split(";")
+    last_part = parts[-1].strip()
+
+    received["date"] = (
+        Maybe.from_optional(received.get("date"))
+        .bind_optional(parse_datetime)
+        .value_or(parse_datetime(last_part))
+    )
+
     return received
 
 
@@ -76,12 +89,25 @@ def _normalize_received(received: list[dict]) -> list[dict]:
     received.reverse()
 
     first = received[0]
-    base_date = arrow.get(first.get("date", ""))
+
+    optional_base_datetime = (
+        Maybe.from_optional(first.get("date"))
+        .bind_optional(parse_datetime)
+        .value_or(None)
+    )
+
     for r in received:
-        date = arrow.get(r.get("date", ""))
-        delay = (date - base_date).seconds
+        optional_datetime = (
+            Maybe.from_optional(r.get("date"))
+            .bind_optional(parse_datetime)
+            .value_or(None)
+        )
+        if optional_base_datetime is None or optional_datetime is None:
+            continue
+
+        delay = (optional_datetime - optional_base_datetime).seconds
         r["delay"] = delay
-        base_date = date
+        optional_base_datetime = optional_datetime
 
     return received
 
