@@ -19,7 +19,6 @@ import email.parser
 import email.policy
 import os
 import re
-import sys
 from email.message import EmailMessage
 from email.utils import formataddr, formatdate
 from functools import reduce
@@ -29,8 +28,7 @@ import compressed_rtf
 from compoundfiles import CompoundFileEntity, CompoundFileReader
 from loguru import logger
 
-
-FALLBACK_ENCODING = 'cp1252'
+FALLBACK_ENCODING = "cp1252"
 
 
 class Message:
@@ -205,22 +203,23 @@ def parse_properties(
         stream = stream.read()
 
     # Skip header.
-    i = (32 if is_top_level else 24)
+    i = 32 if is_top_level else 24
 
     # Read 16-byte entries.
-    raw_properties = { }
+    raw_properties = {}
     while i < len(stream):
         # Read the entry.
-        property_type   = stream[i+0:i+2]
-        property_tag = stream[i+2:i+4]
+        property_type = stream[i + 0 : i + 2]
+        property_tag = stream[i + 2 : i + 4]
         # flags = stream[i+4:i+8]
-        value = stream[i+8:i+16]
+        value = stream[i + 8 : i + 16]
         i += 16
 
         # Turn the byte strings into numbers and look up the property type.
-        property_type = property_type[0] + (property_type[1]<<8)
-        property_tag = property_tag[0] + (property_tag[1]<<8)
-        if property_tag not in property_tags: continue # should not happen
+        property_type = property_type[0] + (property_type[1] << 8)
+        property_tag = property_tag[0] + (property_tag[1] << 8)
+        if property_tag not in property_tags:
+            continue  # should not happen
         tag_name, _ = property_tags[property_tag]
         tag_type = property_types.get(property_type)
 
@@ -231,24 +230,28 @@ def parse_properties(
 
         # Variable Length Properties.
         elif isinstance(tag_type, VariableLengthValueLoader):
-            value_length = stream[i+8:i+12] # not used
+            # value_length = stream[i + 8 : i + 12]  # not used
 
             # Look up the stream in the document that holds the value.
-            streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(property_tag,4, property_type,4)
+            streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(
+                property_tag, 4, property_type, 4
+            )
             try:
                 with doc.open(container[streamname]) as innerstream:
                     value = innerstream.read()
-            except:
+            except Exception:
                 # Stream isn't present!
                 logger.error("stream missing {}".format(streamname))
                 continue
 
         elif isinstance(tag_type, EMBEDDED_MESSAGE):
             # Look up the stream in the document that holds the attachment.
-            streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(property_tag,4, property_type,4)
+            streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(
+                property_tag, 4, property_type, 4
+            )
             try:
                 value = container[streamname]
-            except:
+            except Exception:
                 # Stream isn't present!
                 logger.error("stream missing {}".format(streamname))
                 continue
@@ -262,9 +265,10 @@ def parse_properties(
 
     # Decode all FixedLengthValueLoader properties so we have codepage
     # properties.
-    properties = { }
+    properties = {}
     for tag_name, (tag_type, value) in raw_properties.items():
-        if not isinstance(tag_type, FixedLengthValueLoader): continue
+        if not isinstance(tag_type, FixedLengthValueLoader):
+            continue
         try:
             properties[tag_name] = tag_type.load(value)
         except Exception as e:
@@ -276,24 +280,33 @@ def parse_properties(
 
     # The encoding of the "BODY" (and HTML body) properties.
     body_encoding = None
-    if "PR_INTERNET_CPID" in properties and properties['PR_INTERNET_CPID'] in code_pages:
-        body_encoding = code_pages[properties['PR_INTERNET_CPID']]
+    if (
+        "PR_INTERNET_CPID" in properties
+        and properties["PR_INTERNET_CPID"] in code_pages
+    ):
+        body_encoding = code_pages[properties["PR_INTERNET_CPID"]]
 
     # The encoding of "string properties of the message object".
     properties_encoding = None
-    if "PR_MESSAGE_CODEPAGE" in properties and properties['PR_MESSAGE_CODEPAGE'] in code_pages:
-        properties_encoding = code_pages[properties['PR_MESSAGE_CODEPAGE']]
+    if (
+        "PR_MESSAGE_CODEPAGE" in properties
+        and properties["PR_MESSAGE_CODEPAGE"] in code_pages
+    ):
+        properties_encoding = code_pages[properties["PR_MESSAGE_CODEPAGE"]]
 
     # Decode all of the remaining properties.
     for tag_name, (tag_type, value) in raw_properties.items():
-        if isinstance(tag_type, FixedLengthValueLoader): continue # already done, above
+        if isinstance(tag_type, FixedLengthValueLoader):
+            continue  # already done, above
 
         # The codepage properties may be wrong. Fall back to
         # the other property if present.
-        encodings = [body_encoding, properties_encoding] if tag_name == "BODY" \
+        encodings = (
+            [body_encoding, properties_encoding]
+            if tag_name == "BODY"
             else [properties_encoding, body_encoding]
+        )
 
-        print(tag_name, tag_type, value[:32])
         try:
             properties[tag_name] = tag_type.load(value, encodings=encodings, doc=doc)
         except KeyError as e:
@@ -383,11 +396,11 @@ class STRING8(VariableLengthValueLoader):
         # character replacement so that this never fails.
         for encoding in encodings:
             try:
-                return value.decode(encoding=encoding, errors='strict')
-            except:
+                return value.decode(encoding=encoding, errors="strict")
+            except UnicodeError:
                 # Try the next one.
                 pass
-        return value.decode(encoding=FALLBACK_ENCODING, errors='replace')
+        return value.decode(encoding=FALLBACK_ENCODING, errors="replace")
 
 
 class UNICODE(VariableLengthValueLoader):
@@ -395,6 +408,7 @@ class UNICODE(VariableLengthValueLoader):
     def load(value, **kwargs):
         # value is a bytestring encoded in UTF-16.
         return value.decode("utf16")
+
 
 # TODO: The other variable-length tag types are "CLSID", "OBJECT".
 
