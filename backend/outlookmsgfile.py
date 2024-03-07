@@ -201,7 +201,6 @@ def parse_properties(
     # in the mapping at the top of this module.
 
     # Load stream content.
-    # Load stream content.
     with doc.open(properties) as stream:
         stream = stream.read()
 
