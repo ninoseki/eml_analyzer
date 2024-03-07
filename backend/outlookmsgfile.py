@@ -272,7 +272,7 @@ def parse_properties(  # noqa: C901
         try:
             properties[tag_name] = tag_type.load(value)
         except Exception as e:
-            logger.error(f"Error while reading stream: {str(e)}")
+            logger.error(f"Error while reading stream: {e!s}")
 
     # String8 strings use code page information stored in other
     # properties, which may not be present. Find the Python
@@ -310,9 +310,9 @@ def parse_properties(  # noqa: C901
         try:
             properties[tag_name] = tag_type.load(value, encodings=encodings, doc=doc)
         except KeyError as e:
-            logger.error(f"Error while reading stream: {str(e)} not found")
+            logger.error(f"Error while reading stream: {e!s} not found")
         except Exception as e:
-            logger.error(f"Error while reading stream: {str(e)}")
+            logger.error(f"Error while reading stream: {e!s}")
 
     return properties
 
