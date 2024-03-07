@@ -241,7 +241,7 @@ def parse_properties(  # noqa: C901
                     value = innerstream.read()
             except Exception:
                 # Stream isn't present!
-                logger.error("stream missing {}".format(streamname))
+                logger.error(f"stream missing {streamname}")
                 continue
 
         elif isinstance(tag_type, EMBEDDED_MESSAGE):
@@ -253,12 +253,12 @@ def parse_properties(  # noqa: C901
                 value = container[streamname]
             except Exception:
                 # Stream isn't present!
-                logger.error("stream missing {}".format(streamname))
+                logger.error(f"stream missing {streamname}")
                 continue
 
         else:
             # unrecognized type
-            logger.error("unhandled property type {}".format(hex(property_type)))
+            logger.error(f"unhandled property type {hex(property_type)}")
             continue
 
         raw_properties[tag_name] = (tag_type, value)
@@ -272,7 +272,7 @@ def parse_properties(  # noqa: C901
         try:
             properties[tag_name] = tag_type.load(value)
         except Exception as e:
-            logger.error("Error while reading stream: {}".format(str(e)))
+            logger.error(f"Error while reading stream: {str(e)}")
 
     # String8 strings use code page information stored in other
     # properties, which may not be present. Find the Python
@@ -310,9 +310,9 @@ def parse_properties(  # noqa: C901
         try:
             properties[tag_name] = tag_type.load(value, encodings=encodings, doc=doc)
         except KeyError as e:
-            logger.error("Error while reading stream: {} not found".format(str(e)))
+            logger.error(f"Error while reading stream: {str(e)} not found")
         except Exception as e:
-            logger.error("Error while reading stream: {}".format(str(e)))
+            logger.error(f"Error while reading stream: {str(e)}")
 
     return properties
 
