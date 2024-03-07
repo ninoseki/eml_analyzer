@@ -188,7 +188,7 @@ def process_attachment(
         msg.add_attachment(blob, filename=filename)
 
 
-def parse_properties(
+def parse_properties(  # noqa: C901
     properties: CompoundFileEntity,
     is_top_level: bool,
     container: CompoundFileEntity,
