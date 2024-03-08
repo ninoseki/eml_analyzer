@@ -7,7 +7,7 @@ license = "MIT"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 aiofiles = "^23.2"
 aiometer = "^0.5"
 aiospamc = "^1.0"
@@ -31,6 +31,7 @@ python-magic = "^0.4"
 python-multipart = "^0.0"
 redis = "^5.0"
 returns = { extras = ["compatible-mypy"], version = "^0.22" }
+rtfparse = "^0.8"
 stamina = "^24.2"
 uvicorn = "^0.27"
 vt-py = "^0.18"
