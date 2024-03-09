@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import type { Response } from '@/types'
+import type { Response, Status } from '@/types'
 
 const client = axios.create()
 
@@ -21,6 +21,10 @@ export const API = {
   },
   async getCacheKeys(): Promise<string[]> {
     const res = await client.get<string[]>(`/api/cache/`)
+    return res.data
+  },
+  async getStatus(): Promise<Status> {
+    const res = await client.get<Status>(`/api/status/`)
     return res.data
   }
 }

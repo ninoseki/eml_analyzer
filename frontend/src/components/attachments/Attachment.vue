@@ -30,12 +30,14 @@
           :submitter="vt"
           @set-error="onSetError"
           @set-reference-url="onSetReferenceUrl"
+          v-if="status.vt"
         />
         <AttachmentSubmissionButton
           :attachment="attachment"
           :submitter="inquest"
           @set-error="onSetError"
           @set-reference-url="onSetReferenceUrl"
+          v-if="status.inquest"
         />
         <AttachmentDownloadButton :attachment="attachment" />
       </span>
@@ -65,6 +67,7 @@ import AttachmentSubmissionButton from '@/components/attachments/AttachmentSubmi
 import AttachmentSubmissionNotification from '@/components/attachments/AttachmentSubmissionNotification.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import IndicatorButton from '@/components/IndicatorButton.vue'
+import { useStatusStore } from '@/store'
 import { InQuest, VirusTotal } from '@/submitters'
 import type { Attachment } from '@/types'
 
@@ -88,6 +91,11 @@ export default defineComponent({
     IndicatorButton
   },
   setup(props) {
+    const store = useStatusStore()
+    const status = computed(() => {
+      return store.$state
+    })
+
     const error = ref<AxiosError>()
     const referenceUrl = ref<string>()
 
@@ -119,7 +127,8 @@ export default defineComponent({
       onSetReferenceUrl,
       error,
       referenceUrl,
-      onDisposeError
+      onDisposeError,
+      status
     }
   }
 })

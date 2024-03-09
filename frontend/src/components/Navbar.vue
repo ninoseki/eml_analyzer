@@ -4,8 +4,7 @@
       <a class="navbar-item"><h1 class="title">EML Analyzer</h1></a>
     </div>
     <div class="navbar-menu">
-      <div class="navbar-start"></div>
-      <div class="navbar-end">
+      <div class="navbar-start">
         <router-link class="navbar-item" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="navbar-item" :to="{ name: 'Cache' }">Cache</router-link>
         <a class="navbar-item"><a href="/docs" target="_blank" class="navbar-item">API</a></a>
@@ -15,15 +14,32 @@
           ></a
         >
       </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <StatusTags :status="status"></StatusTags>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+
+import StatusTags from '@/components/StatusTags.vue'
+import { useStatusStore } from '@/store'
 
 export default defineComponent({
-  name: 'NavbarComponent'
+  name: 'NavbarComponent',
+  components: { StatusTags },
+  setup() {
+    const store = useStatusStore()
+    const status = computed(() => {
+      return store.$state
+    })
+
+    return { status }
+  }
 })
 </script>
 

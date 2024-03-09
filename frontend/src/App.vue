@@ -8,14 +8,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 
 import Navbar from '@/components/Navbar.vue'
+import { useStatusStore } from '@/store'
 
 export default defineComponent({
   name: 'App',
   components: {
     Navbar
+  },
+  setup() {
+    const store = useStatusStore()
+
+    onMounted(async () => {
+      store.getStatus()
+    })
   }
 })
 </script>

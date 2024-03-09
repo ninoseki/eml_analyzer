@@ -8,7 +8,7 @@
             The MSG file will be converted to the EML file before analyzing. The conversion might be
             lossy.
           </li>
-          <li>This app doesn't store any information you enter.</li>
+          <li v-if="!status.cache">This app doesn't store EML/MSG file you upload.</li>
         </ul>
       </div>
     </article>
@@ -56,17 +56,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed, defineComponent, ref, toRef, watch } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
 import { API } from '@/api'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/Loading.vue'
 import ResponseComponent from '@/components/Response.vue'
+import { useStatusStore } from '@/store'
 import type { Response } from '@/types'
 
 export default defineComponent({
-  name: 'HomeView',
+  name: 'UploadItem',
   components: {
     ResponseComponent,
     ErrorMessage,
@@ -76,6 +78,11 @@ export default defineComponent({
     const file = ref<File>()
     const filename = ref<string>()
     const dragDropFocus = ref(false)
+
+    const store = useStatusStore()
+    const status = computed(() => {
+      return store.$state
+    })
 
     const analyzeTask = useAsyncTask<Response, [File]>(async (_signal, file: File) => {
       return await API.analyze(file)
@@ -119,7 +126,8 @@ export default defineComponent({
       updateDragDropFocus,
       onFileChangeDrop,
       onFileChange,
-      dragDropFocus
+      dragDropFocus,
+      status
     }
   }
 })
