@@ -35,6 +35,9 @@ VIRUSTOTAL_API_KEY: Secret | None = config(
 )
 INQUEST_API_KEY: Secret | None = config("INQUEST_API_KEY", cast=Secret, default=None)
 URLSCAN_API_KEY: Secret | None = config("URLSCAN_API_KEY", cast=Secret, default=None)
+EMAIL_REP_API_KEY: Secret | None = config(
+    "EMAIL_REP_API_KEY", cast=Secret, default=None
+)
 
 # Async/aiometer
 ASYNC_MAX_AT_ONCE: int | None = config("ASYNC_MAX_AT_ONCE", cast=int, default=None)

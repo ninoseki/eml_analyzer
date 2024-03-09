@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from backend import deps, schemas, settings
+from backend import dependencies, schemas, settings
 
 router = APIRouter()
 
@@ -11,7 +11,9 @@ router = APIRouter()
     summary="Lookup cached analysis",
     description="Try to fetch existing analysis from database",
 )
-async def lookup(id: str, *, optional_redis: deps.OptionalRedis) -> schemas.Response:
+async def lookup(
+    id: str, *, optional_redis: dependencies.OptionalRedis
+) -> schemas.Response:
     if optional_redis is None:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
