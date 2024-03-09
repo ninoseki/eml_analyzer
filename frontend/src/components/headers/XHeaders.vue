@@ -9,13 +9,13 @@
 import { computed, defineComponent, type PropType } from 'vue'
 
 import FlattenHeaders from '@/components/headers/FlattenHeaders.vue'
-import type { Header, HeaderItem } from '@/types'
+import type { HeaderItemType, HeaderType } from '@/schemas'
 
 export default defineComponent({
   name: 'XHeaders',
   props: {
     header: {
-      type: Object as PropType<Header>,
+      type: Object as PropType<HeaderType>,
       required: true
     }
   },
@@ -32,7 +32,7 @@ export default defineComponent({
         }
       })
 
-      return items.filter((x): x is HeaderItem => x !== undefined)
+      return items.filter((x): x is HeaderItemType => x !== undefined)
     })
 
     return { xHeaders }

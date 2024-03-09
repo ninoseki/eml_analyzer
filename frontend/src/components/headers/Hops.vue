@@ -31,19 +31,19 @@
 <script lang="ts">
 import { computed, defineComponent, type PropType } from 'vue'
 
-import type { Header, Received } from '@/types'
+import type { HeaderType, ReceivedType } from '@/schemas'
 import { humanizeSeconds, toCSV, toUTC } from '@/utils'
 
 interface ReceivedWithIndex {
   index: number
-  received: Received
+  received: ReceivedType
 }
 
 export default defineComponent({
   name: 'HopsComponent',
   props: {
     header: {
-      type: Object as PropType<Header>,
+      type: Object as PropType<HeaderType>,
       required: true
     }
   },

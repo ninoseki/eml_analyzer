@@ -10,13 +10,13 @@ import { defineComponent, type PropType } from 'vue'
 import Attachments from '@/components/attachments/Attachments.vue'
 import Bodies from '@/components/bodies/Bodies.vue'
 import Headers from '@/components/headers/Headers.vue'
-import type { Eml } from '@/types'
+import type { EmlType } from '@/schemas'
 
 export default defineComponent({
   name: 'EmlComponent',
   props: {
     eml: {
-      type: Object as PropType<Eml>,
+      type: Object as PropType<EmlType>,
       required: true
     }
   },

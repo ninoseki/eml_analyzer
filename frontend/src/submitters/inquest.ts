@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-import type { Attachment, SubmissionResult, Submitter, SubmitType } from '@/types'
+import type { AttachmentType, SubmissionResultType, SubmitterType, SubmitType } from '@/schemas'
 
-export class InQuest implements Submitter {
+export class InQuest implements SubmitterType {
   public favicon: string
   public name: string
   public type: SubmitType
@@ -13,8 +13,8 @@ export class InQuest implements Submitter {
     this.type = 'sha256'
   }
 
-  public async submit(attachment: Attachment): Promise<SubmissionResult> {
-    const res = await axios.post<SubmissionResult>('/api/submit/inquest', attachment)
+  public async submit(attachment: AttachmentType): Promise<SubmissionResultType> {
+    const res = await axios.post<SubmissionResultType>('/api/submit/inquest', attachment)
     return res.data
   }
 }

@@ -11,14 +11,14 @@
 import fileDownload from 'js-file-download'
 import { defineComponent, type PropType } from 'vue'
 
-import type { Attachment } from '@/types'
+import type { AttachmentType } from '@/schemas'
 import { b64toBlob } from '@/utils'
 
 export default defineComponent({
   name: 'AttachmentDownloadButton',
   props: {
     attachment: {
-      type: Object as PropType<Attachment>,
+      type: Object as PropType<AttachmentType>,
       required: true
     }
   },

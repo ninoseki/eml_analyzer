@@ -11,13 +11,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 
-import type { Status } from '@/types'
+import type { StatusType } from '@/schemas'
 
 export default defineComponent({
   name: 'StatusTags',
   props: {
     status: {
-      type: Object as PropType<Status>,
+      type: Object as PropType<StatusType>,
       required: true
     }
   },

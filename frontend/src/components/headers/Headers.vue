@@ -17,13 +17,13 @@ import Hops from '@/components/headers/Hops.vue'
 import OtherHeaders from '@/components/headers/OtherHeaders.vue'
 import SecurityHeaders from '@/components/headers/SecurityHeaders.vue'
 import XHeaders from '@/components/headers/XHeaders.vue'
-import type { Header } from '@/types'
+import type { HeaderType } from '@/schemas'
 
 export default defineComponent({
   name: 'HeadersComponent',
   props: {
     header: {
-      type: Object as PropType<Header>,
+      type: Object as PropType<HeaderType>,
       required: true
     }
   },

@@ -16,7 +16,7 @@
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <StatusTags :status="status"></StatusTags>
+          <StatusTags :status="status" />
         </div>
       </div>
     </div>

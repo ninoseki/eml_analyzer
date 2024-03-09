@@ -9,12 +9,13 @@
 import { defineComponent, type PropType } from 'vue'
 
 import BodyComponent from '@/components/bodies/Body.vue'
-import type { Body } from '@/types'
+import type { BodyType } from '@/schemas'
+
 export default defineComponent({
   name: 'BodiesComponent',
   props: {
     bodies: {
-      type: Array as PropType<Body[]>,
+      type: Array as PropType<BodyType[]>,
       required: true
     }
   },

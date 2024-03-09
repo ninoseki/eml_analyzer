@@ -1,4 +1,4 @@
-import type { Link } from '@/types'
+import type { LinkType } from '@/schemas'
 
 import { AnyRun } from './anyrun'
 import { Browserling } from './browserling'
@@ -16,7 +16,7 @@ import {
   VirusTotalForURL
 } from './virustotal'
 
-export const Links: Link[] = [
+export const Links: LinkType[] = [
   new AnyRun(),
   new Browserling(),
   new Crtsh(),

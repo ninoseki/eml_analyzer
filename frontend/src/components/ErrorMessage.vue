@@ -5,7 +5,7 @@
       <div v-if="typeof data.detail === 'string'">
         {{ data.detail }}
       </div>
-      <VueJsonPretty :data="data.detail" v-else></VueJsonPretty>
+      <VueJsonPretty :data="data.detail" v-else />
     </div>
     <p v-else>{{ error }}</p>
   </div>
@@ -18,7 +18,7 @@ import { AxiosError } from 'axios'
 import { computed, defineComponent } from 'vue'
 import VueJsonPretty from 'vue-json-pretty'
 
-import type { ErrorData } from '@/types'
+import type { ErrorDataType } from '@/schemas'
 
 export default defineComponent({
   name: 'ErrorItem',
@@ -37,9 +37,9 @@ export default defineComponent({
   },
   emits: ['dispose'],
   setup(props, context) {
-    const data = computed<ErrorData | undefined>(() => {
+    const data = computed<ErrorDataType | undefined>(() => {
       if (props.error.response) {
-        return props.error.response?.data as ErrorData
+        return props.error.response?.data as ErrorDataType
       }
       return undefined
     })

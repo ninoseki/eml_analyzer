@@ -1,7 +1,7 @@
-import type { IndicatorType, Link } from '@/types'
+import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
 
-class Urlscan implements Link {
+class Urlscan implements LinkType {
   public favicon: string
   public baseURL: string
   public name: string

@@ -13,13 +13,13 @@
 import linkifyString from 'linkify-string'
 import { computed, defineComponent, type PropType } from 'vue'
 
-import type { Detail } from '@/types'
+import type { DetailType } from '@/schemas'
 
 export default defineComponent({
   name: 'DetailComponent',
   props: {
     detail: {
-      type: Object as PropType<Detail>,
+      type: Object as PropType<DetailType>,
       required: true
     }
   },

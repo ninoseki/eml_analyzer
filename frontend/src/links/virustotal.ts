@@ -1,10 +1,10 @@
 import { sha256 } from 'js-sha256'
 import URL from 'url-parse'
 
-import type { IndicatorType, Link } from '@/types'
+import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
 
-class VirusTotal implements Link {
+class VirusTotal implements LinkType {
   public favicon: string
   public baseURL: string
   public name: string

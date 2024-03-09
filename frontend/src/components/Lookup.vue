@@ -1,7 +1,7 @@
 <template>
-  <Loading v-if="lookupTask.isRunning"></Loading>
+  <Loading v-if="lookupTask.isRunning" />
   <ErrorMessage :error="lookupTask.last?.error" v-if="lookupTask.isError" />
-  <ResponseComponent :response="lookupTask.last.value" v-if="lookupTask.last?.value" />
+  <Response :response="lookupTask.last.value" v-if="lookupTask.last?.value" />
 </template>
 
 <script lang="ts">
@@ -11,8 +11,8 @@ import { useAsyncTask } from 'vue-concurrency'
 import { API } from '@/api'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/Loading.vue'
-import ResponseComponent from '@/components/Response.vue'
-import type { Response } from '@/types'
+import Response from '@/components/Response.vue'
+import type { ResponseType } from '@/schemas'
 
 export default defineComponent({
   name: 'LookupItem',
@@ -23,12 +23,12 @@ export default defineComponent({
     }
   },
   components: {
-    ResponseComponent,
+    Response,
     Loading,
     ErrorMessage
   },
   setup(props) {
-    const lookupTask = useAsyncTask<Response, []>(async () => {
+    const lookupTask = useAsyncTask<ResponseType, []>(async () => {
       return await API.lookup(props.id)
     })
 
