@@ -8,7 +8,7 @@
             The MSG file will be converted to the EML file before analyzing. The conversion might be
             lossy.
           </li>
-          <li v-if="status.cache === false">This app doesn't store EML/MSG file you upload.</li>
+          <li v-if="!status.cache">This app doesn't store EML/MSG file you upload.</li>
         </ul>
       </div>
     </article>
