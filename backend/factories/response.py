@@ -75,8 +75,8 @@ async def set_verdicts(
     response: schemas.Response,
     *,
     eml_file: bytes,
-    email_rep: clients.EmailRep,
     spam_assassin: clients.SpamAssassin,
+    optional_email_rep: clients.EmailRep | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
     optional_inquest: clients.InQuest | None = None,
@@ -86,9 +86,9 @@ async def set_verdicts(
         get_oleid_verdict(response.eml.attachments),
     ]
 
-    if response.eml.header.from_ is not None:
+    if response.eml.header.from_ is not None and optional_email_rep is not None:
         f_results.append(
-            get_email_rep_verdicts(response.eml.header.from_, client=email_rep)
+            get_email_rep_verdicts(response.eml.header.from_, client=optional_email_rep)
         )
 
     if optional_vt is not None:
@@ -117,8 +117,8 @@ class ResponseFactory(
         cls,
         eml_file: bytes,
         *,
-        email_rep: clients.EmailRep,
         spam_assassin: clients.SpamAssassin,
+        optional_email_rep: clients.EmailRep | None,
         optional_vt: clients.VirusTotal | None = None,
         optional_urlscan: clients.UrlScan | None = None,
         optional_inquest: clients.InQuest | None = None,
@@ -129,7 +129,7 @@ class ResponseFactory(
                 partial(
                     set_verdicts,
                     eml_file=eml_file,
-                    email_rep=email_rep,
+                    optional_email_rep=optional_email_rep,
                     spam_assassin=spam_assassin,
                     optional_vt=optional_vt,
                     optional_urlscan=optional_urlscan,
