@@ -20,13 +20,13 @@ import { defineComponent, type PropType } from 'vue'
 
 import Eml from '@/components/Eml.vue'
 import Verdicts from '@/components/verdicts/Verdicts.vue'
-import type { Response } from '@/types'
+import type { ResponseType } from '@/schemas'
 
 export default defineComponent({
   name: 'ResponseComponent',
   props: {
     response: {
-      type: Object as PropType<Response>,
+      type: Object as PropType<ResponseType>,
       required: true
     }
   },

@@ -14,7 +14,7 @@
 <script lang="ts">
 import { computed, defineComponent, type PropType } from 'vue'
 
-import type { HeaderItem } from '@/types'
+import type { HeaderItemType } from '@/schemas'
 
 interface FlattenHeader {
   id: string
@@ -26,7 +26,7 @@ export default defineComponent({
   name: 'FlattenHeaders',
   props: {
     headers: {
-      type: Array as PropType<HeaderItem[]>,
+      type: Array as PropType<HeaderItemType[]>,
       required: true
     }
   },

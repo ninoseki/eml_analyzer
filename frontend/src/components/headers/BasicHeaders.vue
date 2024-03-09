@@ -21,7 +21,7 @@
           <th>From</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton :value="header.from"></IndicatorButton>
+              <IndicatorButton :value="header.from" />
             </div>
           </td>
         </tr>
@@ -29,11 +29,7 @@
           <th>To</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton
-                :value="email"
-                v-for="email in header.to"
-                :key="email"
-              ></IndicatorButton>
+              <IndicatorButton :value="email" v-for="email in header.to" :key="email" />
             </div>
           </td>
         </tr>
@@ -41,11 +37,7 @@
           <th>Cc</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton
-                :value="email"
-                v-for="email in header.cc"
-                :key="email"
-              ></IndicatorButton>
+              <IndicatorButton :value="email" v-for="email in header.cc" :key="email" />
             </div>
           </td>
         </tr>
@@ -58,14 +50,14 @@
 import { defineComponent, type PropType } from 'vue'
 
 import IndicatorButton from '@/components/IndicatorButton.vue'
-import type { Header } from '@/types'
+import type { HeaderType } from '@/schemas'
 import { toUTC } from '@/utils'
 
 export default defineComponent({
   name: 'BasicHeaders',
   props: {
     header: {
-      type: Object as PropType<Header>,
+      type: Object as PropType<HeaderType>,
       required: true
     }
   },

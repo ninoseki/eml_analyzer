@@ -1,7 +1,7 @@
-import type { IndicatorType, Link } from '@/types'
+import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
 
-export class Browserling implements Link {
+export class Browserling implements LinkType {
   public baseURL: string
   public favicon: string
   public name: string

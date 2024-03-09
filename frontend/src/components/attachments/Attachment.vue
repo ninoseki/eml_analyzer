@@ -18,7 +18,7 @@
         <tr>
           <th>SHA256</th>
           <td>
-            <IndicatorButton :value="attachment.hash.sha256"></IndicatorButton>
+            <IndicatorButton :value="attachment.hash.sha256" />
           </td>
         </tr>
       </tbody>
@@ -67,15 +67,15 @@ import AttachmentSubmissionButton from '@/components/attachments/AttachmentSubmi
 import AttachmentSubmissionNotification from '@/components/attachments/AttachmentSubmissionNotification.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import IndicatorButton from '@/components/IndicatorButton.vue'
+import type { AttachmentType } from '@/schemas'
 import { useStatusStore } from '@/store'
 import { InQuest, VirusTotal } from '@/submitters'
-import type { Attachment } from '@/types'
 
 export default defineComponent({
   name: 'AttachmentComponent',
   props: {
     attachment: {
-      type: Object as PropType<Attachment>,
+      type: Object as PropType<AttachmentType>,
       required: true
     },
     index: {

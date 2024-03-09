@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 
 import { API } from '@/api'
-import type { Status } from '@/types'
+import type { StatusType } from '@/schemas'
 
 export const useStatusStore = defineStore('status', {
-  state: (): Status => {
+  state: (): StatusType => {
     return {}
   },
   actions: {

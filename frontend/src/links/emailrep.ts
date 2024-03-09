@@ -1,6 +1,6 @@
-import type { IndicatorType, Link } from '@/types'
+import type { IndicatorType, LinkType } from '@/schemas'
 
-export class EmailRep implements Link {
+export class EmailRep implements LinkType {
   public baseURL: string
   public favicon: string
   public name: string

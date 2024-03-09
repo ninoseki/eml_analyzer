@@ -1,7 +1,7 @@
-import type { IndicatorType, Link } from '@/types'
+import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
 
-export class Crtsh implements Link {
+export class Crtsh implements LinkType {
   public baseURL: string
   public favicon: string
   public name: string

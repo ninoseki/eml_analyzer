@@ -20,7 +20,7 @@
           <th>Extracted URLs</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton :value="url" v-for="url in body.urls" :key="url"></IndicatorButton>
+              <IndicatorButton :value="url" v-for="url in body.urls" :key="url" />
             </div>
           </td>
         </tr>
@@ -28,11 +28,7 @@
           <th>Extracted emails</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton
-                :value="email"
-                v-for="email in body.emails"
-                :key="email"
-              ></IndicatorButton>
+              <IndicatorButton :value="email" v-for="email in body.emails" :key="email" />
             </div>
           </td>
         </tr>
@@ -40,11 +36,7 @@
           <th>Extracted domains</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton
-                :value="domain"
-                v-for="domain in body.domains"
-                :key="domain"
-              ></IndicatorButton>
+              <IndicatorButton :value="domain" v-for="domain in body.domains" :key="domain" />
             </div>
           </td>
         </tr>
@@ -52,11 +44,7 @@
           <th>Extracted IPv4s</th>
           <td>
             <div class="dropdowns">
-              <IndicatorButton
-                :value="ip"
-                v-for="ip in body.ipAddresses"
-                :key="ip"
-              ></IndicatorButton>
+              <IndicatorButton :value="ip" v-for="ip in body.ipAddresses" :key="ip" />
             </div>
           </td>
         </tr>
@@ -71,12 +59,13 @@ import { computed, defineComponent, type PropType } from 'vue'
 
 import ContentComponent from '@/components/bodies/Content.vue'
 import IndicatorButton from '@/components/IndicatorButton.vue'
-import type { Body } from '@/types'
+import type { BodyType } from '@/schemas'
+
 export default defineComponent({
   name: 'BodyComponent',
   props: {
     body: {
-      type: Object as PropType<Body>,
+      type: Object as PropType<BodyType>,
       required: true
     },
     index: {

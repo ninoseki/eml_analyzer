@@ -37,7 +37,7 @@ import truncate from 'just-truncate'
 import { computed, defineComponent } from 'vue'
 
 import { Links } from '@/links'
-import type { IndicatorType } from '@/types'
+import type { IndicatorType } from '@/schemas'
 import { getIndicatorType } from '@/utils'
 
 export default defineComponent({

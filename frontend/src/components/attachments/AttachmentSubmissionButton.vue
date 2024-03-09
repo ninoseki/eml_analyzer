@@ -13,23 +13,23 @@ import axios from 'axios'
 import { defineComponent, type PropType } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
-import type { Attachment, SubmissionResult, Submitter } from '@/types'
+import type { AttachmentType, SubmissionResultType, SubmitterType } from '@/schemas'
 
 export default defineComponent({
   name: 'AttachmentSubmissionButton',
   props: {
     attachment: {
-      type: Object as PropType<Attachment>,
+      type: Object as PropType<AttachmentType>,
       required: true
     },
     submitter: {
-      type: Object as PropType<Submitter>,
+      type: Object as PropType<SubmitterType>,
       required: true
     }
   },
   emits: ['set-reference-url', 'set-error'],
   setup(props, context) {
-    const submitTask = useAsyncTask<SubmissionResult, []>(async () => {
+    const submitTask = useAsyncTask<SubmissionResultType, []>(async () => {
       return await props.submitter.submit(props.attachment)
     })
 

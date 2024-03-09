@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
 import OtherHeaders from '@/components/headers/OtherHeaders.vue'
-import { securityKeys } from '@/types'
+import { securityKeys } from '@/constants'
 
 import { header } from '../../fixtures'
 

@@ -16,12 +16,13 @@
 import { computed, defineComponent, type PropType } from 'vue'
 
 import Detail from '@/components/verdicts/Detail.vue'
-import type { Verdict } from '@/types'
+import type { VerdictType } from '@/schemas'
+
 export default defineComponent({
   name: 'VerdictComponent',
   props: {
     verdict: {
-      type: Object as PropType<Verdict>,
+      type: Object as PropType<VerdictType>,
       required: true
     }
   },

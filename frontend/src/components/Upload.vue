@@ -49,28 +49,27 @@
   </div>
   <Loading v-if="analyzeTask.isRunning"></Loading>
   <ErrorMessage :error="analyzeTask.last?.error" v-if="analyzeTask.isError" />
-  <ResponseComponent
+  <Response
     :response="analyzeTask.last.value"
     v-if="analyzeTask.last?.value && !analyzeTask.isRunning"
   />
 </template>
 
 <script lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, defineComponent, ref, toRef, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
 import { API } from '@/api'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/Loading.vue'
-import ResponseComponent from '@/components/Response.vue'
+import Response from '@/components/Response.vue'
+import type { ResponseType } from '@/schemas'
 import { useStatusStore } from '@/store'
-import type { Response } from '@/types'
 
 export default defineComponent({
   name: 'UploadItem',
   components: {
-    ResponseComponent,
+    Response,
     ErrorMessage,
     Loading
   },
@@ -84,7 +83,7 @@ export default defineComponent({
       return store.$state
     })
 
-    const analyzeTask = useAsyncTask<Response, [File]>(async (_signal, file: File) => {
+    const analyzeTask = useAsyncTask<ResponseType, [File]>(async (_signal, file: File) => {
       return await API.analyze(file)
     })
 
