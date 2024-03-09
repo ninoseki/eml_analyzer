@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from backend import deps, settings
+from backend import dependencies, settings
 
 router = APIRouter()
 
@@ -11,7 +11,7 @@ router = APIRouter()
     summary="Get analysis cache keys",
     description="Try to get analysis cache keys",
 )
-async def cache_keys(optional_redis: deps.OptionalRedis) -> list[str]:
+async def cache_keys(optional_redis: dependencies.OptionalRedis) -> list[str]:
     if optional_redis is None:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,

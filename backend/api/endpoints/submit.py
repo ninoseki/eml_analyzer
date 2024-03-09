@@ -1,7 +1,7 @@
 import httpx
 from fastapi import APIRouter, HTTPException, status
 
-from backend import deps, schemas
+from backend import dependencies, schemas
 from backend.schemas.eml import Attachment
 from backend.utils import attachment_to_file
 
@@ -16,7 +16,7 @@ router = APIRouter()
     status_code=200,
 )
 async def submit_to_inquest(
-    attachment: Attachment, *, optional_inquest: deps.OptionalInQuest
+    attachment: Attachment, *, optional_inquest: dependencies.OptionalInQuest
 ) -> schemas.SubmissionResult:
     # check ext type
     valid_types = ["doc", "docx", "ppt", "pptx", "xls", "xlsx"]
@@ -49,7 +49,7 @@ async def submit_to_inquest(
     status_code=200,
 )
 async def submit_to_virustotal(
-    attachment: Attachment, *, optional_vt: deps.OptionalVirusTotal
+    attachment: Attachment, *, optional_vt: dependencies.OptionalVirusTotal
 ) -> schemas.SubmissionResult:
     if optional_vt is None:
         raise HTTPException(

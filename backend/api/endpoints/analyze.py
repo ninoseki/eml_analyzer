@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from redis import Redis
 
-from backend import clients, deps, schemas, settings
+from backend import clients, dependencies, schemas, settings
 from backend.factories.response import ResponseFactory
 
 router = APIRouter()
@@ -13,7 +13,7 @@ async def _analyze(
     file: bytes,
     *,
     spam_assassin: clients.SpamAssassin,
-    email_rep: clients.EmailRep,
+    optional_email_rep: clients.EmailRep | None = None,
     optional_inquest: clients.InQuest | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
@@ -28,7 +28,7 @@ async def _analyze(
 
     return await ResponseFactory.call(
         payload.file,
-        email_rep=email_rep,
+        optional_email_rep=optional_email_rep,
         spam_assassin=spam_assassin,
         optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
@@ -56,17 +56,17 @@ async def analyze(
     payload: schemas.Payload,
     *,
     background_tasks: BackgroundTasks,
-    optional_redis: deps.OptionalRedis,
-    spam_assassin: deps.SpamAssassin,
-    email_rep: deps.EmailRep,
-    optional_inquest: deps.OptionalInQuest,
-    optional_vt: deps.OptionalVirusTotal,
-    optional_urlscan: deps.OptionalUrlScan,
+    spam_assassin: dependencies.SpamAssassin,
+    optional_redis: dependencies.OptionalRedis,
+    optional_email_rep: dependencies.OptionalEmailRep,
+    optional_inquest: dependencies.OptionalInQuest,
+    optional_vt: dependencies.OptionalVirusTotal,
+    optional_urlscan: dependencies.OptionalUrlScan,
 ) -> schemas.Response:
     response = await _analyze(
         payload.file.encode(),
-        email_rep=email_rep,
         spam_assassin=spam_assassin,
+        optional_email_rep=optional_email_rep,
         optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
@@ -90,16 +90,16 @@ async def analyze_file(
     file: bytes = File(...),
     *,
     background_tasks: BackgroundTasks,
-    optional_redis: deps.OptionalRedis,
-    spam_assassin: deps.SpamAssassin,
-    email_rep: deps.EmailRep,
-    optional_inquest: deps.OptionalInQuest,
-    optional_vt: deps.OptionalVirusTotal,
-    optional_urlscan: deps.OptionalUrlScan,
+    optional_redis: dependencies.OptionalRedis,
+    spam_assassin: dependencies.SpamAssassin,
+    optional_email_rep: dependencies.OptionalEmailRep,
+    optional_inquest: dependencies.OptionalInQuest,
+    optional_vt: dependencies.OptionalVirusTotal,
+    optional_urlscan: dependencies.OptionalUrlScan,
 ) -> schemas.Response:
     response = await _analyze(
         file,
-        email_rep=email_rep,
+        optional_email_rep=optional_email_rep,
         spam_assassin=spam_assassin,
         optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
