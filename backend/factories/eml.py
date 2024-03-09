@@ -12,7 +12,6 @@ from returns.pointfree import bind
 from returns.result import ResultE, safe
 
 from backend import schemas
-from backend.monkeypatch import with_monkey_patched_rtfparser
 from backend.outlookmsgfile import Message
 from backend.utils import parse_urls_from_body
 from backend.validator import is_eml_file
@@ -47,10 +46,8 @@ def to_eml(data: bytes) -> bytes:
 
     # assume data is a msg file
     file = BytesIO(data)
-    with with_monkey_patched_rtfparser():
-        message = Message(file)
-        email = message.to_email()
-
+    message = Message(file)
+    email = message.to_email()
     return email.as_bytes()
 
 

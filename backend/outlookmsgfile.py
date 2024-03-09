@@ -17,7 +17,6 @@
 import email.message
 import email.parser
 import email.policy
-import io
 import os
 import re
 from email.message import EmailMessage
@@ -26,11 +25,8 @@ from functools import reduce
 from typing import BinaryIO
 
 import compressed_rtf
-import html2text
 from compoundfiles import CompoundFileEntity, CompoundFileReader
 from loguru import logger
-from rtfparse.parser import Rtf_Parser
-from rtfparse.renderers.de_encapsulate_html import De_encapsulate_HTML
 
 FALLBACK_ENCODING = "cp1252"
 
@@ -85,8 +81,11 @@ def load_message_stream(  # noqa: C901
 
         if "SENDER_NAME" in props:
             if "SENT_REPRESENTING_NAME" in props:
-                if props["SENDER_NAME"] != props["SENT_REPRESENTING_NAME"]:
-                    props["SENDER_NAME"] += " (" + props["SENT_REPRESENTING_NAME"] + ")"
+                if props["SENT_REPRESENTING_NAME"]:  # noqa: SIM102
+                    if props["SENDER_NAME"] != props["SENT_REPRESENTING_NAME"]:
+                        props["SENDER_NAME"] += (
+                            " (" + props["SENT_REPRESENTING_NAME"] + ")"
+                        )
                 del props["SENT_REPRESENTING_NAME"]
             if props["SENDER_NAME"]:
                 msg["From"] = formataddr((props["SENDER_NAME"], ""))
@@ -112,61 +111,30 @@ def load_message_stream(  # noqa: C901
                 msg["Subject"] = props["SUBJECT"]
             del props["SUBJECT"]
 
-    # Add a plain text body from the BODY field.
-    has_body = False
+    # Add the plain-text body from the BODY field.
     if "BODY" in props:
         body = props["BODY"]
         if isinstance(body, str):
             msg.set_content(body, cte="quoted-printable")
         else:
             msg.set_content(body, maintype="text", subtype="plain", cte="8bit")
-        has_body = True
 
-    # Add a HTML body from the RTF_COMPRESSED field.
-    if "RTF_COMPRESSED" in props:
+    # Plain-text is not availabe. Use the rich text version.
+    else:
+        doc.rtf_attachments += 1
+        fn = f"messagebody_{doc.rtf_attachments}.rtf"
+
+        msg.set_content(
+            f"<no plain text message body --- see attachment {fn}>",
+            cte="quoted-printable",
+        )
+
         # Decompress the value to Rich Text Format.
-
         rtf = props["RTF_COMPRESSED"]
         rtf = compressed_rtf.decompress(rtf)
 
-        # Try rtfparse to de-encapsulate HTML stored in a rich
-        # text container.
-        try:
-            rtf_blob = io.BytesIO(rtf)
-            parsed = Rtf_Parser(rtf_file=rtf_blob).parse_file()
-            html_stream = io.StringIO()
-            De_encapsulate_HTML().render(parsed, html_stream)
-            html_body = html_stream.getvalue()
-
-            if not has_body:
-                # Try to convert that to plain/text if possible.
-                text_body = html2text.html2text(html_body)
-                msg.set_content(text_body, subtype="text", cte="quoted-printable")
-                has_body = True
-
-            if not has_body:
-                msg.set_content(html_body, subtype="html", cte="quoted-printable")
-                has_body = True
-            else:
-                msg.add_alternative(html_body, subtype="html", cte="quoted-printable")
-
-        # If that fails, just attach the RTF file to the message.
-        except Exception:
-            doc.rtf_attachments += 1
-            fn = f"messagebody_{doc.rtf_attachments}.rtf"
-
-            if not has_body:
-                msg.set_content(
-                    f"<no plain text message body --- see attachment {fn}>",
-                    cte="quoted-printable",
-                )
-                has_body = True
-
-            # Add RTF file as an attachment.
-            msg.add_attachment(rtf, maintype="text", subtype="rtf", filename=fn)
-
-    if not has_body:
-        msg.set_content("<no message body>", cte="quoted-printable")
+        # Add RTF file as an attachment.
+        msg.add_attachment(rtf, maintype="text", subtype="rtf", filename=fn)
 
     # # Copy over string values of remaining properties as headers
     # # so we don't lose any information.
@@ -177,11 +145,7 @@ def load_message_stream(  # noqa: C901
     # Add attachments.
     for stream in entry:
         if stream.name.startswith("__attach_version1.0_#"):
-            try:
-                process_attachment(msg, stream, doc)
-            except KeyError as e:
-                logger.error(f"Error processing attachment {e!s} not found")
-                continue
+            process_attachment(msg, stream, doc)
 
     return msg
 
@@ -247,6 +211,7 @@ def parse_properties(  # noqa: C901
         # Read the entry.
         property_type = stream[i + 0 : i + 2]
         property_tag = stream[i + 2 : i + 4]
+        # flags = stream[i+4:i+8]
         value = stream[i + 8 : i + 16]
         i += 16
 
@@ -265,6 +230,8 @@ def parse_properties(  # noqa: C901
 
         # Variable Length Properties.
         elif isinstance(tag_type, VariableLengthValueLoader):
+            # value_length = stream[i + 8 : i + 12]  # not used
+
             # Look up the stream in the document that holds the value.
             streamname = "__substg1.0_{0:0{1}X}{2:0{3}X}".format(
                 property_tag, 4, property_type, 4
@@ -351,7 +318,9 @@ def parse_properties(  # noqa: C901
 
 
 class FixedLengthValueLoader:
-    pass
+    @staticmethod
+    def load(value):
+        raise NotImplementedError()
 
 
 class NULL(FixedLengthValueLoader):
@@ -399,12 +368,7 @@ class INTTIME(FixedLengthValueLoader):
         value = reduce(
             lambda a, b: (a << 8) + b, reversed(value)
         )  # bytestring to integer
-        try:
-            value = datetime(1601, 1, 1) + timedelta(seconds=value / 10000000)
-        except OverflowError:
-            value = None
-
-        return value
+        return datetime(1601, 1, 1) + timedelta(seconds=value / 10000000)
 
 
 # TODO: The other fixed-length data types:
@@ -412,7 +376,9 @@ class INTTIME(FixedLengthValueLoader):
 
 
 class VariableLengthValueLoader:
-    pass
+    @staticmethod
+    def load(value):
+        raise NotImplementedError()
 
 
 class BINARY(VariableLengthValueLoader):
@@ -934,9 +900,8 @@ property_tags = {
     0x3F06: ("YPOS", "I4"),
     0x3F07: ("CONTROL_ID", "BINARY"),
     0x3F08: ("INITIAL_DETAILS_PANE", "I4"),
-    0x3FDE: ("PR_INTERNET_CPID", "I4"),
-    0x3FFD: ("PR_MESSAGE_CODEPAGE", "I4"),
 }
+
 
 code_pages = {
     # Microsoft code page id: python codec name
