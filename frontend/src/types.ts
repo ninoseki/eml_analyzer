@@ -1,3 +1,11 @@
+export interface Status {
+  cache?: boolean
+  vt?: boolean
+  emailRep?: boolean
+  inquest?: boolean
+  urlscan?: boolean
+}
+
 export interface Payload {
   file: File | null
 }

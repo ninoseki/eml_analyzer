@@ -14,6 +14,7 @@ import {
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import router from '@/router'
@@ -29,9 +30,14 @@ library.add(
   faInfoCircle,
   faCopy
 )
+const pinia = createPinia()
 
 import App from '@/App.vue'
 
 const app = createApp(App)
+
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(router).mount('#app')
+app.use(router)
+app.use(pinia)
+
+app.mount('#app')
