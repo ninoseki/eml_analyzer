@@ -19,7 +19,7 @@ compressed-rtf = "^1.0"
 dateparser = "^1.2"
 eml_parser = { extras = ["filemagic"], version = "^1.17" }
 fastapi = "^0.110"
-gunicorn = "^21.2"
+gunicorn = "^22.0"
 html2text = "^2024.2"
 httpx = "^0.27"
 ioc-finder = "^6.0"
