@@ -1,9 +1,64 @@
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { useAsyncTask } from 'vue-concurrency'
+
+import { API } from '@/api'
+import ErrorMessage from '@/components/ErrorMessage.vue'
+import Loading from '@/components/Loading.vue'
+import Response from '@/components/ResponseItem.vue'
+import type { ResponseType } from '@/schemas'
+import { useStatusStore } from '@/store'
+
+const file = ref<File>()
+const filename = ref<string>()
+const dragDropFocus = ref(false)
+
+const store = useStatusStore()
+const status = computed(() => {
+  return store.$state
+})
+
+const analyzeTask = useAsyncTask<ResponseType, [File]>(async (_signal, file: File) => {
+  return await API.analyze(file)
+})
+
+const updateDragDropFocus = (value: boolean) => {
+  dragDropFocus.value = value
+}
+
+const analyze = async () => {
+  if (file.value) {
+    await analyzeTask.perform(file.value)
+  }
+}
+
+const onFileChangeDrop = (event: DragEvent) => {
+  dragDropFocus.value = false
+  if (event?.dataTransfer?.files) {
+    file.value = event.dataTransfer.files[0]
+  }
+}
+
+const onFileChange = (event: Event) => {
+  const f = (event.target as HTMLInputElement).files?.[0]
+  if (f) {
+    file.value = f
+  }
+}
+
+watch(file, () => {
+  if (file.value) {
+    filename.value = file.value.name
+  }
+})
+</script>
+
 <template>
   <div class="box">
     <article class="message is-info">
       <div class="message-body content">
         <ul>
-          <li>EML(<code>.eml</code>) and MSG(<code>.msg</code>) formats are supported.</li>
+          <li>EML (<b>.eml</b>) and MSG (<b>.msg</b>) formats are supported.</li>
           <li>
             The MSG file will be converted to the EML file before analyzing. The conversion might be
             lossy.
@@ -54,83 +109,6 @@
     v-if="analyzeTask.last?.value && !analyzeTask.isRunning"
   />
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { useAsyncTask } from 'vue-concurrency'
-
-import { API } from '@/api'
-import ErrorMessage from '@/components/ErrorMessage.vue'
-import Loading from '@/components/Loading.vue'
-import Response from '@/components/Response.vue'
-import type { ResponseType } from '@/schemas'
-import { useStatusStore } from '@/store'
-
-export default defineComponent({
-  name: 'UploadItem',
-  components: {
-    Response,
-    ErrorMessage,
-    Loading
-  },
-  setup() {
-    const file = ref<File>()
-    const filename = ref<string>()
-    const dragDropFocus = ref(false)
-
-    const store = useStatusStore()
-    const status = computed(() => {
-      return store.$state
-    })
-
-    const analyzeTask = useAsyncTask<ResponseType, [File]>(async (_signal, file: File) => {
-      return await API.analyze(file)
-    })
-
-    const updateDragDropFocus = (value: boolean) => {
-      dragDropFocus.value = value
-    }
-
-    const analyze = async () => {
-      if (file.value) {
-        await analyzeTask.perform(file.value)
-      }
-    }
-
-    const onFileChangeDrop = (event: DragEvent) => {
-      dragDropFocus.value = false
-      if (event?.dataTransfer?.files) {
-        file.value = event.dataTransfer.files[0]
-      }
-    }
-
-    const onFileChange = (event: Event) => {
-      const f = (event.target as HTMLInputElement).files?.[0]
-      if (f) {
-        file.value = f
-      }
-    }
-
-    watch(file, () => {
-      if (file.value) {
-        filename.value = file.value.name
-      }
-    })
-
-    return {
-      analyze,
-      analyzeTask,
-      file,
-      filename,
-      updateDragDropFocus,
-      onFileChangeDrop,
-      onFileChange,
-      dragDropFocus,
-      status
-    }
-  }
-})
-</script>
 
 <style scoped>
 .upload {

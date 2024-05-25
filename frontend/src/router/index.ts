@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 
 import Cache from '@/views/Cache.vue'
-import Home from '@/views/Home.vue'
-import Lookup from '@/views/Lookup.vue'
+import Home from '@/views/HomeView.vue'
+import Lookup from '@/views/LookupView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import { computed, type PropType } from 'vue'
+
+import ContentComponent from '@/components/bodies/ContentItem.vue'
+import IndicatorButton from '@/components/IndicatorButton.vue'
+import type { BodyType } from '@/schemas'
+
+const props = defineProps({
+  body: {
+    type: Object as PropType<BodyType>,
+    required: true
+  },
+  index: {
+    type: Number,
+    required: true
+  }
+})
+
+const header = computed(() => {
+  return `#${props.index + 1}`
+})
+</script>
+
 <template>
   <div class="block">
     <h3 class="is-size-5 has-text-weight-bold">{{ header }}</h3>
@@ -52,34 +75,3 @@
     </table>
   </div>
 </template>
-
-<script lang="ts">
-import truncate from 'just-truncate'
-import { computed, defineComponent, type PropType } from 'vue'
-
-import ContentComponent from '@/components/bodies/Content.vue'
-import IndicatorButton from '@/components/IndicatorButton.vue'
-import type { BodyType } from '@/schemas'
-
-export default defineComponent({
-  name: 'BodyComponent',
-  props: {
-    body: {
-      type: Object as PropType<BodyType>,
-      required: true
-    },
-    index: {
-      type: Number,
-      required: true
-    }
-  },
-  components: { ContentComponent, IndicatorButton },
-  setup(props) {
-    const header = computed(() => {
-      return `#${props.index + 1}`
-    })
-
-    return { header, truncate }
-  }
-})
-</script>
