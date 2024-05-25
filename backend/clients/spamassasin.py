@@ -1,8 +1,19 @@
+import re
+
 import aiospamc
 from aiospamc.header_values import Headers
 from async_timeout import timeout
 
 from backend import schemas, settings
+
+
+def is_header(line: str) -> bool:
+    headers = ["pts", "rule name", "description"]
+    return all(header in line for header in headers)
+
+
+def is_divider(line: str) -> bool:
+    return re.match(r"^-+\s-+\s-+$", line) is not None
 
 
 class Parser:
@@ -42,9 +53,19 @@ class Parser:
 
     def _parse_body(self):
         lines = [line for line in self.body.splitlines() if line != ""]
-        delimiter_index = 0
+        delimiter_index: int | None = None
+
+        headers_seen: bool = False
+        divider_seen: bool = False
+
         for index, line in enumerate(lines):
-            if "---" in line:
+            if not headers_seen and is_header(line):
+                headers_seen = True
+
+            if headers_seen and not divider_seen and is_divider(line):
+                divider_seen = True
+
+            if headers_seen and divider_seen:
                 delimiter_index = index + 1
                 break
 
