@@ -26,20 +26,19 @@ async def is_spam_assassin_responsive(port: int) -> bool:
         return False
 
 
-if not ci.is_ci():
+if ci.is_ci():
 
     @pytest.fixture(scope="session", autouse=True)
-    def docker_compose(docker_ip: str, docker_services: Services):  # type: ignore
+    def docker_compose():  # type: ignore
+        return
+else:
+
+    @pytest.fixture(scope="session", autouse=True)
+    def docker_compose(docker_ip: str, docker_services: Services):
         port = docker_services.port_for("spamassassin", 783)
         docker_services.wait_until_responsive(
             timeout=60.0, pause=0.1, check=lambda: is_spam_assassin_responsive(port)
         )
-
-else:
-
-    @pytest.fixture
-    def docker_compose():
-        return
 
 
 @pytest.fixture
@@ -119,7 +118,7 @@ def test_html() -> str:
 
 @pytest.fixture
 def docx_attachment(encrypted_docx_eml: bytes) -> schemas.Attachment:
-    eml = factories.EmlFactory.call(encrypted_docx_eml)
+    eml = factories.EmlFactory().call(encrypted_docx_eml)
     return eml.attachments[0]
 
 

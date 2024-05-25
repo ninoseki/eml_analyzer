@@ -13,12 +13,15 @@ async def client():
         yield client
 
 
+@pytest.fixture
+def factory(client: clients.UrlScan):
+    return factories.UrlScanVerdictFactory(client)
+
+
 @vcr.use_cassette(
     "tests/fixtures/vcr_cassettes/urlscan.yaml", filter_headers=["api-key"]
 )  # type: ignore
 @pytest.mark.asyncio
-async def test_urlscan_factory(client: clients.UrlScan):
-    verdict = await factories.UrlScanVerdictFactory.call(
-        ["http://example.com"], client=client
-    )
+async def test_urlscan_factory(factory: factories.UrlScanVerdictFactory):
+    verdict = await factory.call(["http://example.com"])
     assert verdict.malicious is False

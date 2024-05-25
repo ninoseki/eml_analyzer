@@ -8,8 +8,6 @@ from backend.oleid import OleID
 
 from .abstract import AbstractFactory
 
-NAME = "oleid"
-
 
 @safe
 def parse(attachment: schemas.Attachment) -> OleID:
@@ -74,9 +72,12 @@ def attachment_to_details(
 
 
 class OleIDVerdictFactory(AbstractFactory):
-    @classmethod
+    def __init__(self, name: str = "oleid"):
+        self.name = name
+
     def call(
-        cls, attachments: list[schemas.Attachment], *, name: str = NAME
+        self,
+        attachments: list[schemas.Attachment],
     ) -> schemas.Verdict:
         details = list(
             itertools.chain.from_iterable(
@@ -95,4 +96,4 @@ class OleIDVerdictFactory(AbstractFactory):
                     description="There is no suspicious OLE file in attachments.",
                 )
             )
-        return schemas.Verdict(name=name, malicious=malicious, details=details)
+        return schemas.Verdict(name=self.name, malicious=malicious, details=details)

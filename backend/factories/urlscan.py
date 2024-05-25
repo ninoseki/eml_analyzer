@@ -12,8 +12,6 @@ from backend import clients, schemas, settings, types
 
 from .abstract import AbstractAsyncFactory
 
-NAME = "urlscan.io"
-
 
 @future_safe
 async def lookup(url: str, *, client: clients.UrlScan) -> schemas.UrlScanLookup:
@@ -39,7 +37,7 @@ async def bulk_lookup(
 
 
 @future_safe
-async def transform(lookups: list[schemas.UrlScanLookup], *, name: str = NAME):
+async def transform(lookups: list[schemas.UrlScanLookup], *, name: str):
     results = itertools.chain.from_iterable([lookup.results for lookup in lookups])
     malicious_results = [result for result in results if result.verdicts.malicious]
 
@@ -71,24 +69,25 @@ async def transform(lookups: list[schemas.UrlScanLookup], *, name: str = NAME):
 
 
 class UrlScanVerdictFactory(AbstractAsyncFactory):
-    @classmethod
+    def __init__(self, client: clients.UrlScan, *, name: str = "urlscan.io"):
+        self.client = client
+        self.name = name
+
     async def call(
-        cls,
+        self,
         urls: types.ListSet[str],
         *,
-        client: clients.UrlScan,
-        name: str = NAME,
         max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
         max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
     ):
         f_result: FutureResultE[schemas.Verdict] = flow(
             bulk_lookup(
                 urls,
-                client=client,
+                client=self.client,
                 max_at_once=max_at_once,
                 max_per_second=max_per_second,
             ),
-            bind(partial(transform, name=name)),
+            bind(partial(transform, name=self.name)),
         )
         result = await f_result.awaitable()
         return unsafe_perform_io(result.alt(raise_exception).unwrap())

@@ -4,8 +4,13 @@ from backend import factories
 from backend.factories.eml import is_inline_forward_attachment
 
 
-def test_sample(sample_eml: bytes):
-    eml = factories.EmlFactory.call(sample_eml)
+@pytest.fixture()
+def factory():
+    return factories.EmlFactory()
+
+
+def test_sample(sample_eml: bytes, factory: factories.EmlFactory):
+    eml = factory.call(sample_eml)
     assert eml.header.message_id is None
     assert eml.header.subject == "Winter promotions"
     assert eml.header.to == ["foo.bar@example.com"]
@@ -14,8 +19,8 @@ def test_sample(sample_eml: bytes):
     assert len(eml.bodies) == 2
 
 
-def test_cc(cc_eml: bytes):
-    eml = factories.EmlFactory.call(cc_eml)
+def test_cc(cc_eml: bytes, factory: factories.EmlFactory):
+    eml = factory.call(cc_eml)
     assert eml.header.message_id == "ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com"
     assert eml.header.subject == "To and Cc headers"
     assert eml.header.to == ["foo.bar@example.com", "info@example.com"]
@@ -28,8 +33,8 @@ def test_cc(cc_eml: bytes):
     assert eml.attachments == []
 
 
-def test_multipart(multipart_eml: bytes):
-    eml = factories.EmlFactory.call(multipart_eml)
+def test_multipart(multipart_eml: bytes, factory: factories.EmlFactory):
+    eml = factory.call(multipart_eml)
     assert eml.attachments is not None
     assert len(eml.attachments) == 1
 
@@ -38,8 +43,8 @@ def test_multipart(multipart_eml: bytes):
     assert first.hash.md5 == "f561388f7446cedd5b8b480311744b3c"
 
 
-def test_encrypted_docx(encrypted_docx_eml: bytes):
-    eml = factories.EmlFactory.call(encrypted_docx_eml)
+def test_encrypted_docx(encrypted_docx_eml: bytes, factory: factories.EmlFactory):
+    eml = factory.call(encrypted_docx_eml)
     assert eml.attachments is not None
     assert len(eml.attachments) == 1
 
@@ -50,14 +55,14 @@ def test_encrypted_docx(encrypted_docx_eml: bytes):
     )
 
 
-def test_emails(emails: list[bytes]):
+def test_emails(emails: list[bytes], factory: factories.EmlFactory):
     for email in emails:
-        eml = factories.EmlFactory.call(email)
+        eml = factory.call(email)
         assert eml is not None
 
 
-def test_complete_msg(complete_msg: bytes):
-    eml = factories.EmlFactory.call(complete_msg)
+def test_complete_msg(complete_msg: bytes, factory: factories.EmlFactory):
+    eml = factory.call(complete_msg)
     assert eml.header.subject == "Test Multiple attachments complete email!!"
 
 

@@ -9,8 +9,6 @@ from returns.unsafe import unsafe_perform_io
 
 from backend import clients, schemas, settings, types
 
-NAME = "InQuest"
-
 
 @future_safe
 async def lookup(sha256: str, *, client: clients.InQuest) -> schemas.InQuestLookup:
@@ -36,7 +34,7 @@ async def bulk_lookup(
 
 
 @future_safe
-async def transform(lookups: list[schemas.InQuestLookup], *, name: str = NAME):
+async def transform(lookups: list[schemas.InQuestLookup], *, name: str):
     malicious_lookups = [lookup for lookup in lookups if lookup.malicious]
 
     if len(malicious_lookups) == 0:
@@ -67,24 +65,25 @@ async def transform(lookups: list[schemas.InQuestLookup], *, name: str = NAME):
 
 
 class InQuestVerdictFactory:
-    @classmethod
+    def __init__(self, client: clients.InQuest, *, name: str = "InQuest"):
+        self.client = client
+        self.name = name
+
     async def call(
-        cls,
+        self,
         sha256s: types.ListSet[str],
         *,
-        client: clients.InQuest,
-        name: str = NAME,
         max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
         max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
     ) -> schemas.Verdict:
         f_result: FutureResultE[schemas.Verdict] = flow(
             bulk_lookup(
                 sha256s,
-                client=client,
+                client=self.client,
                 max_at_once=max_at_once,
                 max_per_second=max_per_second,
             ),
-            bind(partial(transform, name=name)),
+            bind(partial(transform, name=self.name)),
         )
         result = await f_result.awaitable()
         return unsafe_perform_io(result.alt(raise_exception).unwrap())
