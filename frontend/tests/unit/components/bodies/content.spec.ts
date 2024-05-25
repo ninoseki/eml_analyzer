@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-import Content from '@/components/bodies/Content.vue'
+import Content from '@/components/bodies/ContentItem.vue'
 
 describe('Content.vue', () => {
   it('returns html', () => {
