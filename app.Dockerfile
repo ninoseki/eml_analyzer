@@ -13,8 +13,8 @@ RUN npm install && npm run build && rm -rf node_modules
 FROM python:3.11-slim-bookworm as backend
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends build-essential libmagic-dev  \
-	&& apt-get clean  \
+	&& apt-get install -y --no-install-recommends build-essential libmagic-dev \
+	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY pyproject.toml poetry.lock ./
 
 RUN poetry config virtualenvs.create false \
-	&& poetry install --no-root --without dev
+	&& poetry install --without dev
 
 # Main
 FROM python:3.11-slim-bookworm
