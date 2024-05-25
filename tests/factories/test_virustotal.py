@@ -11,11 +11,15 @@ async def client():
         yield client
 
 
+@pytest.fixture
+def factory(client: clients.VirusTotal):
+    return factories.VirusTotalVerdictFactory(client)
+
+
 @pytest.mark.skip(reason="VCR cannot handle this...")
 @pytest.mark.asyncio
-async def test_virus_total_factory(client: clients.VirusTotal):
-    verdict = await factories.VirusTotalVerdictFactory.call(
+async def test_virus_total_factory(factory: factories.VirusTotalVerdictFactory):
+    verdict = await factory.call(
         ["275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f"],
-        client=client,
     )
     assert verdict.malicious is True

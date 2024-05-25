@@ -169,8 +169,7 @@ def transform(parsed: dict) -> schemas.Eml:
 
 
 class EmlFactory(AbstractFactory):
-    @classmethod
-    def call(cls, data: bytes) -> schemas.Eml:
+    def call(self, data: bytes) -> schemas.Eml:
         result: ResultE[schemas.Eml] = flow(
             to_eml(data),
             bind(parse),

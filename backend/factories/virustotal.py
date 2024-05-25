@@ -73,24 +73,25 @@ async def transform(objects: list[vt.Object], *, name: str = NAME) -> schemas.Ve
 
 
 class VirusTotalVerdictFactory(AbstractAsyncFactory):
-    @classmethod
+    def __init__(self, client: clients.VirusTotal, *, name: str = "VirusTotal"):
+        self.client = client
+        self.name = name
+
     async def call(
-        cls,
+        self,
         sha256s: types.ListSet[str],
         *,
-        client: clients.VirusTotal,
-        name: str = NAME,
         max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
         max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
     ) -> schemas.Verdict:
         f_result: FutureResultE[schemas.Verdict] = flow(
             bulk_get_file_objects(
                 sha256s,
-                client=client,
+                client=self.client,
                 max_at_once=max_at_once,
                 max_per_second=max_per_second,
             ),
-            bind(partial(transform, name=name)),
+            bind(partial(transform, name=self.name)),
         )
         result = await f_result.awaitable()
         return unsafe_perform_io(result.alt(raise_exception).unwrap())

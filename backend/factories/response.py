@@ -28,7 +28,7 @@ def log_exception(exception: Exception):
 @future_safe
 async def parse(eml_file: bytes) -> schemas.Response:
     return schemas.Response(
-        eml=EmlFactory.call(eml_file), id=hashlib.sha256(eml_file).hexdigest()
+        eml=EmlFactory().call(eml_file), id=hashlib.sha256(eml_file).hexdigest()
     )
 
 
@@ -36,38 +36,38 @@ async def parse(eml_file: bytes) -> schemas.Response:
 async def get_spam_assassin_verdict(
     eml_file: bytes, *, client: clients.SpamAssassin
 ) -> schemas.Verdict:
-    return await SpamAssassinVerdictFactory.call(eml_file, client=client)
+    return await SpamAssassinVerdictFactory(client).call(eml_file)
 
 
 @future_safe
 async def get_oleid_verdict(attachments: list[schemas.Attachment]) -> schemas.Verdict:
-    return OleIDVerdictFactory.call(attachments)
+    return OleIDVerdictFactory().call(attachments)
 
 
 @future_safe
 async def get_email_rep_verdicts(from_, *, client: clients.EmailRep) -> schemas.Verdict:
-    return await EmailRepVerdictFactory.call(from_, client=client)
+    return await EmailRepVerdictFactory(client).call(from_)
 
 
 @future_safe
 async def get_urlscan_verdict(
     urls: types.ListSet[str], *, client: clients.UrlScan
 ) -> schemas.Verdict:
-    return await UrlScanVerdictFactory.call(urls, client=client)
+    return await UrlScanVerdictFactory(client).call(urls)
 
 
 @future_safe
 async def get_inquest_verdict(
     sha256s: types.ListSet[str], *, client: clients.InQuest
 ) -> schemas.Verdict:
-    return await InQuestVerdictFactory.call(sha256s, client=client)
+    return await InQuestVerdictFactory(client).call(sha256s)
 
 
 @future_safe
 async def get_vt_verdict(
     sha256s: types.ListSet[str], *, client: clients.VirusTotal
 ) -> schemas.Verdict:
-    return await VirusTotalVerdictFactory.call(sha256s, client=client)
+    return await VirusTotalVerdictFactory(client).call(sha256s)
 
 
 @future_safe
@@ -109,9 +109,7 @@ async def set_verdicts(
     return response
 
 
-class ResponseFactory(
-    AbstractAsyncFactory,
-):
+class ResponseFactory(AbstractAsyncFactory):
     @classmethod
     async def call(
         cls,

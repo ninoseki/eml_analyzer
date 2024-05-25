@@ -10,8 +10,6 @@ from backend import clients, schemas
 
 from .abstract import AbstractAsyncFactory
 
-NAME_OR_KEY = "EmailRep"
-
 
 @future_safe
 async def lookup(email: str, *, client: clients.EmailRep) -> schemas.EmailRepLookup:
@@ -19,7 +17,7 @@ async def lookup(email: str, *, client: clients.EmailRep) -> schemas.EmailRepLoo
 
 
 @future_safe
-async def transform(lookup: schemas.EmailRepLookup, *, name_or_key: str = NAME_OR_KEY):
+async def transform(lookup: schemas.EmailRepLookup, *, key_or_name: str):
     details: list[schemas.VerdictDetail] = []
     malicious = False
 
@@ -28,18 +26,20 @@ async def transform(lookup: schemas.EmailRepLookup, *, name_or_key: str = NAME_O
         malicious = True
         description = f"{lookup.email} is suspicious. See https://emailrep.io/{lookup.email} for details."
 
-    details.append(schemas.VerdictDetail(key=name_or_key, description=description))
-    return schemas.Verdict(name=name_or_key, malicious=malicious, details=details)
+    details.append(schemas.VerdictDetail(key=key_or_name, description=description))
+    return schemas.Verdict(name=key_or_name, malicious=malicious, details=details)
 
 
 class EmailRepVerdictFactory(AbstractAsyncFactory):
-    @classmethod
-    async def call(
-        cls, email: str, *, client: clients.EmailRep, name_or_key: str = NAME_OR_KEY
-    ) -> schemas.Verdict:
+    def __init__(self, client: clients.EmailRep, *, name: str = "EmailRep"):
+        self.client = client
+        self.name = name
+
+    async def call(self, email: str, key: str | None = None) -> schemas.Verdict:
+        key_or_name: str = key or self.name
         f_result: FutureResultE[schemas.Verdict] = flow(
-            lookup(email, client=client),
-            bind(partial(transform, name_or_key=name_or_key)),
+            lookup(email, client=self.client),
+            bind(partial(transform, key_or_name=key_or_name)),
         )
         result = await f_result.awaitable()
         return unsafe_perform_io(result.alt(raise_exception).unwrap())

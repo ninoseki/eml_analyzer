@@ -1,3 +1,5 @@
+from functools import partial
+
 from returns.functions import raise_exception
 from returns.future import FutureResultE, future_safe
 from returns.pipeline import flow
@@ -7,8 +9,6 @@ from returns.unsafe import unsafe_perform_io
 from backend import clients, schemas
 
 from .abstract import AbstractAsyncFactory
-
-NAME = "SpamAssassin"
 
 
 @future_safe
@@ -20,7 +20,7 @@ async def report(
 
 @future_safe
 async def transform(
-    report: schemas.SpamAssassinReport, *, name: str = NAME
+    report: schemas.SpamAssassinReport, *, name: str
 ) -> schemas.Verdict:
     details = [
         schemas.VerdictDetail(
@@ -39,12 +39,17 @@ async def transform(
 
 
 class SpamAssassinVerdictFactory(AbstractAsyncFactory):
-    @classmethod
+    def __init__(self, client: clients.SpamAssassin, *, name: str = "SpamAssassin"):
+        self.client = client
+        self.name = name
+
     async def call(
-        cls, eml_file: bytes, *, client: clients.SpamAssassin
+        self,
+        eml_file: bytes,
     ) -> schemas.Verdict:
         f_result: FutureResultE[schemas.Verdict] = flow(
-            report(eml_file, client=client), bind(transform)
+            report(eml_file, client=self.client),
+            bind(partial(transform, name=self.name)),
         )
         result = await f_result.awaitable()
         return unsafe_perform_io(result.alt(raise_exception).unwrap())
