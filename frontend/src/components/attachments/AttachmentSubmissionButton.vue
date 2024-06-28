@@ -38,7 +38,6 @@ export default defineComponent({
         const result = await submitTask.perform()
         context.emit('set-reference-url', result.referenceUrl)
       } catch (err) {
-        console.log(err)
         if (axios.isAxiosError(err)) {
           context.emit('set-error', err)
         }
