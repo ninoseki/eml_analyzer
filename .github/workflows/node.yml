@@ -12,22 +12,21 @@ on:
       - "frontend/**"
       - ".github/workflows/node.yml"
 
+env:
+  NODE_VERSION: 20
+
 jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
-    strategy:
-      matrix:
-        node-version:
-          - 20
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - name: Install npm dependencies
@@ -39,16 +38,12 @@ jobs:
     defaults:
       run:
         working-directory: ./frontend
-    strategy:
-      matrix:
-        node-version:
-          - 20
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - name: Install npm dependencies
@@ -56,4 +51,4 @@ jobs:
       - name: Run type-check
         run: npm run type-check
       - name: Run ESLint
-        run: NODE_ENV=production npx eslint
+        run: NODE_ENV=production npm run lint
