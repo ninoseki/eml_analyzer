@@ -1,6 +1,5 @@
 # EML analyzer
 
-[![Build Status](https://travis-ci.com/ninoseki/eml_analyzer.svg?branch=master)](https://travis-ci.com/ninoseki/eml_analyzer)
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/eml_analyzer/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/eml_analyzer?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/eml_analyzer/badge)](https://www.codefactor.io/repository/github/ninoseki/eml_analyzer)
 
