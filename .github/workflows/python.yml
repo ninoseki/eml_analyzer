@@ -67,6 +67,6 @@ jobs:
       - name: Wait until SpamAssasin ready
         run: poetry run python scripts/ping.py
       - name: Run tests
-        run: poetry run pytest -v --cov=backend --cov-report=term-missing
+        run: poetry run coverage run -m pytest
       - name: Coveralls
         uses: coverallsapp/github-action@v2
