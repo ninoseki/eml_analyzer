@@ -7,7 +7,7 @@ license = "MIT"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 aiofiles = "^23.2.1"
 aiometer = "^0.5"
 aiospamc = "^1.0"
@@ -37,7 +37,7 @@ vt-py = "^0.18.2"
 
 [tool.poetry.group.dev.dependencies]
 ci-py = "^1.0"
-coveralls = "^3.3"
+coveralls = "^4.0.1"
 pytest = "^8.2.2"
 pytest-asyncio = "^0.23.7"
 pytest-cov = "^5.0.0"
