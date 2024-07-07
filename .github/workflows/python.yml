@@ -20,22 +20,22 @@ on:
       - "requirements.txt"
       - "tests/**"
 
+env:
+  PYTHON_VERSION: 3.11
+  POETRY_VERSION: 1.8.3
+
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.11]
-        poetry-version: [1.8.1]
     steps:
       - uses: actions/checkout@v4
       - name: Setup poetry
         uses: abatilo/actions-poetry@v3
         with:
-          poetry-version: ${{ matrix.poetry-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
       - name: Install dependencies
         run: poetry install
@@ -50,19 +50,15 @@ jobs:
         image: instantlinux/spamassassin:4.0.0-6
         ports:
           - 783:783
-    strategy:
-      matrix:
-        python-version: [3.11]
-        poetry-version: [1.8.1]
     steps:
       - uses: actions/checkout@v4
       - name: Setup poetry
         uses: abatilo/actions-poetry@v3
         with:
-          poetry-version: ${{ matrix.poetry-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
       - name: Install dependencies
         run: poetry install
@@ -71,20 +67,6 @@ jobs:
       - name: Wait until SpamAssasin ready
         run: poetry run python scripts/ping.py
       - name: Run tests
-        run: poetry run pytest -v --cov=app --cov-report=term-missing
+        run: poetry run pytest -v --cov=backend --cov-report=term-missing
       - name: Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: poetry run coveralls --service=github
-  coveralls:
-    name: Indicate completion to coveralls.io
-    needs: test
-    runs-on: ubuntu-latest
-    container: python:3-slim
-    steps:
-      - name: Finished
-        run: |
-          pip3 install --upgrade coveralls
-          coveralls --finish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: coverallsapp/github-action@v2
