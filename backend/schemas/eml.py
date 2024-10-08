@@ -36,12 +36,12 @@ class Body(APIModel):
 
 class Received(APIModel):
     by: list[str] | None = None
-    date: datetime
+    date: str = ""
     for_: list[str] | None = Field(default=None, alias="for")
     from_: list[str] | None = Field(default=None, alias="from")
     src: str
     with_: str | None = Field(default=None, alias="with")
-    delay: int
+    delay: int | None = None
 
 
 class Header(APIModel):

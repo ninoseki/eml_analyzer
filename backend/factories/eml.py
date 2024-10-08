@@ -72,11 +72,11 @@ def _normalize_received_date(received: dict):
     parts: list[str] = src.split(";")
     last_part = parts[-1].strip()
 
-    received["date"] = (
-        Maybe.from_optional(received.get("date"))
-        .bind_optional(parse_datetime)
-        .value_or(parse_datetime(last_part))
-    )
+    date = received.get("date")
+    if date is None:
+        date = parse_datetime(last_part)
+
+    received["date"] = date.isoformat() if isinstance(date, datetime.datetime) else ""
 
     return received
 
@@ -88,26 +88,22 @@ def _normalize_received(received: list[dict]) -> list[dict]:
     received = [_normalize_received_date(r) for r in received]
     received.reverse()
 
-    first = received[0]
-
-    optional_base_datetime = (
-        Maybe.from_optional(first.get("date"))
-        .bind_optional(parse_datetime)
-        .value_or(None)
-    )
-
+    base_datetime = None
     for r in received:
-        optional_datetime = (
-            Maybe.from_optional(r.get("date"))
-            .bind_optional(parse_datetime)
-            .value_or(None)
-        )
-        if optional_base_datetime is None or optional_datetime is None:
-            continue
-
-        delay = (optional_datetime - optional_base_datetime).seconds
-        r["delay"] = delay
-        optional_base_datetime = optional_datetime
+        current_datetime = r.get('date')
+        if current_datetime is not None:
+            current_datetime = parse_datetime(current_datetime)
+            if current_datetime is not None:
+                if base_datetime is None:
+                    base_datetime = current_datetime
+                
+                delay = int((current_datetime - base_datetime).total_seconds())
+                r['delay'] = delay
+                base_datetime = current_datetime
+            else:
+                r['delay'] = 0
+        else:
+            r['delay'] = 0  # Set delay to 0 if date is missing
 
     return received
 
