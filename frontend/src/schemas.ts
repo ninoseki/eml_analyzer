@@ -59,7 +59,7 @@ export const ReceivedSchema = z.object({
   from: z.array(z.string()).nullish(),
   src: z.string(),
   with: z.string().nullish(),
-  delay: z.number()
+  delay: z.number().nullish()
 })
 
 export type ReceivedType = z.infer<typeof ReceivedSchema>

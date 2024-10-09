@@ -92,3 +92,17 @@ def test_complete_msg(complete_msg: bytes, factory: factories.EmlFactory):
 )
 def test_is_inline_forward_attachment(attachment: dict, expected: bool):
     assert is_inline_forward_attachment(attachment) is expected
+
+
+@pytest.fixture
+def invalid_datetime_eml() -> bytes:
+    with open("tests/fixtures/invalid_datetime.eml", "rb") as f:
+        return f.read()
+
+
+def test_invalid_datetime(factory: factories.EmlFactory, invalid_datetime_eml: bytes):
+    eml = factory.call(invalid_datetime_eml)
+    assert isinstance(eml.header.received[0].date, str)
+    # delay should be None because the base datetime (= header.received[0].date) is invalid
+    for r in eml.header.received:
+        assert r.delay is None
