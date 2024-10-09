@@ -57,12 +57,14 @@ def parse(data: bytes) -> dict:
     return parser.decode_email_bytes(data)
 
 
-def parse_datetime(dt: str | datetime.datetime | None) -> datetime.datetime | None:
-    if isinstance(dt, str):
-        return dateparser.parse(dt)
-
+def parse_datetime(
+    dt: str | datetime.datetime | None,
+) -> datetime.datetime | str | None:
     if isinstance(dt, datetime.datetime):
         return dt
+
+    if isinstance(dt, str):
+        return dateparser.parse(dt) or dt
 
     return None
 
@@ -103,6 +105,11 @@ def _normalize_received(received: list[dict]) -> list[dict]:
             .value_or(None)
         )
         if optional_base_datetime is None or optional_datetime is None:
+            continue
+
+        if not isinstance(optional_base_datetime, datetime.datetime) or not isinstance(
+            optional_datetime, datetime.datetime
+        ):
             continue
 
         delay = (optional_datetime - optional_base_datetime).seconds

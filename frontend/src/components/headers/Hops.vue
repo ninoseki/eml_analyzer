@@ -19,8 +19,15 @@
             <td>{{ toCSV(index.received.from || []) }}</td>
             <td>{{ toCSV(index.received.by || []) }}</td>
             <td>{{ index.received.with }}</td>
-            <td>{{ toUTC(index.received.date) }}</td>
-            <td>{{ humanizeSeconds(index.received.delay) }}</td>
+            <td>
+              {{ toUTC(index.received.date) }}
+            </td>
+            <td>
+              <div v-if="index.received.delay">
+                {{ humanizeSeconds(index.received.delay) }}
+              </div>
+              <div v-else>N/A</div>
+            </td>
           </tr>
         </tbody>
       </table>
