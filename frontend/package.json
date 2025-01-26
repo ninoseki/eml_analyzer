@@ -18,7 +18,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@vueuse/core": "^10.9.0",
     "@vueuse/router": "^10.9.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "bulma": "^1.0.1",
     "bulma-helpers": "^0.4.3",
     "dayjs": "1.11.11",
