@@ -6,43 +6,39 @@ on:
     paths:
       - ".github/workflows/python.yml"
       - "backend/**"
-      - "poetry.lock"
       - "pyproject.toml"
       - "requirements.txt"
       - "tests/**"
+      - "uv.lock"
   pull_request:
     branches: [master]
     paths:
       - ".github/workflows/python.yml"
       - "backend/**"
-      - "poetry.lock"
       - "pyproject.toml"
       - "requirements.txt"
       - "tests/**"
+      - "uv.lock"
 
 env:
   PYTHON_VERSION: 3.11
-  POETRY_VERSION: 1.8.3
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup poetry
-        uses: abatilo/actions-poetry@v3
-        with:
-          poetry-version: ${{ env.POETRY_VERSION }}
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install
-      - name: Ruff check
-        run: poetry run ruff check backend/ tests/
-      - name: Pyupgrade
-        run: poetry run pyupgrade --py311-plus **/*.py
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ env.PYTHON_VERSION }}-${{ hashFiles('uv.lock') }}
+      - run: uv sync --frozen
+      - run: uv run ruff check backend/ tests/
   test:
     runs-on: ubuntu-latest
     services:
@@ -52,23 +48,23 @@ jobs:
           - 783:783
     steps:
       - uses: actions/checkout@v4
-      - name: Setup poetry
-        uses: abatilo/actions-poetry@v3
-        with:
-          poetry-version: ${{ env.POETRY_VERSION }}
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ env.PYTHON_VERSION }}-${{ hashFiles('uv.lock') }}
+      - run: uv sync --frozen
       - name: Make dummy frontend directory
         run: mkdir -p frontend/dist/
       - name: Wait until SpamAssasin ready
-        run: poetry run python scripts/ping.py
+        run: uv run python scripts/ping.py
       - name: Run tests
-        run: poetry run coverage run -m pytest
+        run: uv run coverage run -m pytest
       - name: Coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: poetry run coveralls
+        run: uv run coveralls

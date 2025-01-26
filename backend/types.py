@@ -1,5 +1,5 @@
-import typing
+from typing import TypeVar, Union
 
-T = typing.TypeVar("T")
+T = TypeVar("T")
 
-ListSet = typing.Union[list[T], set[T]]
+ListSet = Union[list[T], set[T]]  # noqa: UP007
