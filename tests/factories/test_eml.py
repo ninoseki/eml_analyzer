@@ -21,7 +21,7 @@ def test_sample(sample_eml: bytes, factory: factories.EmlFactory):
 
 def test_cc(cc_eml: bytes, factory: factories.EmlFactory):
     eml = factory.call(cc_eml)
-    assert eml.header.message_id == "ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com"
+    assert eml.header.message_id == "<ecc38b11-aa06-44c9-b8de-283b06a1d89e@example.com>"
     assert eml.header.subject == "To and Cc headers"
     assert eml.header.to == ["foo.bar@example.com", "info@example.com"]
 

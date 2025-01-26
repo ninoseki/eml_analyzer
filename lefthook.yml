@@ -1,23 +1,19 @@
 pre-commit:
   commands:
-    poetry-check:
+    uv-lock:
       glob: "pyproject.toml"
-      run: poetry check
-    poetry-sort:
+      run: uv lock
+    uv-sort:
       glob: "pyproject.toml"
-      run: poetry sort
+      run: uv run uv-sort
       stage_fixed: true
     ruff:
       glob: "*.py"
-      run: poetry run ruff check --fix {staged_files}
+      run: uv run ruff check --fix {staged_files}
       stage_fixed: true
     ruff-format:
       glob: "*.py"
-      run: poetry run ruff format {staged_files}
-      stage_fixed: true
-    pyupgrade:
-      glob: "*.py"
-      run: poetry run pyupgrade --py311-plus {staged_files}
+      run: uv run ruff format {staged_files}
       stage_fixed: true
     type-check:
       root: "frontend/"
