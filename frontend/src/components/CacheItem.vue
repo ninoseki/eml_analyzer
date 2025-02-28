@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAsyncTask } from 'vue-concurrency'
+
+import { API } from '@/api'
+import ErrorMessage from '@/components/ErrorMessage.vue'
+import Loading from '@/components/LoadingItem.vue'
+
+const getCacheKeysTask = useAsyncTask<string[], []>(async () => {
+  return await API.getCacheKeys()
+})
+
+onMounted(async () => {
+  await getCacheKeysTask.perform()
+})
+</script>
+
 <template>
   <div class="box">
     <h2 class="is-size-4 has-text-weight-bold middle">Cache</h2>
@@ -19,31 +36,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import { useAsyncTask } from 'vue-concurrency'
-
-import { API } from '@/api'
-import ErrorMessage from '@/components/ErrorMessage.vue'
-import Loading from '@/components/Loading.vue'
-
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    ErrorMessage,
-    Loading
-  },
-  setup() {
-    const getCacheKeysTask = useAsyncTask<string[], []>(async () => {
-      return await API.getCacheKeys()
-    })
-
-    onMounted(async () => {
-      await getCacheKeysTask.perform()
-    })
-
-    return { getCacheKeysTask }
-  }
-})
-</script>

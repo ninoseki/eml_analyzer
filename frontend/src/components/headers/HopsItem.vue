@@ -35,8 +35,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, type PropType } from 'vue'
+<script setup lang="ts">
+import { computed, type PropType } from 'vue'
 
 import type { HeaderType, ReceivedType } from '@/schemas'
 import { humanizeSeconds, toCSV, toUTC } from '@/utils'
@@ -46,30 +46,18 @@ interface ReceivedWithIndex {
   received: ReceivedType
 }
 
-export default defineComponent({
-  name: 'HopsComponent',
-  props: {
-    header: {
-      type: Object as PropType<HeaderType>,
-      required: true
-    }
-  },
-  setup(props) {
-    const receivedWithIndexes = computed(() => {
-      const received = props.header.received || []
-
-      const receivedWithIndex: ReceivedWithIndex[] = received.map((recived_, index) => {
-        return { index: index + 1, received: recived_ }
-      })
-      return receivedWithIndex
-    })
-
-    return {
-      receivedWithIndexes,
-      humanizeSeconds,
-      toCSV,
-      toUTC
-    }
+const props = defineProps({
+  header: {
+    type: Object as PropType<HeaderType>,
+    required: true
   }
+})
+const receivedWithIndexes = computed(() => {
+  const received = props.header.received || []
+
+  const receivedWithIndex: ReceivedWithIndex[] = received.map((received_, index) => {
+    return { index: index + 1, received: received_ }
+  })
+  return receivedWithIndex
 })
 </script>

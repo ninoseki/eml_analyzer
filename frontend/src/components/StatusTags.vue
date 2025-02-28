@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { type PropType } from 'vue'
+
+import type { StatusType } from '@/schemas'
+
+defineProps({
+  status: {
+    type: Object as PropType<StatusType>,
+    required: true
+  }
+})
+
+const toClass = (b: boolean) => {
+  return b ? 'is-success' : 'is-warning'
+}
+</script>
+
 <template>
   <div class="tags">
     <span class="tag is-light" :class="toClass(status.cache || false)">Cache</span>
@@ -7,26 +24,3 @@
     <span class="tag is-light" :class="toClass(status.urlscan || false)">urlscan.io</span>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, type PropType } from 'vue'
-
-import type { StatusType } from '@/schemas'
-
-export default defineComponent({
-  name: 'StatusTags',
-  props: {
-    status: {
-      type: Object as PropType<StatusType>,
-      required: true
-    }
-  },
-  setup() {
-    const toClass = (b: boolean) => {
-      return b ? 'is-success' : 'is-warning'
-    }
-
-    return { toClass }
-  }
-})
-</script>

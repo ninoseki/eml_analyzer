@@ -12,9 +12,9 @@ describe('XHeaders.vue', () => {
         propsData: { header }
       })
 
-      const headers = (wrapper.vm as any).xHeaders
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const headers: any[] = (wrapper.vm as any).xHeaders
       expect(headers.length).toBeGreaterThan(0)
-
       headers.forEach((xHeader) => expect(xHeader.key as string).toMatch(/^x-/))
     })
   })
