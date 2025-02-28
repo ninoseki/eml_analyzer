@@ -5,14 +5,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'LoadingItem'
-})
-</script>
-
 <style scoped>
 .loading-overlay {
   bottom: 0;

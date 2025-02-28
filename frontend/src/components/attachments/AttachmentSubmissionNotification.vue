@@ -1,3 +1,21 @@
+<script setup lang="ts">
+defineProps({
+  referenceUrl: {
+    type: String,
+    required: true
+  },
+  disposable: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emits = defineEmits(['dispose'])
+const dispose = () => {
+  emits('dispose')
+}
+</script>
+
 <template>
   <div class="notification is-info is-light">
     <button class="delete" v-if="disposable" @click="dispose"></button>
@@ -5,29 +23,3 @@
     Please wait for a while.
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'AttachmentSubmissionInfoMessage',
-  props: {
-    referenceUrl: {
-      type: String,
-      required: true
-    },
-    disposable: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['dispose'],
-  setup(_, context) {
-    const dispose = () => {
-      context.emit('dispose')
-    }
-
-    return { dispose }
-  }
-})
-</script>

@@ -13,7 +13,8 @@ describe('SecurityHeaders.vue', () => {
         propsData: { header }
       })
 
-      const headers = (wrapper.vm as any).securityHeaders
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const headers: any[] = (wrapper.vm as any).securityHeaders
       expect(headers.length).toBeGreaterThan(0)
 
       const keys = headers.map((securityHeader) => securityHeader.key) as string[]

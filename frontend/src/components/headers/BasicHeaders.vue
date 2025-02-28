@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { type PropType } from 'vue'
+
+import IndicatorButton from '@/components/IndicatorButton.vue'
+import type { HeaderType } from '@/schemas'
+import { toUTC } from '@/utils'
+
+defineProps({
+  header: {
+    type: Object as PropType<HeaderType>,
+    required: true
+  }
+})
+</script>
+
 <template>
   <div class="block">
     <h3 class="is-size-5 has-text-weight-bold">Basic headers</h3>
@@ -45,25 +60,3 @@
     </table>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, type PropType } from 'vue'
-
-import IndicatorButton from '@/components/IndicatorButton.vue'
-import type { HeaderType } from '@/schemas'
-import { toUTC } from '@/utils'
-
-export default defineComponent({
-  name: 'BasicHeaders',
-  props: {
-    header: {
-      type: Object as PropType<HeaderType>,
-      required: true
-    }
-  },
-  components: { IndicatorButton },
-  setup() {
-    return { toUTC }
-  }
-})
-</script>

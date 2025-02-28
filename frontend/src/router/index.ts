@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 
-import Cache from '@/views/Cache.vue'
+import Cache from '@/views/CacheView.vue'
 import Home from '@/views/HomeView.vue'
 import Lookup from '@/views/LookupView.vue'
 

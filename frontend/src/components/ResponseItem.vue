@@ -2,7 +2,7 @@
 import { computed, type PropType } from 'vue'
 
 import Eml from '@/components/EmlItem.vue'
-import Verdicts from '@/components/verdicts/Verdicts.vue'
+import Verdicts from '@/components/verdicts/VerdictsItem.vue'
 import type { ResponseType } from '@/schemas'
 import { useStatusStore } from '@/store'
 

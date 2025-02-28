@@ -4,7 +4,7 @@ import { useAsyncTask } from 'vue-concurrency'
 
 import { API } from '@/api'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import Loading from '@/components/Loading.vue'
+import Loading from '@/components/LoadingItem.vue'
 import Response from '@/components/ResponseItem.vue'
 import type { ResponseType } from '@/schemas'
 import { useStatusStore } from '@/store'

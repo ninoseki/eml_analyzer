@@ -3,7 +3,7 @@ import { type PropType } from 'vue'
 
 import Attachments from '@/components/attachments/AttachmentsItem.vue'
 import Bodies from '@/components/bodies/BodiesItem.vue'
-import Headers from '@/components/headers/Headers.vue'
+import Headers from '@/components/headers/HeadersItem.vue'
 import type { EmlType } from '@/schemas'
 
 defineProps({
