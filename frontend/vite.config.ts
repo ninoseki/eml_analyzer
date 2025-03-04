@@ -6,11 +6,17 @@ import { defineConfig } from 'vite'
 const env = process.env
 const target = env.BACKEND_URL || 'http://localhost:8000/'
 
+const basePath = env.VITE_BASE_PATH || '/'
+const apiPath = `${basePath}api`
+
 export default defineConfig({
+  base: basePath,
   plugins: [vue()],
   server: {
+    allowedHosts: true,
+    origin: '',
     proxy: {
-      '/api': target
+      [apiPath]: target
     }
   },
   resolve: {
