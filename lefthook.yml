@@ -5,7 +5,7 @@ pre-commit:
       run: uv lock
     uv-sort:
       glob: "pyproject.toml"
-      run: uv run uv-sort
+      run: uvx uv-sort
       stage_fixed: true
     ruff:
       glob: "*.py"
