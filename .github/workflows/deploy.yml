@@ -7,10 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       # ref. https://github.com/AkhileshNS/heroku-deploy/issues/188
       - run: curl https://cli-assets.heroku.com/install.sh | sh
-      - uses: akhileshns/heroku-deploy@v3.13.15
+      - uses: akhileshns/heroku-deploy@e3eb99d45a8e2ec5dca08735e089607befa4bf28 # v3.14.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "eml-analyzer"
