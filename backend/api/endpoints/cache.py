@@ -12,16 +12,10 @@ router = APIRouter()
     description="Try to get analysis cache keys",
 )
 async def cache_keys(optional_redis: dependencies.OptionalRedis) -> list[str]:
-    if optional_redis is None:
+    if optional_redis is None or not settings.REDIS_CACHE_LIST_AVAILABLE:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
             detail="Redis cache is not enabled",
-        )
-
-    if not settings.REDIS_CACHE_LIST_AVAILABLE:
-        raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="Redis cache is not available",
         )
 
     byte_keys: list[bytes] = optional_redis.keys(f"{settings.REDIS_KEY_PREFIX}:*")  # type: ignore
