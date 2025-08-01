@@ -17,12 +17,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="block">
-    <h2 class="is-size-4 has-text-weight-bold middle">Headers</h2>
-    <BasicHeaders :header="header" />
-    <Hops :header="header" />
-    <SecurityHeaders :header="header" />
-    <XHeaders :header="header" />
-    <OtherHeaders :header="header" />
-  </div>
+  <h2 class="text-2xl font-bold middle">Headers</h2>
+  <Hops :header="header" />
+  <BasicHeaders :header="header" />
+  <SecurityHeaders :header="header" />
+  <XHeaders :header="header" />
+  <OtherHeaders :header="header" />
 </template>

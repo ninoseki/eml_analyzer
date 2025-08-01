@@ -43,11 +43,14 @@ const confirm = () => {
 </script>
 
 <template>
-  <span class="button is-light" @click="confirm">
-    <span class="icon">
-      <font-awesome-icon icon="spinner" spin v-if="submitTask.isRunning"></font-awesome-icon>
-      <font-awesome-icon icon="upload" v-else></font-awesome-icon>
-    </span>
+  <button class="btn" @click="confirm">
+    <font-awesome-icon
+      icon="spinner"
+      spin
+      v-if="submitTask.isRunning"
+      class="w-4 h-4"
+    ></font-awesome-icon>
+    <font-awesome-icon icon="upload" v-else class="w-4 h-4"></font-awesome-icon>
     <span>{{ submitter.name }}</span>
-  </span>
+  </button>
 </template>

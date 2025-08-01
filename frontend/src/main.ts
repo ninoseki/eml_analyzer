@@ -1,12 +1,12 @@
-import 'bulma/css/bulma.css'
-import 'bulma-helpers/css/bulma-helpers.min.css'
 import 'font-awesome-animation/css/font-awesome-animation.min.css'
+import '@/style.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faAngleDown,
   faCopy,
   faDownload,
+  faIdBadge,
   faInfoCircle,
   faLink,
   faSearch,
@@ -28,7 +28,8 @@ library.add(
   faDownload,
   faUpload,
   faInfoCircle,
-  faCopy
+  faCopy,
+  faIdBadge
 )
 const pinia = createPinia()
 

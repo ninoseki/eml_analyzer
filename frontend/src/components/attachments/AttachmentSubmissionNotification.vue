@@ -17,9 +17,17 @@ const dispose = () => {
 </script>
 
 <template>
-  <div class="notification is-info is-light">
-    <button class="delete" v-if="disposable" @click="dispose"></button>
-    The submission result will be available at <a :href="referenceUrl" target="_blank">here</a>.
-    Please wait for a while.
+  <div class="alert alert-info">
+    <button
+      class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+      v-if="disposable"
+      @click="dispose"
+    >
+      ✕
+    </button>
+    <span
+      >The submission result will be available at <a :href="referenceUrl" target="_blank">here</a>.
+      Please wait for a while.</span
+    >
   </div>
 </template>

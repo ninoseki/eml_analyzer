@@ -13,13 +13,33 @@ const props = defineProps({
 })
 
 const html = computedAsync(async () => {
-  if (props.contentType === 'text/html') {
-    return await codeToHtml(props.content, { lang: 'html', theme: 'github-dark-default' })
+  const render = async () => {
+    if (props.contentType === 'text/html') {
+      return await codeToHtml(props.content, { lang: 'html', theme: 'github-dark-default' })
+    }
+    return await codeToHtml(props.content, { lang: 'text', theme: 'github-dark-default' })
   }
-  return await codeToHtml(props.content, { lang: 'text', theme: 'github-dark-default' })
+  return await render()
 })
 </script>
 
 <template>
-  <div v-html="html"></div>
+  <div class="mockup-code w-full px-6 my-4 bg-[#0d1117]" v-html="html"></div>
 </template>
+
+<style>
+pre.shiki > code {
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+pre.shiki {
+  overflow-x: auto;
+}
+
+pre.shiki::before {
+  content: none !important;
+  display: none !important;
+}
+</style>

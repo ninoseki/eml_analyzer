@@ -14,49 +14,41 @@ defineProps({
 </script>
 
 <template>
-  <div class="block">
-    <h3 class="is-size-5 has-text-weight-bold">Basic headers</h3>
-    <table class="table is-fullwidth is-completely-borderless">
-      <tbody>
-        <tr>
-          <th>Message ID</th>
-          <td>{{ header.messageId || 'N/A' }}</td>
-        </tr>
-        <tr>
-          <th>Subject</th>
-          <td>{{ header.subject }}</td>
-        </tr>
-        <tr>
-          <th>Date (UTC)</th>
-          <td>
-            {{ toUTC(header.date) }}
-          </td>
-        </tr>
-        <tr v-if="header.from">
-          <th>From</th>
-          <td>
-            <div class="dropdowns">
-              <IndicatorButton :value="header.from" />
-            </div>
-          </td>
-        </tr>
-        <tr v-if="header.to.length > 0">
-          <th>To</th>
-          <td>
-            <div class="dropdowns">
-              <IndicatorButton :value="email" v-for="email in header.to" :key="email" />
-            </div>
-          </td>
-        </tr>
-        <tr v-if="(header.cc || []).length > 0">
-          <th>Cc</th>
-          <td>
-            <div class="dropdowns">
-              <IndicatorButton :value="email" v-for="email in header.cc" :key="email" />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <h3 class="text-lg font-bold">Basic headers</h3>
+  <table class="table w-full break-all">
+    <tbody>
+      <tr>
+        <th class="w-80">Message ID</th>
+        <td>{{ header.messageId || 'N/A' }}</td>
+      </tr>
+      <tr>
+        <th class="w-80">Subject</th>
+        <td>{{ header.subject }}</td>
+      </tr>
+      <tr>
+        <th class="w-80">Date (UTC)</th>
+        <td>
+          {{ toUTC(header.date) }}
+        </td>
+      </tr>
+      <tr v-if="header.from">
+        <th class="w-80">From</th>
+        <td>
+          <IndicatorButton :value="header.from" />
+        </td>
+      </tr>
+      <tr v-if="header.to.length > 0">
+        <th class="w-80">To</th>
+        <td>
+          <IndicatorButton :value="email" v-for="email in header.to" :key="email" />
+        </td>
+      </tr>
+      <tr v-if="(header.cc || []).length > 0">
+        <th class="w-80">Cc</th>
+        <td>
+          <IndicatorButton :value="email" v-for="email in header.cc" :key="email" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>

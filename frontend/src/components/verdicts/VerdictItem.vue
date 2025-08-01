@@ -2,7 +2,7 @@
 import { computed, type PropType } from 'vue'
 
 import Detail from '@/components/verdicts/DetailItem.vue'
-import type { VerdictType } from '@/schemas'
+import type { DetailType, VerdictType } from '@/schemas'
 
 const props = defineProps({
   verdict: {
@@ -12,23 +12,35 @@ const props = defineProps({
 })
 
 const title = computed(() => {
-  return `${props.verdict.name} (score: ${props.verdict.score || 'N/A'})`
+  return `${props.verdict.name}`
 })
-const type = computed(() => {
-  return props.verdict.malicious ? 'is-warning' : 'is-success'
+
+const score = computed(() => {
+  return props.verdict.score ? props.verdict.score.toFixed(2) : 'N/A'
+})
+
+const cardType = computed(() => {
+  return props.verdict.malicious ? 'border-warning' : 'border-success'
+})
+
+const details = computed((): DetailType[] => {
+  if (props.verdict.details.length > 0) {
+    return props.verdict.details
+  }
+  return [{ key: 'N/A', description: 'No details available', score: null }]
 })
 </script>
 
 <template>
-  <article class="message mt-2 mb-2" :class="type">
-    <div class="message-header">
-      <p>{{ title }}</p>
+  <div class="card border-l-4 border-1" :class="cardType">
+    <div class="card-body">
+      <h3 class="card-title text-base">
+        {{ title }}
+        <div class="badge">{{ score }}</div>
+      </h3>
+      <ul class="list">
+        <Detail v-for="detail in details" :detail="detail" :key="detail.key" />
+      </ul>
     </div>
-    <div class="message-body content">
-      <div v-if="verdict.details.length > 0">
-        <Detail v-for="detail in verdict.details" :detail="detail" :key="detail.key" />
-      </div>
-      <div v-else>N/A</div>
-    </div>
-  </article>
+  </div>
 </template>

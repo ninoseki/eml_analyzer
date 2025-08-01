@@ -1,25 +1,45 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { onMounted, type PropType, ref } from 'vue'
 
 import Attachment from '@/components/attachments/AttachmentItem.vue'
 import type { AttachmentType } from '@/schemas'
 
-defineProps({
+const props = defineProps({
   attachments: {
     type: Array as PropType<AttachmentType[]>,
     required: true
   }
 })
+
+const selectedAttachment = ref<AttachmentType>()
+const selectedTabIndex = ref(0)
+
+const select = (attachment: AttachmentType, index: number) => {
+  selectedAttachment.value = attachment
+  selectedTabIndex.value = index
+}
+
+onMounted(() => {
+  if (props.attachments.length > 0) {
+    selectedAttachment.value = props.attachments[0]
+    selectedTabIndex.value = 0
+  }
+})
 </script>
 
 <template>
-  <div class="block">
-    <h2 class="is-size-4 has-text-weight-bold middle">Attachments</h2>
-    <Attachment
+  <h2 class="text-2xl font-bold middle">Attachments</h2>
+  <div role="tablist" class="tabs tabs-border justify-center">
+    <a
+      role="tab"
+      class="tab"
+      :class="{ 'tab-active': selectedTabIndex === index }"
       v-for="(attachment, index) in attachments"
       :key="attachment.hash.md5"
       :attachment="attachment"
-      :index="index"
-    />
+      @click="select(attachment, index)"
+      >{{ index + 1 }}</a
+    >
   </div>
+  <Attachment :attachment="selectedAttachment" v-if="selectedAttachment" />
 </template>
