@@ -32,7 +32,7 @@ const details = computed((): DetailType[] => {
 </script>
 
 <template>
-  <div class="card border-l-4 border-1" :class="cardType">
+  <div class="card border-1" :class="cardType">
     <div class="card-body">
       <h3 class="card-title text-base">
         {{ title }}
