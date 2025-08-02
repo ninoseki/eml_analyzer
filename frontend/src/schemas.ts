@@ -1,5 +1,14 @@
 import { z } from 'zod'
 
+// ref. https://github.com/colinhacks/zod/issues/4143#issuecomment-2845134912
+const functionSchema = <T extends z.core.$ZodFunction>(schema: T) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  z.custom<Parameters<T['implement']>[0]>((fn) => schema.implement(fn as any))
+
+const asyncFunctionSchema = <T extends z.core.$ZodFunction>(schema: T) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  z.custom<Parameters<T['implementAsync']>[0]>((fn) => schema.implementAsync(fn as any))
+
 export const StatusSchema = z.object({
   cache: z.boolean().optional(),
   vt: z.boolean().optional(),
@@ -24,7 +33,7 @@ export const HeaderItemSchema = z.object({
 
 export type HeaderItemType = z.infer<typeof HeaderItemSchema>
 
-const DictionarySchema = z.record(z.array(z.union([z.string(), z.number()])))
+const DictionarySchema = z.record(z.string(), z.array(z.union([z.string(), z.number()])))
 
 export const AttachmentSchema = z.object({
   raw: z.string(),
@@ -159,7 +168,7 @@ export const LinkSchema = z.object({
   type: z.string(),
   baseURL: z.string(),
   favicon: z.string(),
-  href: z.function().args(z.string()).returns(z.string())
+  href: functionSchema(z.function({ input: [z.string()], output: z.string() }))
 })
 
 export type LinkType = z.infer<typeof LinkSchema>
@@ -172,7 +181,9 @@ export const SubmitterSchema = z.object({
   name: z.string(),
   type: SubmitTypeSchema,
   favicon: z.string(),
-  submit: z.function().args(AttachmentSchema).returns(z.promise(SubmissionResultSchema))
+  submit: asyncFunctionSchema(
+    z.function({ input: [AttachmentSchema], output: z.promise(SubmissionResultSchema) })
+  )
 })
 
 export type SubmitterType = z.infer<typeof SubmitterSchema>
