@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
 import { API } from '@/api'
+import Divider from '@/components/DividerItem.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/LoadingItem.vue'
 import Response from '@/components/ResponseItem.vue'
@@ -54,55 +55,45 @@ watch(file, () => {
 </script>
 
 <template>
-  <div class="box">
-    <article class="message is-info">
-      <div class="message-body content">
-        <ul>
-          <li>EML (<b>.eml</b>) and MSG (<b>.msg</b>) formats are supported.</li>
-          <li>
-            The MSG file will be converted to the EML file before analyzing. The conversion might be
-            lossy.
-          </li>
-          <li v-if="!status.cache">This app doesn't store EML/MSG file you upload.</li>
-        </ul>
+  <div class="grid gap-4">
+    <div class="alert border-info">
+      <font-awesome-icon icon="info-circle" class="w-6 h-6 mr-2" />
+      <ul class="list-disc list-inside space-y-1">
+        <li>EML (<b>.eml</b>) and MSG (<b>.msg</b>) formats are supported.</li>
+        <li>
+          The MSG file will be converted to the EML file before analyzing. The conversion might be
+          lossy.
+        </li>
+        <li v-if="!status.cache">This app doesn't store EML/MSG file you upload.</li>
+      </ul>
+    </div>
+    <div
+      class="w-full flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md upload-draggable"
+      @dragover.prevent="updateDragDropFocus(true)"
+      @dragleave.prevent="updateDragDropFocus(false)"
+      @dragenter.prevent="updateDragDropFocus(true)"
+      @drop.prevent="onFileChangeDrop"
+    >
+      <div class="text-center py-16">
+        <p>
+          <span class="text-4xl">
+            <font-awesome-icon icon="upload"></font-awesome-icon>
+          </span>
+        </p>
+        <p class="mt-4">Drop the EML/MSG file here or click to upload</p>
       </div>
-    </article>
-    <div class="field">
-      <label class="upload control is-expanded">
-        <div
-          class="upload-draggable is-primary is-expanded"
-          @dragover.prevent="updateDragDropFocus(true)"
-          @dragleave.prevent="updateDragDropFocus(false)"
-          @dragenter.prevent="updateDragDropFocus(true)"
-          @drop.prevent="onFileChangeDrop"
-        >
-          <section class="section">
-            <div class="content has-text-centered">
-              <p>
-                <span class="icon is-large">
-                  <font-awesome-icon icon="upload"></font-awesome-icon>
-                </span>
-              </p>
-              <p>Drop the EML/MSG file here or click to upload</p>
-            </div>
-          </section>
-        </div>
-        <input type="file" @change="onFileChange"
-      /></label>
+      <input type="file" @change="onFileChange" />
     </div>
-    <div class="has-text-centered mt-3 mb-3" v-if="filename">
-      <p>{{ filename }}</p>
-    </div>
-    <div class="has-text-centered">
-      <button class="button is-light" @click="analyze">
-        <span class="icon is-small">
-          <font-awesome-icon icon="search"></font-awesome-icon>
-        </span>
-        <span>Analyze</span>
+    <div class="text-center">
+      <p class="mb-4" v-if="filename">{{ filename }}</p>
+      <button class="btn btn-primary" @click="analyze">
+        <font-awesome-icon icon="search" class="w-4 h-4"></font-awesome-icon>
+        Analyze
       </button>
     </div>
   </div>
-  <Loading v-if="analyzeTask.isRunning"></Loading>
+  <Divider />
+  <Loading v-if="analyzeTask.isRunning" />
   <ErrorMessage :error="analyzeTask.last?.error" v-if="analyzeTask.isError" />
   <Response
     :response="analyzeTask.last.value"
@@ -111,12 +102,7 @@ watch(file, () => {
 </template>
 
 <style scoped>
-.upload {
-  position: relative;
-  display: inline-flex;
-}
-
-.upload input[type='file'] {
+input[type='file'] {
   position: absolute;
   top: 0;
   left: 0;
@@ -128,39 +114,15 @@ watch(file, () => {
   z-index: -1;
 }
 
-.upload .upload-draggable {
+.upload-draggable {
   cursor: pointer;
   padding: 0.25em;
   border: 1px dashed hsl(0, 0%, 71%);
   border-radius: 6px;
 }
 
-.upload .upload-draggable:hover {
+.upload-draggable:hover {
   border-color: #7957d5;
   background: rgba(121, 87, 213, 0.05);
-}
-
-.upload .upload-draggable.is-expanded,
-.upload.is-expanded {
-  width: 100%;
-}
-
-.upload.is-rounded {
-  border-radius: 9999px;
-}
-
-.upload.is-rounded .file-name {
-  border-top-right-radius: 9999px;
-  border-bottom-right-radius: 9999px;
-}
-
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  .upload input[type='file'] {
-    z-index: auto;
-  }
-
-  .upload .upload-draggable + input[type='file'] {
-    z-index: -1;
-  }
 }
 </style>

@@ -28,10 +28,8 @@ const confirm = () => {
 </script>
 
 <template>
-  <span class="button is-light" @click="confirm">
-    <span class="icon">
-      <font-awesome-icon icon="download"></font-awesome-icon>
-    </span>
+  <button class="btn" @click="confirm">
+    <font-awesome-icon icon="download" class="w-4 h-4"></font-awesome-icon>
     <span>Download</span>
-  </span>
+  </button>
 </template>

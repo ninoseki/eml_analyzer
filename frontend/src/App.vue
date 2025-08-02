@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import Navbar from '@/components/Navbar.vue'
+import Navbar from '@/components/NavbarItem.vue'
 import { useStatusStore } from '@/store'
 
 const store = useStatusStore()
@@ -13,26 +13,9 @@ onMounted(async () => {
 
 <template>
   <Navbar />
-  <section class="section is-medium">
-    <div class="container">
+  <section class="py-16">
+    <div class="container mx-auto px-4">
       <router-view />
     </div>
   </section>
 </template>
-
-<style>
-html {
-  background-color: #fafafa !important;
-}
-
-pre {
-  white-space: pre;
-  white-space: pre-wrap;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-
-table.is-fullwidth th {
-  width: 360px;
-}
-</style>

@@ -1,10 +1,3 @@
-<template>
-  <div class="block" v-if="otherHeaders.length > 0">
-    <h3 class="is-size-5 has-text-weight-bold">Other headers</h3>
-    <FlattenHeaders :headers="otherHeaders" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 
@@ -35,3 +28,10 @@ const otherHeaders = computed(() => {
   return items.filter((x): x is HeaderItemType => x !== undefined)
 })
 </script>
+
+<template>
+  <div v-if="otherHeaders.length > 0">
+    <h3 class="text-lg font-bold">Other headers</h3>
+    <FlattenHeaders :headers="otherHeaders" />
+  </div>
+</template>

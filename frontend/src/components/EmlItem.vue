@@ -15,7 +15,11 @@ defineProps({
 </script>
 
 <template>
-  <Headers :header="eml.header" />
-  <Bodies :bodies="eml.bodies" v-if="eml.bodies.length > 0" />
-  <Attachments :attachments="eml.attachments" v-if="eml.attachments.length > 0" />
+  <Headers class="grid gap-4" :header="eml.header" />
+  <Bodies class="grid gap-4" :bodies="eml.bodies" v-if="eml.bodies.length > 0" />
+  <Attachments
+    class="grid gap-4"
+    :attachments="eml.attachments"
+    v-if="eml.attachments.length > 0"
+  />
 </template>

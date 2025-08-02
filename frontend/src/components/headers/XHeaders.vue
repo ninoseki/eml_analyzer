@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 
 import FlattenHeaders from '@/components/headers/FlattenHeaders.vue'
 import type { HeaderItemType, HeaderType } from '@/schemas'
@@ -27,8 +27,8 @@ const xHeaders = computed(() => {
 </script>
 
 <template>
-  <div class="block" v-if="xHeaders.length > 0">
-    <h3 class="is-size-5 has-text-weight-bold">X headers</h3>
+  <div v-if="xHeaders.length > 0">
+    <h3 class="text-lg font-bold">X headers</h3>
     <FlattenHeaders :headers="xHeaders" />
   </div>
 </template>

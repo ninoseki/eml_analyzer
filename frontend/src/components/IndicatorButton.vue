@@ -29,36 +29,24 @@ const copyToClipboard = () => {
 </script>
 
 <template>
-  <div class="dropdown is-hoverable is-right">
-    <div class="dropdown-trigger">
-      <button class="button is-light is-link">
-        <span>{{ truncate(value, 64) }}</span>
-        <span class="icon is-small">
-          <font-awesome-icon icon="angle-down" aria-hidden="true"></font-awesome-icon>
-        </span>
-      </button>
+  <div class="dropdown dropdown-end dropdown-hover">
+    <div tabindex="0" role="button" class="btn">
+      <span>{{ truncate(value, 64) }}</span>
+      <font-awesome-icon icon="angle-down" aria-hidden="true" class="w-4 h-4"></font-awesome-icon>
     </div>
-    <div class="dropdown-menu">
-      <div class="dropdown-content">
-        <a class="dropdown-item" @click="copyToClipboard">
-          <span class="icon">
-            <font-awesome-icon icon="copy"></font-awesome-icon>
-          </span>
+    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+      <li>
+        <a @click="copyToClipboard">
+          <font-awesome-icon icon="copy" class="w-4 h-4"></font-awesome-icon>
           <span>Copy to clipboard</span>
         </a>
-        <a
-          :href="link.href(value)"
-          class="dropdown-item"
-          target="_blank"
-          v-for="(link, index) in links"
-          :key="index"
-        >
-          <span class="icon">
-            <img :src="link.favicon" alt="favicon" />
-          </span>
+      </li>
+      <li v-for="(link, index) in links" :key="index">
+        <a :href="link.href(value)" target="_blank">
+          <img :src="link.favicon" alt="favicon" class="w-4 h-4" />
           <span>{{ link.name }}</span>
         </a>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>

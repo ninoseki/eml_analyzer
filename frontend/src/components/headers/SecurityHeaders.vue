@@ -23,8 +23,8 @@ const securityHeaders = computed(() => {
 </script>
 
 <template>
-  <div class="block" v-if="securityHeaders.length > 0">
-    <h3 class="is-size-5 has-text-weight-bold">Security headers</h3>
+  <div v-if="securityHeaders.length > 0">
+    <h3 class="text-lg font-bold">Security headers</h3>
     <FlattenHeaders :headers="securityHeaders" />
   </div>
 </template>

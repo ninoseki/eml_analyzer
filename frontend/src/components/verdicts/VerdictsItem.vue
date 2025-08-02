@@ -13,8 +13,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="block">
-    <h2 class="is-size-4 has-text-weight-bold middle">Verdicts</h2>
+  <div class="grid gap-4">
+    <h2 class="text-2xl font-bold middle">Verdicts</h2>
     <Verdict v-for="verdict in verdicts" :key="verdict.name" :verdict="verdict" />
   </div>
 </template>

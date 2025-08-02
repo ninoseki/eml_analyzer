@@ -32,8 +32,14 @@ const dispose = () => {
 </script>
 
 <template>
-  <div class="notification is-danger is-light">
-    <button class="delete" v-if="disposable" @click="dispose"></button>
+  <div class="alert alert-error">
+    <button
+      class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+      v-if="disposable"
+      @click="dispose"
+    >
+      ✕
+    </button>
     <div v-if="data?.detail">
       <div v-if="typeof data.detail === 'string'">
         {{ data.detail }}

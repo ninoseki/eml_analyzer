@@ -36,14 +36,12 @@ const flattenHeaders = computed(() => {
 </script>
 
 <template>
-  <div class="table-container">
-    <table class="table is-fullwidth is-completely-borderless" v-if="flattenHeaders.length > 0">
-      <tbody>
-        <tr v-for="header in flattenHeaders" :key="header.id">
-          <th>{{ header.key }}</th>
-          <td>{{ header.value }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table class="table w-full break-all" v-if="flattenHeaders.length > 0">
+    <tbody>
+      <tr v-for="header in flattenHeaders" :key="header.id">
+        <th class="w-80">{{ header.key }}</th>
+        <td>{{ header.value }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
