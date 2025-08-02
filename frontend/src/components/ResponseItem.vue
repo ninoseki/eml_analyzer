@@ -19,9 +19,9 @@ const status = computed(() => store.$state)
 
 <template>
   <div class="grid gap-4">
-    <div class="grid gap-4">
+    <div class="grid gap-4" v-if="status.cache">
       <h2 class="text-2xl font-bold middle">Cache</h2>
-      <div class="card border-l-4 border-1 border-info" v-if="status.cache">
+      <div class="card border-1 border-info">
         <div class="card-body">
           <h3 class="card-title text-base">ID</h3>
           <router-link :to="{ name: 'Lookup', params: { id: response.id } }">{{
