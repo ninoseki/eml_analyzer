@@ -11,7 +11,7 @@ const status = computed(() => {
 
 const toggleTheme = () => {
   const currentTheme = document.documentElement.getAttribute('data-theme')
-  const newTheme = currentTheme === 'synthwave' ? 'light' : 'synthwave'
+  const newTheme = currentTheme !== 'light' ? 'light' : 'synthwave'
   document.documentElement.setAttribute('data-theme', newTheme)
 }
 </script>
