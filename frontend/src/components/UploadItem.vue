@@ -111,10 +111,10 @@ input[type='file'] {
   opacity: 0;
   outline: none;
   cursor: pointer;
-  z-index: -1;
 }
 
 .upload-draggable {
+  position: relative;
   cursor: pointer;
   padding: 0.25em;
   border: 1px dashed hsl(0, 0%, 71%);
