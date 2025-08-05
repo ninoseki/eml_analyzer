@@ -11,7 +11,7 @@ const status = computed(() => {
 
 const toggleTheme = () => {
   const currentTheme = document.documentElement.getAttribute('data-theme')
-  const newTheme = currentTheme !== 'light' ? 'light' : 'synthwave'
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
   document.documentElement.setAttribute('data-theme', newTheme)
 }
 </script>
@@ -35,12 +35,7 @@ const toggleTheme = () => {
     </div>
     <div class="navbar-end">
       <StatusTags :status="status" />
-      <input
-        type="checkbox"
-        value="synthwave"
-        class="toggle theme-controller ml-2"
-        @change="toggleTheme"
-      />
+      <input type="checkbox" class="toggle theme-controller ml-2" @change="toggleTheme" />
     </div>
   </nav>
 </template>
