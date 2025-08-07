@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core'
 import { computed } from 'vue'
 
 import StatusTags from '@/components/StatusTags.vue'
@@ -9,11 +10,14 @@ const status = computed(() => {
   return store.$state
 })
 
-const toggleTheme = () => {
-  const currentTheme = document.documentElement.getAttribute('data-theme')
-  const newTheme = currentTheme !== 'light' ? 'light' : 'synthwave'
-  document.documentElement.setAttribute('data-theme', newTheme)
-}
+const isDark = useDark({
+  selector: 'html',
+  attribute: 'data-theme',
+  valueDark: 'dark',
+  valueLight: 'light'
+})
+
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
@@ -37,9 +41,9 @@ const toggleTheme = () => {
       <StatusTags :status="status" />
       <input
         type="checkbox"
-        value="synthwave"
+        :checked="isDark"
         class="toggle theme-controller ml-2"
-        @change="toggleTheme"
+        @change="toggleDark()"
       />
     </div>
   </nav>
