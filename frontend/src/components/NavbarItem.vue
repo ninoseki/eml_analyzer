@@ -11,7 +11,7 @@ const status = computed(() => {
 })
 
 const isDark = useDark({
-  selector: 'body',
+  selector: 'html',
   attribute: 'data-theme',
   valueDark: 'dark',
   valueLight: 'light'
