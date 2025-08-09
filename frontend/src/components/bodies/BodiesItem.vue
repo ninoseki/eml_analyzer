@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import truncate from 'just-truncate'
 import { onMounted, type PropType, ref } from 'vue'
 
 import BodyComponent from '@/components/bodies/BodyItem.vue'
@@ -38,7 +39,7 @@ onMounted(() => {
       :key="body.hash"
       :body="body"
       @click="select(body, index)"
-      >{{ index + 1 }}</a
+      >{{ truncate(body.contentType || index.toString(), 16) }}</a
     >
   </div>
   <BodyComponent :body="selectedBody" v-if="selectedBody" />

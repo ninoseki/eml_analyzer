@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import truncate from 'just-truncate'
 import { onMounted, type PropType, ref } from 'vue'
 
 import Attachment from '@/components/attachments/AttachmentItem.vue'
@@ -38,7 +39,7 @@ onMounted(() => {
       :key="attachment.hash.md5"
       :attachment="attachment"
       @click="select(attachment, index)"
-      >{{ index + 1 }}</a
+      >{{ truncate(attachment.filename, 16) }}</a
     >
   </div>
   <Attachment :attachment="selectedAttachment" v-if="selectedAttachment" />
