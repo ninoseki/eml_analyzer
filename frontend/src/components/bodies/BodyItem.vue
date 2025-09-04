@@ -11,14 +11,18 @@ defineProps({
     required: true
   },
   inlineAttachments: {
-    type: Object,
+    type: Object as PropType<Record<string, string | undefined>>,
     required: true
-  },
+  }
 })
 </script>
 
 <template>
-  <ContentComponent :content="body.content" :inlineAttachments="inlineAttachments" :contentType="body.contentType || undefined" />
+  <ContentComponent
+    :content="body.content"
+    :inlineAttachments="inlineAttachments"
+    :contentType="body.contentType || undefined"
+  />
   <table class="table w-full break-all">
     <tbody>
       <tr>

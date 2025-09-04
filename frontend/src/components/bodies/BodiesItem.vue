@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import truncate from 'just-truncate'
-import { onMounted, type PropType, ref } from 'vue'
+import { computed, onMounted, type PropType, ref } from 'vue'
 
 import BodyComponent from '@/components/bodies/BodyItem.vue'
 import type { AttachmentType, BodyType } from '@/schemas'
@@ -18,7 +18,19 @@ const props = defineProps({
 
 const selectedBody = ref<BodyType>()
 const selectedTabIndex = ref(0)
-const inlineAttachments: { [contentId: string]: string } = {};
+const inlineAttachments = computed(() => {
+  const mapped = props.attachments.map((attachment) => {
+    const contentId = attachment.contentId?.replace(/^<|>$/g, '')
+    const data = `data:image/png;base64, ${attachment.raw}`
+    if (contentId) {
+      return [contentId, data]
+    }
+    return undefined
+  })
+  return Object.fromEntries(
+    mapped.filter((entry) => entry !== undefined) as [string, string | undefined][]
+  )
+})
 
 const select = (body: BodyType, index: number) => {
   selectedBody.value = body
@@ -30,18 +42,6 @@ onMounted(() => {
     selectedBody.value = props.bodies[0]
     selectedTabIndex.value = 0
   }
-
-  for(const attachment of props.attachments){
-    let contentId = attachment.contentId;
-
-    if (contentId) {
-      if (contentId.charAt(0) == "<"){
-        contentId = contentId.slice(1, -1);
-      }
-      inlineAttachments[contentId] = `data:image/png;base64, ${attachment.raw}`;
-    }
-  }
-
 })
 </script>
 

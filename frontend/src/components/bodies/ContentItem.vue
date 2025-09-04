@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core'
 import { codeToHtml } from 'shiki'
+import { type PropType } from 'vue'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -12,9 +13,9 @@ const props = defineProps({
     type: String
   },
   inlineAttachments: {
-    type: Object,
+    type: Object as PropType<Record<string, string | undefined>>,
     required: true
-  },
+  }
 })
 
 const isHTMLContent = computed(() => {
@@ -22,25 +23,23 @@ const isHTMLContent = computed(() => {
 })
 
 const HTMLContent = computed(() => {
-  const CIDPrefix = "cid:";
+  const CIDPrefix = 'cid:'
 
-  const parser = new DOMParser();
-  const parsedHTML = parser.parseFromString(props.content, 'text/html');
-  const imageTags = parsedHTML.querySelectorAll("img");
+  const parser = new DOMParser()
+  const parsedHTML = parser.parseFromString(props.content, 'text/html')
+  const imageTags = parsedHTML.querySelectorAll('img')
 
-  imageTags.forEach(tag => {
-    if(tag.src.startsWith(CIDPrefix)){
-
-      const imageCID = tag.src.slice(CIDPrefix.length);
-      const inlinedImage = props.inlineAttachments[imageCID];
-
-      if(inlinedImage !== undefined){
-        tag.src = inlinedImage;
+  imageTags.forEach((tag) => {
+    if (tag.src.startsWith(CIDPrefix)) {
+      const imageCID = tag.src.slice(CIDPrefix.length)
+      const inlinedImage = props.inlineAttachments[imageCID]
+      if (inlinedImage) {
+        tag.src = inlinedImage
       }
     }
-  });
+  })
 
-  return parsedHTML.documentElement.innerHTML;
+  return parsedHTML.documentElement.innerHTML
 })
 
 const code = computedAsync(async () => {
