@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
-
 from Secweb.ContentSecurityPolicy import ContentSecurityPolicy
 
 from backend import settings
