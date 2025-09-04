@@ -34,8 +34,6 @@ const HTMLContent = computed(() => {
       const imageCID = tag.src.slice(CIDPrefix.length);
       const inlinedImage = props.inlineAttachments[imageCID];
 
-      console.log(imageCID, inlinedImage);
-
       if(inlinedImage !== undefined){
         tag.src = inlinedImage;
       }

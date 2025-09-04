@@ -29,6 +29,7 @@ dependencies = [
   "python-multipart>=0.0.20",
   "redis>=6.2.0",
   "returns[compatible-mypy]>=0.25.0",
+  "secweb>=1.25.2",
   "stamina>=25.1.0",
   "uvicorn>=0.35.0",
   "vt-py>=0.21.0",

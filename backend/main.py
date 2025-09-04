@@ -3,6 +3,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 
+from Secweb.ContentSecurityPolicy import ContentSecurityPolicy
+
 from backend import settings
 from backend.api.api import api_router
 
@@ -18,6 +20,16 @@ def create_app():
     )
     # add middleware
     app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+    app.add_middleware(
+        ContentSecurityPolicy,
+        Option={
+            "img-src": ["'self'", "data:", "t0.gstatic.com", "www.google.com"]
+        },
+        script_nonce=False,
+        style_nonce=False,
+        report_only=False,
+    )
 
     # add routes
     app.include_router(api_router, prefix="/api")
