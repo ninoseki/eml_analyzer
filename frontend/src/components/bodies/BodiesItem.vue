@@ -1,19 +1,36 @@
 <script setup lang="ts">
 import truncate from 'just-truncate'
-import { onMounted, type PropType, ref } from 'vue'
+import { computed, onMounted, type PropType, ref } from 'vue'
 
 import BodyComponent from '@/components/bodies/BodyItem.vue'
-import type { BodyType } from '@/schemas'
+import type { AttachmentType, BodyType } from '@/schemas'
 
 const props = defineProps({
   bodies: {
     type: Array as PropType<BodyType[]>,
+    required: true
+  },
+  attachments: {
+    type: Array as PropType<AttachmentType[]>,
     required: true
   }
 })
 
 const selectedBody = ref<BodyType>()
 const selectedTabIndex = ref(0)
+const inlineAttachments = computed(() => {
+  const mapped = props.attachments.map((attachment) => {
+    const contentId = attachment.contentId?.replace(/^<|>$/g, '')
+    const data = `data:image/png;base64, ${attachment.raw}`
+    if (contentId) {
+      return [contentId, data]
+    }
+    return undefined
+  })
+  return Object.fromEntries(
+    mapped.filter((entry) => entry !== undefined) as [string, string | undefined][]
+  )
+})
 
 const select = (body: BodyType, index: number) => {
   selectedBody.value = body
@@ -42,5 +59,5 @@ onMounted(() => {
       >{{ truncate(body.contentType || index.toString(), 16) }}</a
     >
   </div>
-  <BodyComponent :body="selectedBody" v-if="selectedBody" />
+  <BodyComponent :body="selectedBody" v-if="selectedBody" :inlineAttachments="inlineAttachments" />
 </template>

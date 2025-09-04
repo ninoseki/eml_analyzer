@@ -55,6 +55,15 @@ def test_encrypted_docx(encrypted_docx_eml: bytes, factory: factories.EmlFactory
     )
 
 
+def test_content_id(content_id_eml: bytes, factory: factories.EmlFactory):
+    eml = factory.call(content_id_eml)
+    assert eml.attachments is not None
+    assert len(eml.attachments) == 1
+
+    first = eml.attachments[0]
+    assert first.content_id == "<id42@guppylake.bellcore.com>"
+
+
 def test_emails(emails: list[bytes], factory: factories.EmlFactory):
     for email in emails:
         eml = factory.call(email)

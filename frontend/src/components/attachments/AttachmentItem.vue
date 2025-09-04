@@ -59,6 +59,10 @@ const inquest = new InQuest()
         <td>{{ attachment.mimeType || 'N/A' }}</td>
       </tr>
       <tr>
+        <th class="w-80">CID</th>
+        <td>{{ attachment.contentId || 'N/A' }}</td>
+      </tr>
+      <tr>
         <th class="w-80">SHA256</th>
         <td>
           <IndicatorButton :value="attachment.hash.sha256" />
