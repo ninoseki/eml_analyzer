@@ -43,6 +43,7 @@ export const AttachmentSchema = z.object({
   hash: HashSchema,
   mimeType: z.string(),
   mimeTypeShort: z.string(),
+  contentId: z.string().nullish(),
   contentHeader: DictionarySchema
 })
 

@@ -162,6 +162,11 @@ def normalize_attachments(parsed: dict) -> dict:
 
     non_inline_forward_attachments = []
     for attachment in attachments:
+
+        content_header = attachment.get("content_header", {})
+        if content_id := content_header.get("content-id"):
+            attachment["content_id"] = content_id[0]
+
         if not is_inline_forward_attachment(attachment):
             non_inline_forward_attachments.append(attachment)
 

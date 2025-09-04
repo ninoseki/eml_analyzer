@@ -10,11 +10,39 @@ const props = defineProps({
   },
   contentType: {
     type: String
-  }
+  },
+  inlineAttachments: {
+    type: Object,
+    required: true
+  },
 })
 
 const isHTMLContent = computed(() => {
   return (props.contentType || '').startsWith('text/html')
+})
+
+const HTMLContent = computed(() => {
+  const CIDPrefix = "cid:";
+
+  const parser = new DOMParser();
+  const parsedHTML = parser.parseFromString(props.content, 'text/html');
+  const imageTags = parsedHTML.querySelectorAll("img");
+
+  imageTags.forEach(tag => {
+    if(tag.src.startsWith(CIDPrefix)){
+
+      const imageCID = tag.src.slice(CIDPrefix.length);
+      const inlinedImage = props.inlineAttachments[imageCID];
+
+      console.log(imageCID, inlinedImage);
+
+      if(inlinedImage !== undefined){
+        tag.src = inlinedImage;
+      }
+    }
+  });
+
+  return parsedHTML.documentElement.innerHTML;
 })
 
 const code = computedAsync(async () => {
@@ -37,7 +65,7 @@ const gridColumns = computed(() => {
     <div class="mockup-code w-full h-96 overflow-scroll px-6 my-4 bg-[#0d1117]" v-html="code"></div>
     <iframe
       class="w-full h-96 border-0 px-6 my-4"
-      :srcdoc="content"
+      :srcdoc="HTMLContent"
       sandbox=""
       v-if="isHTMLContent"
     ></iframe>

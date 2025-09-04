@@ -20,6 +20,7 @@ class Attachment(APIModel):
     hash: Hash
     mime_type: str
     mime_type_short: str
+    content_id: str | None = None
     content_header: dict[str, list[str | int]]
 
 
