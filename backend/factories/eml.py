@@ -44,11 +44,15 @@ def to_eml(data: bytes) -> bytes:
     if is_eml_file(data):
         return data
 
-    # assume data is a msg file
-    file = BytesIO(data)
-    message = Message(file)
-    email = message.to_email()
-    return email.as_bytes()
+    try:
+        # assume data is a msg file
+        file = BytesIO(data)
+        message = Message(file)
+        email = message.to_email()
+        return email.as_bytes()
+    except Exception:
+        # TODO: fallback to the original data / fix me
+        return data
 
 
 @safe
@@ -162,7 +166,6 @@ def normalize_attachments(parsed: dict) -> dict:
 
     non_inline_forward_attachments = []
     for attachment in attachments:
-
         content_header = attachment.get("content_header", {})
         if content_id := content_header.get("content-id"):
             attachment["content_id"] = content_id[0]
