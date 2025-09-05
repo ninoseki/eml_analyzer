@@ -12,7 +12,7 @@ from returns.pointfree import bind
 from returns.result import ResultE, safe
 
 from backend import schemas
-from backend.outlookmsgfile import Message
+from backend.outlookmsgfile_wrapper import Message
 from backend.utils import parse_urls_from_body
 from backend.validator import is_eml_file
 
