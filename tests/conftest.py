@@ -1,4 +1,3 @@
-import glob
 import os
 
 import aiospamc
@@ -74,16 +73,6 @@ def encrypted_docx_eml() -> bytes:
 def content_id_eml() -> bytes:
     with open("tests/fixtures/content_id.eml", "rb") as f:
         return f.read()
-
-
-@pytest.fixture
-def emails() -> list[bytes]:
-    emails: list[bytes] = []
-    for p in glob.glob("tests/fixtures/emails/**/*.eml"):
-        with open(p, "rb") as f:
-            emails.append(f.read())
-
-    return emails
 
 
 @pytest.fixture

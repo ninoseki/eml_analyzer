@@ -14,7 +14,7 @@ from returns.result import ResultE, safe
 from backend import schemas
 from backend.outlookmsgfile import Message
 from backend.utils import parse_urls_from_body
-from backend.validator import is_eml_file
+from backend.validator import is_msg_file
 
 from .abstract import AbstractFactory
 
@@ -41,18 +41,14 @@ def is_inline_forward_attachment(attachment: dict) -> bool:
 
 @safe
 def to_eml(data: bytes) -> bytes:
-    if is_eml_file(data):
-        return data
-
-    try:
+    if is_msg_file(data):
         # assume data is a msg file
         file = BytesIO(data)
         message = Message(file)
         email = message.to_email()
         return email.as_bytes()
-    except Exception:
-        # TODO: fallback to the original data / fix me
-        return data
+
+    return data
 
 
 @safe
