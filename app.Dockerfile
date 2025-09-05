@@ -15,7 +15,7 @@ RUN npm install \
 FROM python:3.11-slim-bookworm AS venv
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends build-essential libmagic-dev \
+	&& apt-get install -y --no-install-recommends build-essential git libmagic-dev \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
