@@ -1,3 +1,6 @@
+import glob
+from pathlib import Path
+
 import pytest
 
 from backend import factories
@@ -64,10 +67,17 @@ def test_content_id(content_id_eml: bytes, factory: factories.EmlFactory):
     assert first.content_id == "<id42@guppylake.bellcore.com>"
 
 
-def test_emails(emails: list[bytes], factory: factories.EmlFactory):
-    for email in emails:
-        eml = factory.call(email)
-        assert eml is not None
+def get_email_paths():
+    return [Path(p) for p in glob.glob("tests/fixtures/emails/**/*.eml")]
+
+
+@pytest.fixture(params=get_email_paths())
+def email_path(request: pytest.FixtureRequest):
+    return request.param
+
+
+def test_email(email_path: Path, factory: factories.EmlFactory):
+    assert factory.call(email_path.read_bytes()) is not None
 
 
 def test_complete_msg(complete_msg: bytes, factory: factories.EmlFactory):
