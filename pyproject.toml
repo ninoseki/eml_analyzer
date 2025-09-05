@@ -14,6 +14,7 @@ dependencies = [
   "circus>=0.19.0",
   "compoundfiles>=0.3,<0.4",
   "compressed-rtf>=1.0.7",
+  "convert-outlook-msg-file",
   "dateparser>=1.2.2",
   "eml_parser[filemagic]>=2.0.0",
   "fastapi>=0.116.1",
@@ -55,6 +56,9 @@ dev = [
 
 [tool.uv]
 package = false
+
+[tool.uv.sources]
+convert-outlook-msg-file = { git = "https://github.com/JoshData/convert-outlook-msg-file" }
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
