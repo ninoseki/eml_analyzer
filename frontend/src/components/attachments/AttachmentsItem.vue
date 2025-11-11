@@ -34,8 +34,8 @@ onMounted(() => {
     <a
       role="tab"
       class="tab"
-      :class="{ 'tab-active': selectedTabIndex === index }"
       v-for="(attachment, index) in attachments"
+      :class="{ 'tab-active': selectedTabIndex === index }"
       :key="attachment.hash.md5"
       :attachment="attachment"
       @click="select(attachment, index)"

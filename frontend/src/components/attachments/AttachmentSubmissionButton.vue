@@ -47,10 +47,10 @@ const confirm = () => {
     <font-awesome-icon
       icon="spinner"
       spin
-      v-if="submitTask.isRunning"
       class="w-4 h-4"
+      v-if="submitTask.isRunning"
     ></font-awesome-icon>
-    <font-awesome-icon icon="upload" v-else class="w-4 h-4"></font-awesome-icon>
+    <font-awesome-icon icon="upload" class="w-4 h-4" v-else></font-awesome-icon>
     <span>{{ submitter.name }}</span>
   </button>
 </template>

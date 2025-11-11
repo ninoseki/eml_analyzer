@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { AxiosError } from 'axios'
 import fileSize from 'filesize.js'
-import { computed, type PropType, ref } from 'vue'
+import { type PropType, ref } from 'vue'
 
 import AttachmentDownloadButton from '@/components/attachments/AttachmentDownloadButton.vue'
 import AttachmentSubmissionButton from '@/components/attachments/AttachmentSubmissionButton.vue'
 import AttachmentSubmissionNotification from '@/components/attachments/AttachmentSubmissionNotification.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import IndicatorButton from '@/components/IndicatorButton.vue'
+import { useStatus } from '@/composables/useStatus'
 import type { AttachmentType } from '@/schemas'
-import { useStatusStore } from '@/store'
 import { InQuest, VirusTotal } from '@/submitters'
 
 defineProps({
@@ -19,11 +19,7 @@ defineProps({
   }
 })
 
-const store = useStatusStore()
-const status = computed(() => {
-  return store.$state
-})
-
+const { status } = useStatus()
 const error = ref<AxiosError>()
 const referenceUrl = ref<string>()
 

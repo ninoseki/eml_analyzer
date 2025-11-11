@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { useStatus } from '@/composables/useStatus'
 
-import type { StatusType } from '@/schemas'
-
-defineProps({
-  status: {
-    type: Object as PropType<StatusType>,
-    required: true
-  }
-})
+const { status } = useStatus()
 
 const toClass = (b: boolean) => {
   return b ? 'badge-success' : 'badge-warning'

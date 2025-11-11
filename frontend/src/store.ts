@@ -4,13 +4,17 @@ import { API } from '@/api'
 import type { StatusType } from '@/schemas'
 
 export const useStatusStore = defineStore('status', {
-  state: (): StatusType => {
-    return {}
+  state: () => {
+    return { status: {} as StatusType }
   },
   actions: {
-    async getStatus() {
-      const status = await API.getStatus()
-      this.$state = status
+    async initialize() {
+      this.status = await API.getStatus()
     }
   }
 })
+
+export const initializeStores = async () => {
+  const statusStore = useStatusStore()
+  await statusStore.initialize()
+}

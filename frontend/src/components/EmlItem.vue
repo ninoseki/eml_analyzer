@@ -16,7 +16,12 @@ defineProps({
 
 <template>
   <Headers class="grid gap-4" :header="eml.header" />
-  <Bodies class="grid gap-4" :bodies="eml.bodies" :attachments="eml.attachments" v-if="eml.bodies.length > 0" />
+  <Bodies
+    class="grid gap-4"
+    :bodies="eml.bodies"
+    :attachments="eml.attachments"
+    v-if="eml.bodies.length > 0"
+  />
   <Attachments
     class="grid gap-4"
     :attachments="eml.attachments"

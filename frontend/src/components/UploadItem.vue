@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
 import { API } from '@/api'
@@ -7,17 +7,13 @@ import Divider from '@/components/DividerItem.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/LoadingItem.vue'
 import Response from '@/components/ResponseItem.vue'
+import { useStatus } from '@/composables/useStatus'
 import type { ResponseType } from '@/schemas'
-import { useStatusStore } from '@/store'
 
 const file = ref<File>()
 const filename = ref<string>()
 const dragDropFocus = ref(false)
-
-const store = useStatusStore()
-const status = computed(() => {
-  return store.$state
-})
+const { status } = useStatus()
 
 const analyzeTask = useAsyncTask<ResponseType, [File]>(async (_signal, file: File) => {
   return await API.analyze(file)
