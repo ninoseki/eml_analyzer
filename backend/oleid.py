@@ -1,6 +1,5 @@
 import oletools.oleid
 from olefile import isOleFile
-from returns.maybe import Maybe
 
 from backend.utils import is_truthy
 
@@ -13,16 +12,13 @@ class OleID:
             self.oid = oletools.oleid.OleID(data=data)
             self.oid.check()
 
-    @property
-    def maybe_oid(self) -> Maybe[oletools.oleid.OleID]:
-        return Maybe.from_optional(self.oid)
-
     def _is_truthy_by_indicator_id(self, indicator_id: str) -> bool:
-        return (
-            self.maybe_oid.bind_optional(lambda oid: oid.get_indicator(indicator_id))
-            .bind_optional(lambda i: is_truthy(i.value))
-            .value_or(False)
-        )
+        if self.oid:
+            indicator = self.oid.get_indicator(indicator_id)
+            if indicator:
+                return is_truthy(indicator.value)
+
+        return False
 
     @property
     def has_encrypted(self) -> bool:

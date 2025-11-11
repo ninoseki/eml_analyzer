@@ -29,7 +29,6 @@ dependencies = [
   "python-magic>=0.4.27,<0.5.0",
   "python-multipart>=0.0.20",
   "redis>=6.2.0",
-  "returns[compatible-mypy]>=0.26.0",
   "secweb>=1.25.2",
   "stamina>=25.1.0",
   "uvicorn>=0.38.0",
@@ -85,4 +84,4 @@ ignore = [
 
 [tool.mypy]
 ignore_missing_imports = true
-plugins = ["pydantic.mypy", "returns.contrib.mypy.returns_plugin"]
+plugins = ["pydantic.mypy"]

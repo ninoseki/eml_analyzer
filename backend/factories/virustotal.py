@@ -1,12 +1,8 @@
+import contextlib
 from functools import partial
 
 import aiometer
 import vt
-from returns.functions import raise_exception
-from returns.future import FutureResultE, future_safe
-from returns.pipeline import flow
-from returns.pointfree import bind
-from returns.unsafe import unsafe_perform_io
 
 from backend import clients, schemas, settings, types
 
@@ -15,12 +11,15 @@ from .abstract import AbstractAsyncFactory
 NAME = "VirusTotal"
 
 
-@future_safe
-async def get_file_object(sha256: str, *, client: clients.VirusTotal) -> vt.Object:
-    return await client.get_object_async(f"/files/{sha256}")
+async def get_file_object(
+    sha256: str, *, client: clients.VirusTotal
+) -> vt.Object | None:
+    with contextlib.suppress(Exception):
+        return await client.get_object_async(f"/files/{sha256}")
+
+    return None
 
 
-@future_safe
 async def bulk_get_file_objects(
     sha256s: types.ListSet[str],
     *,
@@ -28,18 +27,16 @@ async def bulk_get_file_objects(
     max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
     max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
 ) -> list[vt.Object]:
-    f_results = [get_file_object(sha256, client=client) for sha256 in set(sha256s)]
+    tasks = [partial(get_file_object, sha256, client=client) for sha256 in set(sha256s)]
     results = await aiometer.run_all(
-        [f_result.awaitable for f_result in f_results],
+        tasks,
         max_at_once=max_at_once,
         max_per_second=max_per_second,
     )
-    values = [unsafe_perform_io(result.value_or(None)) for result in results]
-    return [value for value in values if value is not None]
+    return [result for result in results if result]
 
 
-@future_safe
-async def transform(objects: list[vt.Object], *, name: str = NAME) -> schemas.Verdict:
+def transform(objects: list[vt.Object], *, name: str = NAME) -> schemas.Verdict:
     details: list[schemas.VerdictDetail] = []
 
     for obj in objects:
@@ -84,14 +81,10 @@ class VirusTotalVerdictFactory(AbstractAsyncFactory):
         max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
         max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
     ) -> schemas.Verdict:
-        f_result: FutureResultE[schemas.Verdict] = flow(
-            bulk_get_file_objects(
-                sha256s,
-                client=self.client,
-                max_at_once=max_at_once,
-                max_per_second=max_per_second,
-            ),
-            bind(partial(transform, name=self.name)),
+        got = await bulk_get_file_objects(
+            sha256s,
+            client=self.client,
+            max_at_once=max_at_once,
+            max_per_second=max_per_second,
         )
-        result = await f_result.awaitable()
-        return unsafe_perform_io(result.alt(raise_exception).unwrap())
+        return transform(got, name=self.name)

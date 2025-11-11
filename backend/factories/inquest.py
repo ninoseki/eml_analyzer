@@ -1,21 +1,18 @@
+import contextlib
 from functools import partial
 
 import aiometer
-from returns.functions import raise_exception
-from returns.future import FutureResultE, future_safe
-from returns.pipeline import flow
-from returns.pointfree import bind
-from returns.unsafe import unsafe_perform_io
 
 from backend import clients, schemas, settings, types
 
 
-@future_safe
-async def lookup(sha256: str, *, client: clients.InQuest) -> schemas.InQuestLookup:
-    return await client.lookup(sha256)
+async def lookup(
+    sha256: str, *, client: clients.InQuest
+) -> schemas.InQuestLookup | None:
+    with contextlib.suppress(Exception):
+        return await client.lookup(sha256)
 
 
-@future_safe
 async def bulk_lookup(
     sha256s: types.ListSet[str],
     *,
@@ -23,18 +20,16 @@ async def bulk_lookup(
     max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
     max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
 ) -> list[schemas.InQuestLookup]:
-    f_results = [lookup(sha256, client=client) for sha256 in set(sha256s)]
+    tasks = [partial(lookup, sha256, client=client) for sha256 in set(sha256s)]
     results = await aiometer.run_all(
-        [f_result.awaitable for f_result in f_results],
+        tasks,
         max_at_once=max_at_once,
         max_per_second=max_per_second,
     )
-    values = [unsafe_perform_io(result.value_or(None)) for result in results]
-    return [value for value in values if value is not None]
+    return [result for result in results if result]
 
 
-@future_safe
-async def transform(lookups: list[schemas.InQuestLookup], *, name: str):
+def transform(lookups: list[schemas.InQuestLookup], *, name: str):
     malicious_lookups = [lookup for lookup in lookups if lookup.malicious]
 
     if len(malicious_lookups) == 0:
@@ -76,14 +71,10 @@ class InQuestVerdictFactory:
         max_per_second: float | None = settings.ASYNC_MAX_PER_SECOND,
         max_at_once: int | None = settings.ASYNC_MAX_AT_ONCE,
     ) -> schemas.Verdict:
-        f_result: FutureResultE[schemas.Verdict] = flow(
-            bulk_lookup(
-                sha256s,
-                client=self.client,
-                max_at_once=max_at_once,
-                max_per_second=max_per_second,
-            ),
-            bind(partial(transform, name=self.name)),
+        got = await bulk_lookup(
+            sha256s,
+            client=self.client,
+            max_at_once=max_at_once,
+            max_per_second=max_per_second,
         )
-        result = await f_result.awaitable()
-        return unsafe_perform_io(result.alt(raise_exception).unwrap())
+        return transform(got, name=self.name)
