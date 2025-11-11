@@ -51,8 +51,8 @@ onMounted(() => {
     <a
       role="tab"
       class="tab"
-      :class="{ 'tab-active': selectedTabIndex === index }"
       v-for="(body, index) in bodies"
+      :class="{ 'tab-active': selectedTabIndex === index }"
       :key="body.hash"
       :body="body"
       @click="select(body, index)"

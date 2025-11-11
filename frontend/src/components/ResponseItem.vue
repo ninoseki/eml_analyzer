@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { type PropType } from 'vue'
 
 import Eml from '@/components/EmlItem.vue'
 import Verdicts from '@/components/verdicts/VerdictsItem.vue'
+import { useStatus } from '@/composables/useStatus'
 import type { ResponseType } from '@/schemas'
-import { useStatusStore } from '@/store'
 
 defineProps({
   response: {
@@ -13,8 +13,7 @@ defineProps({
   }
 })
 
-const store = useStatusStore()
-const status = computed(() => store.$state)
+const { status } = useStatus()
 </script>
 
 <template>

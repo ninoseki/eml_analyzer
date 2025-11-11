@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
-import { computed } from 'vue'
 
 import StatusTags from '@/components/StatusTags.vue'
-import { useStatusStore } from '@/store'
-
-const store = useStatusStore()
-const status = computed(() => {
-  return store.$state
-})
 
 const isDark = useDark({
   selector: 'html',
@@ -38,7 +31,7 @@ const toggleDark = useToggle(isDark)
       </div>
     </div>
     <div class="navbar-end">
-      <StatusTags :status="status" />
+      <StatusTags />
       <input
         type="checkbox"
         :checked="isDark"

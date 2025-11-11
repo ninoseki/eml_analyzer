@@ -20,8 +20,8 @@ const dispose = () => {
   <div class="alert alert-info">
     <button
       class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-      v-if="disposable"
       @click="dispose"
+      v-if="disposable"
     >
       ✕
     </button>
