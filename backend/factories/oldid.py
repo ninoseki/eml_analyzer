@@ -1,28 +1,24 @@
 import base64
 import itertools
 
-from returns.result import safe
-
 from backend import schemas
 from backend.oleid import OleID
 
 from .abstract import AbstractFactory
 
 
-@safe
 def parse(attachment: schemas.Attachment) -> OleID:
     data: bytes = base64.b64decode(attachment.raw)
     return OleID(data)
 
 
-@safe
 def attachment_to_details(
     attachment: schemas.Attachment,
 ) -> list[schemas.VerdictDetail]:
-    details: list[schemas.VerdictDetail] = []
     file_info = f"{attachment.filename}({attachment.hash.sha256})"
 
-    def inner(oleid: OleID):
+    def transform(oleid: OleID):
+        details: list[schemas.VerdictDetail] = []
         if oleid.has_vba_macros:
             details.append(
                 schemas.VerdictDetail(
@@ -67,8 +63,10 @@ def attachment_to_details(
                 )
             )
 
-    parse(attachment).map(inner)
-    return details
+        return details
+
+    parsed = parse(attachment)
+    return transform(parsed)
 
 
 class OleIDVerdictFactory(AbstractFactory):
@@ -79,12 +77,15 @@ class OleIDVerdictFactory(AbstractFactory):
         self,
         attachments: list[schemas.Attachment],
     ) -> schemas.Verdict:
+        def process(attachment: schemas.Attachment):
+            try:
+                return attachment_to_details(attachment)
+            except Exception:
+                return []
+
         details = list(
             itertools.chain.from_iterable(
-                [
-                    attachment_to_details(attachment).value_or([])
-                    for attachment in attachments
-                ]
+                [process(attachment) for attachment in attachments]
             )
         )
 

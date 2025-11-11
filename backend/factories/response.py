@@ -1,13 +1,10 @@
 import hashlib
+from collections.abc import Coroutine
 from functools import partial
+from typing import Any
 
 import aiometer
 from loguru import logger
-from returns.functions import raise_exception
-from returns.future import FutureResultE, future_safe
-from returns.pipeline import flow
-from returns.pointfree import bind
-from returns.unsafe import unsafe_perform_io
 
 from backend import clients, schemas, types
 
@@ -25,52 +22,78 @@ def log_exception(exception: Exception):
     logger.exception(exception)
 
 
-@future_safe
-async def parse(eml_file: bytes) -> schemas.Response:
+def parse(eml_file: bytes) -> schemas.Response:
     return schemas.Response(
         eml=EmlFactory().call(eml_file), id=hashlib.sha256(eml_file).hexdigest()
     )
 
 
-@future_safe
 async def get_spam_assassin_verdict(
     eml_file: bytes, *, client: clients.SpamAssassin
-) -> schemas.Verdict:
-    return await SpamAssassinVerdictFactory(client).call(eml_file)
+) -> schemas.Verdict | None:
+    try:
+        return await SpamAssassinVerdictFactory(client).call(eml_file)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
-async def get_oleid_verdict(attachments: list[schemas.Attachment]) -> schemas.Verdict:
-    return OleIDVerdictFactory().call(attachments)
+async def get_oleid_verdict(
+    attachments: list[schemas.Attachment],
+) -> schemas.Verdict | None:
+    try:
+        return OleIDVerdictFactory().call(attachments)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
-async def get_email_rep_verdicts(from_, *, client: clients.EmailRep) -> schemas.Verdict:
-    return await EmailRepVerdictFactory(client).call(from_)
+async def get_email_rep_verdicts(
+    from_, *, client: clients.EmailRep
+) -> schemas.Verdict | None:
+    try:
+        return await EmailRepVerdictFactory(client).call(from_)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
 async def get_urlscan_verdict(
     urls: types.ListSet[str], *, client: clients.UrlScan
-) -> schemas.Verdict:
-    return await UrlScanVerdictFactory(client).call(urls)
+) -> schemas.Verdict | None:
+    try:
+        return await UrlScanVerdictFactory(client).call(urls)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
 async def get_inquest_verdict(
     sha256s: types.ListSet[str], *, client: clients.InQuest
-) -> schemas.Verdict:
-    return await InQuestVerdictFactory(client).call(sha256s)
+) -> schemas.Verdict | None:
+    try:
+        return await InQuestVerdictFactory(client).call(sha256s)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
 async def get_vt_verdict(
     sha256s: types.ListSet[str], *, client: clients.VirusTotal
-) -> schemas.Verdict:
-    return await VirusTotalVerdictFactory(client).call(sha256s)
+) -> schemas.Verdict | None:
+    try:
+        return await VirusTotalVerdictFactory(client).call(sha256s)
+    except Exception as e:
+        log_exception(e)
+
+    return None
 
 
-@future_safe
 async def set_verdicts(
     response: schemas.Response,
     *,
@@ -81,31 +104,35 @@ async def set_verdicts(
     optional_urlscan: clients.UrlScan | None = None,
     optional_inquest: clients.InQuest | None = None,
 ) -> schemas.Response:
-    f_results: list[FutureResultE[schemas.Verdict]] = [
-        get_spam_assassin_verdict(eml_file, client=spam_assassin),
-        get_oleid_verdict(response.eml.attachments),
+    tasks: list[partial[Coroutine[Any, Any, schemas.Verdict | None]]] = [
+        partial(get_spam_assassin_verdict, eml_file, client=spam_assassin),
+        partial(get_oleid_verdict, response.eml.attachments),
     ]
 
     if response.eml.header.from_ is not None and optional_email_rep is not None:
-        f_results.append(
-            get_email_rep_verdicts(response.eml.header.from_, client=optional_email_rep)
+        tasks.append(
+            partial(
+                get_email_rep_verdicts,
+                response.eml.header.from_,
+                client=optional_email_rep,
+            )
         )
 
-    if optional_vt is not None:
-        f_results.append(get_vt_verdict(response.sha256s, client=optional_vt))
+    if optional_vt:
+        tasks.append(partial(get_vt_verdict, response.sha256s, client=optional_vt))
 
-    if optional_inquest is not None:
-        f_results.append(get_inquest_verdict(response.sha256s, client=optional_inquest))
+    if optional_inquest:
+        tasks.append(
+            partial(get_inquest_verdict, response.sha256s, client=optional_inquest)
+        )
 
-    if optional_urlscan is not None:
-        f_results.append(get_urlscan_verdict(response.urls, client=optional_urlscan))
+    if optional_urlscan:
+        tasks.append(
+            partial(get_urlscan_verdict, response.urls, client=optional_urlscan)
+        )
 
-    results = await aiometer.run_all([f_result.awaitable for f_result in f_results])
-    values = [
-        unsafe_perform_io(result.alt(log_exception).value_or(None))
-        for result in results
-    ]
-    response.verdicts = [value for value in values if value is not None]
+    results = await aiometer.run_all(tasks)
+    response.verdicts = [result for result in results if result]
     return response
 
 
@@ -121,19 +148,13 @@ class ResponseFactory(AbstractAsyncFactory):
         optional_urlscan: clients.UrlScan | None = None,
         optional_inquest: clients.InQuest | None = None,
     ) -> schemas.Response:
-        f_result: FutureResultE[schemas.Response] = flow(
-            parse(eml_file),
-            bind(
-                partial(
-                    set_verdicts,
-                    eml_file=eml_file,
-                    optional_email_rep=optional_email_rep,
-                    spam_assassin=spam_assassin,
-                    optional_vt=optional_vt,
-                    optional_urlscan=optional_urlscan,
-                    optional_inquest=optional_inquest,
-                )
-            ),
+        parsed = parse(eml_file)
+        return await set_verdicts(
+            parsed,
+            eml_file=eml_file,
+            spam_assassin=spam_assassin,
+            optional_email_rep=optional_email_rep,
+            optional_vt=optional_vt,
+            optional_urlscan=optional_urlscan,
+            optional_inquest=optional_inquest,
         )
-        result = await f_result.awaitable()
-        return unsafe_perform_io(result.alt(raise_exception).unwrap())
