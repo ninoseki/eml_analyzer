@@ -1,6 +1,5 @@
 from .emailrep import EmailRepLookup  # noqa: F401
 from .eml import Attachment, Body, Eml  # noqa: F401
-from .inquest import InQuestLookup  # noqa: F401
 from .payload import FilePayload, Payload  # noqa: F401
 from .response import Response  # noqa: F401
 from .spamassasin import SpamAssassinDetail, SpamAssassinReport  # noqa: F401

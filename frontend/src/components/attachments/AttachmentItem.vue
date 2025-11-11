@@ -10,7 +10,7 @@ import ErrorMessage from '@/components/ErrorMessage.vue'
 import IndicatorButton from '@/components/IndicatorButton.vue'
 import { useStatus } from '@/composables/useStatus'
 import type { AttachmentType } from '@/schemas'
-import { InQuest, VirusTotal } from '@/submitters'
+import { VirusTotal } from '@/submitters'
 
 defineProps({
   attachment: {
@@ -36,7 +36,6 @@ const onSetReferenceUrl = (newReferenceUrl: string) => {
 }
 
 const vt = new VirusTotal()
-const inquest = new InQuest()
 </script>
 
 <template>
@@ -74,13 +73,6 @@ const inquest = new InQuest()
         @set-error="onSetError"
         @set-reference-url="onSetReferenceUrl"
         v-if="status.vt"
-      />
-      <AttachmentSubmissionButton
-        :attachment="attachment"
-        :submitter="inquest"
-        @set-error="onSetError"
-        @set-reference-url="onSetReferenceUrl"
-        v-if="status.inquest"
       />
       <AttachmentDownloadButton :attachment="attachment" />
     </div>

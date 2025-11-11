@@ -13,7 +13,6 @@ export const StatusSchema = z.object({
   cache: z.boolean().optional(),
   vt: z.boolean().optional(),
   emailRep: z.boolean().optional(),
-  inquest: z.boolean().optional(),
   urlscan: z.boolean().optional()
 })
 

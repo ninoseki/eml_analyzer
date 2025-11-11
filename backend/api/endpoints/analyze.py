@@ -14,7 +14,6 @@ async def _analyze(
     *,
     spam_assassin: clients.SpamAssassin,
     optional_email_rep: clients.EmailRep | None = None,
-    optional_inquest: clients.InQuest | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
 ) -> schemas.Response:
@@ -30,7 +29,6 @@ async def _analyze(
         payload.file,
         optional_email_rep=optional_email_rep,
         spam_assassin=spam_assassin,
-        optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
     )
@@ -59,7 +57,6 @@ async def analyze(
     spam_assassin: dependencies.SpamAssassin,
     optional_redis: dependencies.OptionalRedis,
     optional_email_rep: dependencies.OptionalEmailRep,
-    optional_inquest: dependencies.OptionalInQuest,
     optional_vt: dependencies.OptionalVirusTotal,
     optional_urlscan: dependencies.OptionalUrlScan,
 ) -> schemas.Response:
@@ -67,7 +64,6 @@ async def analyze(
         payload.file.encode(),
         spam_assassin=spam_assassin,
         optional_email_rep=optional_email_rep,
-        optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
     )
@@ -93,7 +89,6 @@ async def analyze_file(
     optional_redis: dependencies.OptionalRedis,
     spam_assassin: dependencies.SpamAssassin,
     optional_email_rep: dependencies.OptionalEmailRep,
-    optional_inquest: dependencies.OptionalInQuest,
     optional_vt: dependencies.OptionalVirusTotal,
     optional_urlscan: dependencies.OptionalUrlScan,
 ) -> schemas.Response:
@@ -101,7 +96,6 @@ async def analyze_file(
         file,
         optional_email_rep=optional_email_rep,
         spam_assassin=spam_assassin,
-        optional_inquest=optional_inquest,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
     )

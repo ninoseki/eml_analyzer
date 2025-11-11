@@ -28,13 +28,14 @@ SPAMASSASSIN_TIMEOUT: int = config("SPAMASSASSIN_TIMEOUT", cast=int, default=10)
 REDIS_URL: DatabaseURL | None = config("REDIS_URL", cast=DatabaseURL, default=None)
 REDIS_EXPIRE: int = config("REDIS_EXPIRE", cast=int, default=3600)
 REDIS_KEY_PREFIX: str = config("REDIS_KEY_PREFIX", cast=str, default="analysis")
-REDIS_CACHE_LIST_AVAILABLE: bool = config("REDIS_CACHE_LIST_AVAILABLE", cast=bool, default=True)
+REDIS_CACHE_LIST_AVAILABLE: bool = config(
+    "REDIS_CACHE_LIST_AVAILABLE", cast=bool, default=True
+)
 
 # 3rd party API keys
 VIRUSTOTAL_API_KEY: Secret | None = config(
     "VIRUSTOTAL_API_KEY", cast=Secret, default=None
 )
-INQUEST_API_KEY: Secret | None = config("INQUEST_API_KEY", cast=Secret, default=None)
 URLSCAN_API_KEY: Secret | None = config("URLSCAN_API_KEY", cast=Secret, default=None)
 EMAIL_REP_API_KEY: Secret | None = config(
     "EMAIL_REP_API_KEY", cast=Secret, default=None
