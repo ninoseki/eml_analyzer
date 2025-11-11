@@ -11,7 +11,6 @@ from backend import clients, schemas, types
 from .abstract import AbstractAsyncFactory
 from .emailrep import EmailRepVerdictFactory
 from .eml import EmlFactory
-from .inquest import InQuestVerdictFactory
 from .oldid import OleIDVerdictFactory
 from .spamassassin import SpamAssassinVerdictFactory
 from .urlscan import UrlScanVerdictFactory
@@ -72,17 +71,6 @@ async def get_urlscan_verdict(
     return None
 
 
-async def get_inquest_verdict(
-    sha256s: types.ListSet[str], *, client: clients.InQuest
-) -> schemas.Verdict | None:
-    try:
-        return await InQuestVerdictFactory(client).call(sha256s)
-    except Exception as e:
-        log_exception(e)
-
-    return None
-
-
 async def get_vt_verdict(
     sha256s: types.ListSet[str], *, client: clients.VirusTotal
 ) -> schemas.Verdict | None:
@@ -102,7 +90,6 @@ async def set_verdicts(
     optional_email_rep: clients.EmailRep | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
-    optional_inquest: clients.InQuest | None = None,
 ) -> schemas.Response:
     tasks: list[partial[Coroutine[Any, Any, schemas.Verdict | None]]] = [
         partial(get_spam_assassin_verdict, eml_file, client=spam_assassin),
@@ -120,11 +107,6 @@ async def set_verdicts(
 
     if optional_vt:
         tasks.append(partial(get_vt_verdict, response.sha256s, client=optional_vt))
-
-    if optional_inquest:
-        tasks.append(
-            partial(get_inquest_verdict, response.sha256s, client=optional_inquest)
-        )
 
     if optional_urlscan:
         tasks.append(
@@ -146,7 +128,6 @@ class ResponseFactory(AbstractAsyncFactory):
         optional_email_rep: clients.EmailRep | None,
         optional_vt: clients.VirusTotal | None = None,
         optional_urlscan: clients.UrlScan | None = None,
-        optional_inquest: clients.InQuest | None = None,
     ) -> schemas.Response:
         parsed = parse(eml_file)
         return await set_verdicts(
@@ -156,5 +137,4 @@ class ResponseFactory(AbstractAsyncFactory):
             optional_email_rep=optional_email_rep,
             optional_vt=optional_vt,
             optional_urlscan=optional_urlscan,
-            optional_inquest=optional_inquest,
         )

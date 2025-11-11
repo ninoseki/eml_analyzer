@@ -9,39 +9,6 @@ router = APIRouter()
 
 
 @router.post(
-    "/inquest",
-    response_description="Return a submission result",
-    summary="Submit an attachment to InQuest",
-    description="Submit an attachment to InQuest",
-    status_code=200,
-)
-async def submit_to_inquest(
-    attachment: Attachment, *, optional_inquest: dependencies.OptionalInQuest
-) -> schemas.SubmissionResult:
-    # check ext type
-    valid_types = ["doc", "docx", "ppt", "pptx", "xls", "xlsx"]
-    if attachment.extension not in valid_types:
-        raise HTTPException(
-            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail=f"{attachment.extension} is not supported.",
-        )
-
-    if optional_inquest is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You don't have the InQuest API key",
-        )
-
-    try:
-        return await optional_inquest.submit(attachment_to_file(attachment))
-    except httpx.HTTPStatusError as e:
-        raise HTTPException(
-            status_code=e.response.status_code,
-            detail=f"Something went wrong with InQuest submission: {e}",
-        ) from e
-
-
-@router.post(
     "/virustotal",
     response_description="Return a submission result",
     summary="Submit an attachment to VirusTotal",

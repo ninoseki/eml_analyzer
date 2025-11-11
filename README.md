@@ -54,7 +54,6 @@ Alternatively you can set values through `.env` file. Values in `.env` file will
 
 | Key                          | Desc.                                           | Default     |
 | ---------------------------- | ----------------------------------------------- | ----------- |
-| `INQUEST_API_KEY`            | InQuest API key                                 | -           |
 | `REDIS_EXPIRE`               | Redis cache expiration time (in seconds)        | 3600        |
 | `REDIS_KEY_PREFIX`           | Redis key prefix                                | `analysis`  |
 | `REDIS_URL`                  | Redis URL                                       | -           |
