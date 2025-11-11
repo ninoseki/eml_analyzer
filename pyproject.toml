@@ -25,7 +25,6 @@ dependencies = [
   "loguru>=0.7.3",
   "oletools==0.60.2",
   "pydantic>=2.12.4",
-  "pyhumps>=3.8,<4.0",
   "python-magic>=0.4.27,<0.5.0",
   "python-multipart>=0.0.20",
   "redis>=6.2.0",
