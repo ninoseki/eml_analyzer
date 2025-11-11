@@ -1,7 +1,6 @@
 # EML analyzer
 
 [![Coverage Status](https://coveralls.io/repos/github/ninoseki/eml_analyzer/badge.svg?branch=master)](https://coveralls.io/github/ninoseki/eml_analyzer?branch=master)
-[![CodeFactor](https://www.codefactor.io/repository/github/ninoseki/eml_analyzer/badge)](https://www.codefactor.io/repository/github/ninoseki/eml_analyzer)
 
 EML analyzer is an application to analyze the EML file which can:
 
