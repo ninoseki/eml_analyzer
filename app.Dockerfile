@@ -53,4 +53,4 @@ ENV PATH="/usr/src/app/.venv/bin:${PATH}"
 COPY --chown=$USERNAME gunicorn.conf.py ./
 COPY --chown=$USERNAME backend ./backend
 
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "backend.main:app"]
+CMD ["gunicorn", "-k", "uvicorn_worker.UvicornWorker", "backend.main:app"]
