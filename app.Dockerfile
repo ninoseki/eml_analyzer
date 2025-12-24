@@ -1,5 +1,5 @@
 # frontend
-FROM node:22-alpine AS frontend
+FROM node:24-alpine AS frontend
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ RUN npm install \
 	&&  \rm -rf node_modules
 
 # venv
-FROM python:3.11-slim-bookworm AS venv
+FROM python:3.12-slim-bookworm AS venv
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends build-essential git libmagic-dev \
@@ -30,7 +30,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 
 # main
-FROM python:3.11-slim-bookworm
+FROM python:3.12-slim-bookworm
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends libmagic-dev \
