@@ -2,7 +2,7 @@
 name = "eml-analyzer"
 version = "0.1.0"
 description = ""
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.12,<3.13"
 license = "MIT"
 authors = [{ name = "Manabu Niseki", email = "manabu.niseki@gmail.com" }]
 dependencies = [
