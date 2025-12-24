@@ -39,21 +39,28 @@ RUN apt-get update \
 
 RUN sa-update --no-gpg
 
+ARG USERNAME=nobody
+
+USER $USERNAME
+
 WORKDIR /usr/src/app
 
-COPY --from=frontend /usr/src/app/frontend ./frontend
-COPY --from=venv /usr/src/app/.venv ./.venv
+COPY --chown=$USERNAME --from=frontend /usr/src/app/frontend ./frontend
+COPY --chown=$USERNAME --from=venv /usr/src/app/.venv ./.venv
 
 ENV PATH="/usr/src/app/.venv/bin:${PATH}"
 
-COPY gunicorn.conf.py circus.ini ./
-COPY backend ./backend
+COPY --chown=$USERNAME gunicorn.conf.py circus.ini ./
+COPY --chown=$USERNAME backend ./backend
 
 ENV SPAMD_MAX_CHILDREN=1
 ENV SPAMD_PORT=7833
 ENV SPAMD_RANGE="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.1/32"
+ENV SPAMD_USERNAME=${USERNAME}
+ENV SPAMD_GROUPNAME=${USERNAME}
 
 ENV SPAMASSASSIN_PORT=7833
+
 ENV PORT=8000
 
 CMD ["circusd", "/usr/src/app/circus.ini"]
