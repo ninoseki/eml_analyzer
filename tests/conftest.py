@@ -113,7 +113,7 @@ def test_html() -> str:
 
 @pytest.fixture
 def dkim_valid_eml() -> bytes:
-    with open("tests/fixtures/emails/dkim_valid.eml", "rb") as f:
+    with open("tests/fixtures/emails/dkim/valid.eml", "rb") as f:
         return f.read()
 
 
