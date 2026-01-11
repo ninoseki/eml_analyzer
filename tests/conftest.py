@@ -112,6 +112,24 @@ def test_html() -> str:
 
 
 @pytest.fixture
+def dkim_valid_eml() -> bytes:
+    with open("tests/fixtures/emails/dkim/valid.eml", "rb") as f:
+        return f.read()
+
+
+@pytest.fixture
+def dkim_invalid_eml() -> bytes:
+    with open("tests/fixtures/emails/invalid.eml", "rb") as f:
+        return f.read()
+
+
+@pytest.fixture
+def dkim_no_signature_eml() -> bytes:
+    with open("tests/fixtures/emails/dkim/no_signature.eml", "rb") as f:
+        return f.read()
+
+
+@pytest.fixture
 def docx_attachment(encrypted_docx_eml: bytes) -> schemas.Attachment:
     eml = factories.EmlFactory().call(encrypted_docx_eml)
     return eml.attachments[0]

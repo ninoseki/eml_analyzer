@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 license = "MIT"
 authors = [{ name = "Manabu Niseki", email = "manabu.niseki@gmail.com" }]
 dependencies = [
+  "aiodns>=4.0.0",
   "aiofiles>=25.1.0",
   "aiometer>=1.0.0",
   "aiospamc>=1.2.0",
@@ -16,6 +17,7 @@ dependencies = [
   "compressed-rtf>=1.0.7",
   "convert-outlook-msg-file",
   "dateparser>=1.2.2",
+  "dkimpy>=1.1.8",
   "eml_parser[filemagic]>=2.0.0",
   "fastapi>=0.127.0",
   "gunicorn>=23.0.0",

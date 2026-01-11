@@ -1,0 +1,26 @@
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=example.com; s=default;
+        t=1234567890;
+        bh=2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=;
+        h=From:To:Subject:Date:Message-ID;
+        b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGiGv1pVFYzMRUty6vWHh0xmx
+         wWTJCe3hXoqQW7DgYa3oSTUqKWGpIKPMVKgqANiLqUdCcVwXGcaB8SNPrHvMYKFJ
+         E8vQ0s3Gfb9+KMlL2vFQN9cLLqXqXlWJMmJ8IcJ8N+0=
+From: sender@example.com
+To: recipient@example.com
+Subject: Test Email with Valid DKIM Signature
+Date: Mon, 11 Jan 2026 10:00:00 +0000
+Message-ID: <valid-dkim@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is a test email with a valid DKIM signature for testing purposes.
+
+The DKIM signature above is properly formatted according to RFC 6376.
+This email should pass DKIM verification when tested with the correct
+public key for the domain example.com with selector "default".
+
+Note: In a real-world scenario, this signature would only be valid if
+the corresponding public key is published in the DNS TXT record at
+default._domainkey.example.com and the signature matches the email content.
