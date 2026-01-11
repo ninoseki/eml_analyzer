@@ -9,7 +9,7 @@ WORKDIR /usr/src/app/frontend
 
 RUN npm install \
   && npm run build \
-  &&  \rm -rf node_modules
+  && rm -rf node_modules
 
 # venv
 FROM python:3.12-slim-bookworm AS venv
