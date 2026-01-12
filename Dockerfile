@@ -39,7 +39,8 @@ RUN apt-get update \
 
 RUN sa-update --no-gpg
 
-ARG USERNAME=nobody
+# nobody
+ARG USERNAME=65534
 
 USER $USERNAME
 
