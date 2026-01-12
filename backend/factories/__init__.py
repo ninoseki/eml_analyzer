@@ -1,3 +1,4 @@
+from .dkim_ import DKIMVerdictFactory  # noqa: F401
 from .emailrep import EmailRepVerdictFactory  # noqa: F401
 from .eml import EmlFactory  # noqa: F401
 from .oldid import OleIDVerdictFactory  # noqa: F401

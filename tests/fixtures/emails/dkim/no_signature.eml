@@ -1,0 +1,13 @@
+From: sender@example.com
+To: recipient@example.com
+Subject: Test Email without DKIM Signature
+Date: Mon, 11 Jan 2026 10:00:00 +0000
+Message-ID: <no-dkim@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is a test email without any DKIM signature for testing purposes.
+
+This email should fail DKIM verification because it lacks a DKIM-Signature
+header entirely. This tests the case where an email has no DKIM signature at all.

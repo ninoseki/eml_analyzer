@@ -7,6 +7,7 @@ import aiometer
 from loguru import logger
 
 from backend import clients, schemas, types
+from backend.factories.dkim_ import DKIMVerdictFactory
 
 from .abstract import AbstractAsyncFactory
 from .emailrep import EmailRepVerdictFactory
@@ -82,6 +83,15 @@ async def get_vt_verdict(
     return None
 
 
+async def get_dkim_verdict(eml_file: bytes, eml: schemas.Eml) -> schemas.Verdict | None:
+    try:
+        return await DKIMVerdictFactory().call(eml_file=eml_file, eml=eml)
+    except Exception as e:
+        log_exception(e)
+
+    return None
+
+
 async def set_verdicts(
     response: schemas.Response,
     *,
@@ -94,6 +104,7 @@ async def set_verdicts(
     tasks: list[partial[Coroutine[Any, Any, schemas.Verdict | None]]] = [
         partial(get_spam_assassin_verdict, eml_file, client=spam_assassin),
         partial(get_oleid_verdict, response.eml.attachments),
+        partial(get_dkim_verdict, eml_file=eml_file, eml=response.eml),
     ]
 
     if response.eml.header.from_ is not None and optional_email_rep is not None:

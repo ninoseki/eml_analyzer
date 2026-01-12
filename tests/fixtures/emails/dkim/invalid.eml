@@ -1,0 +1,24 @@
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=example.com; s=invalid;
+        t=1234567890;
+        bh=INVALIDHASHXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=;
+        h=From:To:Subject:Date:Message-ID;
+        b=ThisIsAnInvalidSignatureXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+From: sender@example.com
+To: recipient@example.com
+Subject: Test Email with Invalid DKIM Signature
+Date: Mon, 11 Jan 2026 10:00:00 +0000
+Message-ID: <invalid-dkim@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is a test email with an invalid DKIM signature for testing purposes.
+
+The DKIM signature above has been intentionally corrupted and will fail
+verification. The signature hash does not match the email content, and
+the signature itself is invalid.
+
+This email is designed to test the DKIM verification failure case.
