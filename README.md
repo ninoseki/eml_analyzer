@@ -40,12 +40,6 @@ docker-compose up
 
 Thus Docker Compose is suitable for the production use.
 
-### Heroku
-
-Alternatively, you can deploy the application on Heroku.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ninoseki/eml_analyzer)
-
 ## Configuration
 
 Configuration can be done via environment variables.
