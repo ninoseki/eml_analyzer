@@ -24,6 +24,7 @@ dependencies = [
   "html2text>=2025.4.15",
   "httpx>=0.28.1",
   "ioc-finder>=7.3.0,<8.0.0",
+  "kachi>=0.1.0",
   "loguru>=0.7.3",
   "oletools==0.60.2",
   "pydantic>=2.12.5",

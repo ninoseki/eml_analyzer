@@ -1,12 +1,13 @@
 import base64
-import typing
-import urllib.parse
+import re
+from collections.abc import Iterable
 from io import BytesIO
 from typing import Any
 
 import html2text
 from bs4 import BeautifulSoup
 from ioc_finder import parse_urls
+from kachi import unsafe_link
 
 from backend.schemas.eml import Attachment
 
@@ -15,29 +16,11 @@ def is_html(content_type: str) -> bool:
     return "text/html" in content_type
 
 
-def unpack_safelink_url(url: str) -> str:
-    # convert a Microsoft safelink back to a normal URL
-    parsed = urllib.parse.urlparse(url)
-    if parsed.netloc.endswith(".safelinks.protection.outlook.com"):
-        parsed_query = urllib.parse.parse_qs(parsed.query)
-        safelink_urls = parsed_query.get("url")
-        if safelink_urls is not None:
-            return urllib.parse.unquote(safelink_urls[0])
-
-    return url
+def normalize_url(url: str) -> str:
+    return re.sub(r"[>\]]+$", "", url)
 
 
-def unpack_safelink_urls(urls: typing.Iterable[str]) -> set[str]:
-    return {unpack_safelink_url(url) for url in urls}
-
-
-def normalize_url(url: str):
-    # remove ] and > from the end of the URL
-    url = url.rstrip(">")
-    return url.rstrip("]")
-
-
-def normalize_urls(urls: typing.Iterable[str]) -> set[str]:
+def normalize_urls(urls: Iterable[str]) -> set[str]:
     return {normalize_url(url) for url in urls}
 
 
@@ -49,6 +32,10 @@ def get_href_links(html: str) -> set[str]:
         for link in links
         if link.startswith("http://") or link.startswith("https://")
     }
+
+
+def unsafe_links(urls: Iterable[str]) -> set[str]:
+    return {unsafe_link(url) or url for url in urls}
 
 
 def parse_urls_from_body(content: str, content_type: str) -> set[str]:
@@ -64,7 +51,7 @@ def parse_urls_from_body(content: str, content_type: str) -> set[str]:
         content = h.handle(content)
 
     urls.update(parse_urls(content, parse_urls_without_scheme=False))
-    return normalize_urls(unpack_safelink_urls(urls))
+    return unsafe_links(normalize_urls(urls))
 
 
 def is_truthy(v: Any) -> bool:
