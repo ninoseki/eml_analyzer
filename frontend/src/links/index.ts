@@ -14,6 +14,7 @@ import {
   VirusTotalForSHA256,
   VirusTotalForURL
 } from './virustotal'
+import { WhoIs } from './whois'
 
 export const Links: LinkType[] = [
   new AnyRun(),
@@ -29,5 +30,6 @@ export const Links: LinkType[] = [
   new VirusTotalForDomain(),
   new VirusTotalForIP(),
   new VirusTotalForSHA256(),
-  new VirusTotalForURL()
+  new VirusTotalForURL(),
+  new WhoIs()
 ]
