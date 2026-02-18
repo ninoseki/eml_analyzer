@@ -1,7 +1,7 @@
 import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
 
-export class WhoIs implements LinkType {
+export class DomainTools implements LinkType {
   public baseURL: string
   public favicon: string
   public name: string
@@ -10,8 +10,8 @@ export class WhoIs implements LinkType {
   public constructor() {
     this.baseURL = 'https://whois.domaintools.com/'
     this.favicon = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${this.baseURL}`
-    this.name = 'Whois Lookup'
-    this.type = 'url'
+    this.name = 'DomainTools Lookup'
+    this.type = 'domain'
   }
 
   public href(value: string): string {

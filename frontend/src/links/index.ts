@@ -1,6 +1,7 @@
 import type { LinkType } from '@/schemas'
 
 import { AnyRun } from './anyrun'
+import { DomainTools } from './domaintools'
 import { Browserling } from './browserling'
 import { Crtsh } from './crtsh'
 import { EmailRep } from './emailrep'
@@ -14,12 +15,12 @@ import {
   VirusTotalForSHA256,
   VirusTotalForURL
 } from './virustotal'
-import { WhoIs } from './whois'
 
 export const Links: LinkType[] = [
   new AnyRun(),
   new Browserling(),
   new Crtsh(),
+  new DomainTools(),  
   new EmailRep(),
   new HybridAnalysis(),
   new SecurityTrails(),
@@ -30,6 +31,5 @@ export const Links: LinkType[] = [
   new VirusTotalForDomain(),
   new VirusTotalForIP(),
   new VirusTotalForSHA256(),
-  new VirusTotalForURL(),
-  new WhoIs()
+  new VirusTotalForURL()
 ]

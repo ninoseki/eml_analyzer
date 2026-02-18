@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { WhoIs } from '@/links/whois'
+import { DomainTools } from '@/links/domaintools'
 
-describe('WhoIs', function () {
-  const subject = new WhoIs()
+describe('DomainTools', function () {
+  const subject = new DomainTools()
 
   describe('#type', function () {
     it('equals to url', function () {
@@ -15,7 +15,7 @@ describe('WhoIs', function () {
     it('returns URL', function () {
       const hash = 'https://example.com'
       expect(subject.href(hash)).toEqual(
-        'https://whois.domaintools.com/example.com'
+        'https://DomainTools.domaintools.com/example.com'
       )
     })
   })
