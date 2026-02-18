@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { Shodan } from '@/links/shodan'
+import { AbuseIPDB } from '@/links/abuseipdb'
 
-describe('Shodan', function () {
-  const subject = new Shodan()
+describe('AbuseIPDB', function () {
+  const subject = new AbuseIPDB()
 
   describe('#type', function () {
     it('equals to ip_address', function () {
