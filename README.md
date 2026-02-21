@@ -60,6 +60,43 @@ Alternatively you can set values through `.env` file. Values in `.env` file will
 | `ASYNC_MAX_AT_ONCE`          | Max number of concurrently running lookup tasks | `None`      |
 | `ASYNC_MAX_PER_SECOND`       | Max number of tasks spawned per second          | `None`      |
 
+## Development
+
+### Requirements
+
+- Python 3.12
+- Node.js v24
+- Docker & Docker Compose
+- Lefthook
+
+### Backend
+
+```bash
+# install dependencies
+uv sync
+# run test
+pytest
+```
+
+### Frontend
+
+```bash
+cd frontend
+# install dependencies
+npm install
+# run test
+npm run test
+```
+
+### Linter
+
+```bash
+# setup pre-commit hooks
+lefthook install
+# run hooks manually
+lefthook run pre-commit --all-files
+```
+
 ## ToDo
 
 - [x] Support MSG format.
