@@ -15,6 +15,6 @@ export class DomainTools implements LinkType {
   }
 
   public href(value: string): string {
-    return buildURL(this.baseURL, `/${value}`)
+    return buildURL(this.baseURL, `${value}`)
   }
 }
