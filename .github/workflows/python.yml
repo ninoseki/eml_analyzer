@@ -68,3 +68,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: uv run coveralls
+        continue-on-error: true
