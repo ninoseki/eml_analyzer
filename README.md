@@ -75,7 +75,7 @@ Alternatively you can set values through `.env` file. Values in `.env` file will
 # install dependencies
 uv sync
 # run test
-pytest
+uv run pytest
 ```
 
 ### Frontend
@@ -85,7 +85,9 @@ cd frontend
 # install dependencies
 npm install
 # run test
-npm run test
+npm run test:unit
+# start dev environment with hot reload on code changes
+npm run dev
 ```
 
 ### Linter
