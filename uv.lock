@@ -666,16 +666,15 @@ dev = [
 
 [[package]]
 name = "eml-parser"
-version = "2.0.0"
+version = "2.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "charset-normalizer" },
     { name = "publicsuffixlist" },
     { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/52/98b93d7352e79f981fafebca347d7d8d9d6c686f9d9f005814ec7d8d52cb/eml_parser-2.0.0.tar.gz", hash = "sha256:be88a77c4b79fc1f5e17091c3a587b12c18203347144d5c0977b925707c491e3", size = 1005039, upload-time = "2024-10-02T22:07:48.662Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/f0/ed7f0b1a002df79bf09270382f2a22392b70f53959a5b0a34284a82e84bf/eml_parser-2.0.0-py3-none-any.whl", hash = "sha256:1885ca8cb2db645dc4f29dfd6947ed84d2debbb1c0531bc542f0091089d48ab2", size = 35089, upload-time = "2024-10-02T22:07:47.47Z" },
+    { url = "https://files.pythonhosted.org/packages/48/91/2a22a7ed034f60767e7c8bbd4eddc2facc9c7e5456f7b056c8c57747218b/eml_parser-2.0.1-py3-none-any.whl", hash = "sha256:a32c52d78842c32e78751ce24e2db1989885e98424882ea4727d924e330d650b", size = 34740, upload-time = "2026-03-03T14:38:31.053Z" },
 ]
 
 [package.optional-dependencies]
