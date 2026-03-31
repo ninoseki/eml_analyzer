@@ -7,7 +7,7 @@ COPY ./frontend ./frontend
 
 WORKDIR /usr/src/app/frontend
 
-RUN npm install \
+RUN npm ci \
   && npm run build \
   && rm -rf node_modules
 
