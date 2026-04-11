@@ -86,8 +86,6 @@ cd frontend
 npm install
 # run test
 npm run test:unit
-# start dev environment with hot reload on code changes
-npm run dev
 ```
 
 ### Linter
