@@ -1,5 +1,4 @@
-import axios from 'axios'
-
+import { FetchError } from '@/api'
 import type { AttachmentType, SubmissionResultType, SubmitterType, SubmitType } from '@/schemas'
 
 export class VirusTotal implements SubmitterType {
@@ -14,7 +13,20 @@ export class VirusTotal implements SubmitterType {
   }
 
   public async submit(attachment: AttachmentType): Promise<SubmissionResultType> {
-    const res = await axios.post<SubmissionResultType>('/api/submit/virustotal', attachment)
-    return res.data
+    const res = await fetch('/api/submit/virustotal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(attachment)
+    })
+    if (!res.ok) {
+      let data: unknown
+      try {
+        data = await res.json()
+      } catch {
+        // no JSON body
+      }
+      throw new FetchError(res.statusText, data)
+    }
+    return res.json()
   }
 }

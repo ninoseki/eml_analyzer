@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { type PropType } from 'vue'
 import { useAsyncTask } from 'vue-concurrency'
 
@@ -26,7 +25,7 @@ const submit = async () => {
     const result = await submitTask.perform()
     emits('set-reference-url', result.referenceUrl)
   } catch (err) {
-    if (axios.isAxiosError(err)) {
+    if (err instanceof Error) {
       emits('set-error', err)
     }
   }

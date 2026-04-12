@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import 'vue-json-pretty/lib/styles.css'
 
-import { AxiosError } from 'axios'
 import { computed } from 'vue'
 import VueJsonPretty from 'vue-json-pretty'
 
+import { FetchError } from '@/api'
 import type { ErrorDataType } from '@/schemas'
 
 const props = defineProps({
   error: {
-    type: AxiosError,
+    type: Error,
     required: true
   },
   disposable: {
@@ -20,8 +20,8 @@ const props = defineProps({
 const emits = defineEmits(['dispose'])
 
 const data = computed<ErrorDataType | undefined>(() => {
-  if (props.error.response) {
-    return props.error.response?.data as ErrorDataType
+  if (props.error instanceof FetchError && props.error.response) {
+    return props.error.response.data as ErrorDataType
   }
   return undefined
 })
