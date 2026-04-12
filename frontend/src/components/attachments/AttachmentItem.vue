@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AxiosError } from 'axios'
 import fileSize from 'filesize.js'
 import { type PropType, ref } from 'vue'
 
@@ -20,14 +19,14 @@ defineProps({
 })
 
 const { status } = useStatus()
-const error = ref<AxiosError>()
+const error = ref<Error>()
 const referenceUrl = ref<string>()
 
 const onDisposeError = () => {
   error.value = undefined
 }
 
-const onSetError = (newError: AxiosError) => {
+const onSetError = (newError: Error) => {
   error.value = newError
 }
 
