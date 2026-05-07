@@ -1,5 +1,6 @@
 import type { LinkType } from '@/schemas'
 
+import { AbuseIPDB } from './abuseipdb'
 import { AnyRun } from './anyrun'
 import { DomainTools } from './domaintools'
 import { Browserling } from './browserling'
@@ -17,6 +18,7 @@ import {
 } from './virustotal'
 
 export const Links: LinkType[] = [
+  new AbuseIPDB(),
   new AnyRun(),
   new Browserling(),
   new Crtsh(),
