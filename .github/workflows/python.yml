@@ -33,7 +33,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
       - run: pip install -r requirements.txt
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/.cache/uv
           key: uv-${{ env.PYTHON_VERSION }}-${{ hashFiles('uv.lock') }}
@@ -43,9 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       spamassassin:
-        image: instantlinux/spamassassin:4.0.0-6
+        image: instantlinux/spamassassin:4.0.1-5
         ports:
-          - 783:783
+          - 7783:783
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -53,7 +53,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
       - run: pip install -r requirements.txt
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/.cache/uv
           key: uv-${{ env.PYTHON_VERSION }}-${{ hashFiles('uv.lock') }}
@@ -61,7 +61,7 @@ jobs:
       - name: Make dummy frontend directory
         run: mkdir -p frontend/dist/
       - name: Wait until SpamAssasin ready
-        run: uv run python scripts/ping.py
+        run: uv run python -m scripts.ping
       - name: Run tests
         run: uv run coverage run -m pytest
       - name: Coveralls

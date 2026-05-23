@@ -95,3 +95,6 @@ class SpamAssassin:
 
         parser = Parser(headers=response.headers, body=response.body.decode())
         return parser.parse()
+
+    async def ping(self):
+        return await aiospamc.ping(host=self.host, port=self.port)

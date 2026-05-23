@@ -1,9 +1,9 @@
 services:
   spamassassin:
-    image: instantlinux/spamassassin:4.0.0-6
+    image: instantlinux/spamassassin:4.0.1-5
     platform: linux/x86_64
     ports:
-      - ${SPAMASSASSIN_PORT:-783}:783
+      - ${SPAMASSASSIN_PORT:-7783}:783
     restart: always
 
   redis:
@@ -23,7 +23,7 @@ services:
       - ${PORT:-8000}:8000
     environment:
       - SPAMASSASSIN_HOST=spamassassin
-      - SPAMASSASSIN_PORT=${SPAMASSASSIN_PORT:-783}
+      - SPAMASSASSIN_PORT=${SPAMASSASSIN_PORT:-7783}
       - REDIS_URL=redis://redis:${REDIS_PORT:-6379}
     restart: always
     depends_on:
