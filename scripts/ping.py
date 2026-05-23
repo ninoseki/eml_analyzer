@@ -1,6 +1,7 @@
-import aiospamc
 import stamina
 from syncer import sync
+
+from backend.dependencies import get_spam_assassin
 
 
 @stamina.retry(
@@ -11,7 +12,8 @@ from syncer import sync
 )
 @sync
 async def is_spam_assassin_responsive():
-    await aiospamc.ping()
+    sa = get_spam_assassin()
+    await sa.ping()
 
 
 if __name__ == "__main__":
