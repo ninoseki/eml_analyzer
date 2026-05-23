@@ -1,5 +1,4 @@
 import { sha256 } from 'js-sha256'
-import URL from 'url-parse'
 
 import type { IndicatorType, LinkType } from '@/schemas'
 import { buildURL } from '@/utils'
