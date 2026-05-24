@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import truncate from 'just-truncate'
 import { computed, onMounted, type PropType, ref } from 'vue'
 
 import BodyComponent from '@/components/bodies/BodyItem.vue'
 import type { AttachmentType, BodyType } from '@/schemas'
+import { truncate } from '@/utils'
 
 const props = defineProps({
   bodies: {

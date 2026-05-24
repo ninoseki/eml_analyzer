@@ -4,7 +4,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import utc from 'dayjs/plugin/utc'
 import { isDomain, isEmail, isIPv4, isIPv6, isSHA256, isURL } from 'ioc-extractor'
 import { Base64 } from 'js-base64'
-import qs from 'qs'
 
 dayjs.extend(utc)
 dayjs.extend(duration)
@@ -29,8 +28,27 @@ export function toCSV(values: string[]): string {
   return values.join(', ')
 }
 
-export function buildURL(baseURL: string, path: string, params = {}): string {
-  const queryString: string = qs.stringify(params)
+export function truncate(s: string, length: number, suffix = '...'): string {
+  if (s.length <= length) {
+    return s
+  }
+  return s.slice(0, Math.max(0, length - suffix.length)) + suffix
+}
+
+export function stringifyParams(params: Record<string, string | number | boolean>): string {
+  const searchParams = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    searchParams.append(key, String(value))
+  }
+  return searchParams.toString()
+}
+
+export function buildURL(
+  baseURL: string,
+  path: string,
+  params: Record<string, string | number | boolean> = {}
+): string {
+  const queryString = stringifyParams(params)
   if (queryString === '') {
     return `${baseURL}${path}`
   } else {

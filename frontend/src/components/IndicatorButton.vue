@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import truncate from 'just-truncate'
 import { computed } from 'vue'
 
 import { Links } from '@/links'
 import type { IndicatorType } from '@/schemas'
-import { getIndicatorType } from '@/utils'
+import { getIndicatorType, truncate } from '@/utils'
 
 const props = defineProps({
   value: {

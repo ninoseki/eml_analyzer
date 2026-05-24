@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import truncate from 'just-truncate'
 import { onMounted, type PropType, ref } from 'vue'
 
 import Attachment from '@/components/attachments/AttachmentItem.vue'
 import type { AttachmentType } from '@/schemas'
+import { truncate } from '@/utils'
 
 const props = defineProps({
   attachments: {
