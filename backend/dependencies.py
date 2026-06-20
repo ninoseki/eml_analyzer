@@ -1,20 +1,24 @@
 import typing
 
-from fastapi import Depends
-from redis import Redis
+from fastapi import Depends, HTTPException, Request, status
+from redis.asyncio import Redis
 
 from backend import clients, settings
 
 
-def get_optional_redis():
-    if settings.REDIS_URL:
-        redis: Redis = Redis.from_url(str(settings.REDIS_URL))  # type: ignore
-        try:
-            yield redis
-        finally:
-            redis.close()
-    else:
-        yield None
+def get_optional_redis(request: Request) -> Redis | None:
+    return request.app.state.redis
+
+
+def get_required_redis(
+    optional_redis: typing.Annotated[Redis | None, Depends(get_optional_redis)],
+) -> Redis:
+    if optional_redis is None:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Redis cache is not enabled",
+        )
+    return optional_redis
 
 
 async def get_optional_vt():
@@ -52,6 +56,7 @@ def get_spam_assassin() -> clients.SpamAssassin:
 
 
 OptionalRedis = typing.Annotated[Redis | None, Depends(get_optional_redis)]
+RequiredRedis = typing.Annotated[Redis, Depends(get_required_redis)]
 OptionalVirusTotal = typing.Annotated[
     clients.VirusTotal | None, Depends(get_optional_vt)
 ]

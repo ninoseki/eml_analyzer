@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, File, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
-from redis import Redis
+from redis.asyncio import Redis
 
 from backend import clients, dependencies, schemas, settings
 from backend.factories.response import ResponseFactory
@@ -34,14 +34,16 @@ async def _analyze(
     )
 
 
-def cache_response(
+async def cache_response(
     redis: Redis,
     response: schemas.Response,
     expire: int = settings.REDIS_EXPIRE,
     key_prefix: str = settings.REDIS_KEY_PREFIX,
 ):
     ex = expire if expire > 0 else None
-    redis.set(f"{key_prefix}:{response.id}", value=response.model_dump_json(), ex=ex)
+    await redis.set(
+        f"{key_prefix}:{response.id}", value=response.model_dump_json(), ex=ex
+    )
 
 
 @router.post(
