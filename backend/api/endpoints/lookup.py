@@ -11,16 +11,8 @@ router = APIRouter()
     summary="Lookup cached analysis",
     description="Try to fetch existing analysis from database",
 )
-async def lookup(
-    id: str, *, optional_redis: dependencies.OptionalRedis
-) -> schemas.Response:
-    if optional_redis is None:
-        raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="Redis cache is not enabled",
-        )
-
-    got: bytes | None = optional_redis.get(f"{settings.REDIS_KEY_PREFIX}:{id}")  # type: ignore
+async def lookup(id: str, *, redis: dependencies.RequiredRedis) -> schemas.Response:
+    got: bytes | None = await redis.get(f"{settings.REDIS_KEY_PREFIX}:{id}")
     if got is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
