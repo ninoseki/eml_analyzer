@@ -7,7 +7,10 @@ from backend import clients, settings
 
 
 def get_optional_redis(request: Request) -> Redis | None:
-    return request.app.state.redis
+    try:
+        return request.app.state.redis
+    except AttributeError:
+        return None
 
 
 def get_required_redis(
