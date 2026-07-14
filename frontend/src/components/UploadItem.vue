@@ -78,7 +78,7 @@ watch(file, () => {
         </p>
         <p class="mt-4">Drop the EML/MSG file here or click to upload</p>
       </div>
-      <input type="file" @change="onFileChange" />
+      <input type="file" accept=".eml,.msg" @change="onFileChange" />
     </div>
     <div class="text-center">
       <p class="mb-4" v-if="filename">{{ filename }}</p>
