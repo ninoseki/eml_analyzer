@@ -83,6 +83,9 @@ ignore = [
   "E501", # line too long
 ]
 
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
+
 [tool.mypy]
 ignore_missing_imports = true
 plugins = ["pydantic.mypy"]

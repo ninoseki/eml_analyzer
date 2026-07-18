@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, File, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, File, HTTPException, UploadFile, status
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from redis.asyncio import Redis
@@ -22,7 +22,7 @@ async def _analyze(
     except ValidationError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=jsonable_encoder(exc.errors()),
+            detail=jsonable_encoder(exc.errors(include_input=False, include_url=False)),
         ) from exc
 
     return await ResponseFactory.call(
@@ -85,7 +85,7 @@ async def analyze(
     description="Analyze an eml and return an analysis result",
 )
 async def analyze_file(
-    file: bytes = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     *,
     background_tasks: BackgroundTasks,
     optional_redis: dependencies.OptionalRedis,
@@ -95,7 +95,7 @@ async def analyze_file(
     optional_urlscan: dependencies.OptionalUrlScan,
 ) -> schemas.Response:
     response = await _analyze(
-        file,
+        await file.read(),
         optional_email_rep=optional_email_rep,
         spam_assassin=spam_assassin,
         optional_urlscan=optional_urlscan,
