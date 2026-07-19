@@ -14,9 +14,7 @@ describe('DomainTools', function () {
   describe('#href', function () {
     it('returns URL', function () {
       const hash = 'example.com'
-      expect(subject.href(hash)).toEqual(
-        'https://whois.domaintools.com/example.com'
-      )
+      expect(subject.href(hash)).toEqual('https://whois.domaintools.com/example.com')
     })
   })
 })
