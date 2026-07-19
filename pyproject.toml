@@ -39,7 +39,7 @@ dependencies = [
 dev = [
   "ci-py>=1.0,<2.0",
   "coveralls>=4.1.0",
-  "mypy>=2.1.0",
+  "mypy>=2.3.0",
   "pytest-asyncio>=1.4.0",
   "pytest-cov>=7.1.0",
   "pytest-docker>=3.2.5",
@@ -49,9 +49,9 @@ dev = [
   "pytest-randomly>=4.1.0",
   "pytest-timeout>=2.4.0",
   "pytest>=9.1.1",
-  "ruff>=0.15.18",
+  "ruff>=0.15.22",
   "syncer>=2.0.3,<3.0.0",
-  "vcrpy>=8.2.1",
+  "vcrpy>=8.3.0",
 ]
 
 [tool.uv]

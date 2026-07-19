@@ -1,9 +1,9 @@
 import type { LinkType } from '@/schemas'
 
 import { AnyRun } from './anyrun'
-import { DomainTools } from './domaintools'
 import { Browserling } from './browserling'
 import { Crtsh } from './crtsh'
+import { DomainTools } from './domaintools'
 import { EmailRep } from './emailrep'
 import { HybridAnalysis } from './hybridanalysis'
 import { SecurityTrails } from './securitytrails'
@@ -20,7 +20,7 @@ export const Links: LinkType[] = [
   new AnyRun(),
   new Browserling(),
   new Crtsh(),
-  new DomainTools(),  
+  new DomainTools(),
   new EmailRep(),
   new HybridAnalysis(),
   new SecurityTrails(),
