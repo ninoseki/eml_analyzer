@@ -40,12 +40,10 @@ const dispose = () => {
     >
       ✕
     </button>
-    <div v-if="data?.detail">
-      <div v-if="typeof data.detail === 'string'">
-        {{ data.detail }}
-      </div>
-      <VueJsonPretty :data="data.detail" v-else />
+    <div v-if="typeof data?.detail === 'string'">
+      {{ data.detail }}
     </div>
-    <p v-else>{{ error }}</p>
+    <p v-else>{{ error.message || error.name || 'Something went wrong' }}</p>
   </div>
+  <VueJsonPretty class="mt-2" :data="data.detail" v-if="data?.detail" />
 </template>

@@ -25,7 +25,11 @@ const updateDragDropFocus = (value: boolean) => {
 
 const analyze = async () => {
   if (file.value) {
-    await analyzeTask.perform(file.value)
+    try {
+      await analyzeTask.perform(file.value)
+    } catch {
+      // do nothing
+    }
   }
 }
 
