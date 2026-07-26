@@ -3,6 +3,7 @@
 
 # vscode
 .vscode
+**/.vscode
 
 # node
 **/node_modules
