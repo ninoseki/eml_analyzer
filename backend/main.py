@@ -5,7 +5,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 from redis.asyncio import Redis
-from Secweb.ContentSecurityPolicy import ContentSecurityPolicy
+from Secweb.headers import Content_Security_Policy
 
 from backend import settings
 from backend.api.api import api_router
@@ -36,11 +36,23 @@ def create_app():
     # add middleware
     app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-    app.add_middleware(
-        ContentSecurityPolicy,
-        Option={"img-src": ["'self'", "data:", "t0.gstatic.com", "www.google.com"]},
-        script_nonce=False,
-        style_nonce=False,
+    Content_Security_Policy(
+        app,
+        options={
+            "default-src": ["'self'"],
+            "base-uri": ["'self'"],
+            "block-all-mixed-content": [],
+            "font-src": ["'self'", "https:", "data:"],
+            "frame-ancestors": ["'self'"],
+            "img-src": ["'self'", "data:", "t0.gstatic.com", "www.google.com"],
+            "object-src": ["'none'"],
+            "script-src": ["'self'"],
+            "script-src-attr": ["'none'"],
+            "style-src": ["'self'", "https:", "'unsafe-inline'"],
+            "upgrade-insecure-requests": [],
+        },
+        script_nonce_flag=False,
+        style_nonce_flag=False,
         report_only=False,
     )
 

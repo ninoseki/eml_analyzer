@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import aiospamc
@@ -5,7 +6,6 @@ import ci
 import pytest
 from fastapi.testclient import TestClient
 from pytest_docker.plugin import Services
-from syncer import sync
 
 from backend import clients, factories, schemas
 from backend.main import create_app
@@ -16,13 +16,15 @@ def docker_compose_file(pytestconfig):
     return os.path.join(str(pytestconfig.rootdir), "test.docker-compose.yml")
 
 
-@sync
-async def is_spam_assassin_responsive(port: int) -> bool:
-    try:
-        res = await aiospamc.ping(port=port)
-        return res is not None
-    except Exception:
-        return False
+def is_spam_assassin_responsive(port: int) -> bool:
+    async def ping() -> bool:
+        try:
+            res = await aiospamc.ping(port=port)
+            return res is not None
+        except Exception:
+            return False
+
+    return asyncio.run(ping())
 
 
 if ci.is_ci():

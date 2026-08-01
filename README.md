@@ -14,31 +14,10 @@ EML analyzer is an application to analyze the EML file which can:
 
 ### Docker
 
-```bash
-git clone https://github.com/ninoseki/eml_analyzer.git
-cd eml_analyzer
-docker build . -t eml_analyzer
-docker run -i -d -p 8000:8000 eml_analyzer
-```
+Container images are available via GHCR: https://github.com/ninoseki/eml_analyzer/pkgs/container/eml_analyzer.
 
-The application is running at: http://localhost:8000/ in your browser.
-
-### Docker Compose
-
-```bash
-git clone https://github.com/ninoseki/eml_analyzer.git
-cd eml_analyzer
-docker-compose up
-```
-
-### Docker vs. Docker compose
-
-- Docker:
-  - Run [Uvicorn](https://www.uvicorn.org/) and [SpamAssassin](https://spamassassin.apache.org/) in the same container. (The processes are managed by [Circus](https://circus.readthedocs.io/en/latest/))
-- Docker Compose:
-  - Run [Gunicorn](https://gunicorn.org/) and SpamAssassin in each container.
-
-Thus Docker Compose is suitable for the production use.
+- `latest`: the latest version with spamd
+- `latest-slim`: the latest slim version (without spamd)
 
 ## Configuration
 
@@ -64,7 +43,7 @@ Alternatively you can set values through `.env` file. Values in `.env` file will
 
 ### Requirements
 
-- Python 3.12
+- Python 3.14
 - Node.js v24
 - Docker & Docker Compose
 - Lefthook

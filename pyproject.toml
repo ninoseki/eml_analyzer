@@ -2,7 +2,7 @@
 name = "eml-analyzer"
 version = "0.1.0"
 description = ""
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.14,<3.15"
 license = "MIT"
 authors = [{ name = "Manabu Niseki", email = "manabu.niseki@gmail.com" }]
 dependencies = [
@@ -28,7 +28,7 @@ dependencies = [
   "pydantic>=2.13.4",
   "python-magic>=0.4.27,<0.5.0",
   "redis>=7.4.0",
-  "secweb>=1.30.10",
+  "secweb>=2.0.0",
   "stamina>=26.1.0",
   "uvicorn-worker>=0.4.0",
   "vt-py>=0.22.0",
@@ -50,7 +50,6 @@ dev = [
   "pytest-timeout>=2.4.0",
   "pytest>=9.1.1",
   "ruff>=0.15.22",
-  "syncer>=2.0.3,<3.0.0",
   "vcrpy>=8.3.0",
 ]
 
