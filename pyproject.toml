@@ -50,7 +50,6 @@ dev = [
   "pytest-timeout>=2.4.0",
   "pytest>=9.1.1",
   "ruff>=0.15.22",
-  "syncer>=2.0.3,<3.0.0",
   "vcrpy>=8.3.0",
 ]
 

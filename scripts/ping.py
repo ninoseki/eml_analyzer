@@ -1,5 +1,6 @@
+import asyncio
+
 import stamina
-from syncer import sync
 
 from backend.dependencies import get_spam_assassin
 
@@ -10,11 +11,13 @@ from backend.dependencies import get_spam_assassin
     wait_initial=5.0,
     timeout=60.0,
 )
-@sync
-async def is_spam_assassin_responsive():
-    sa = get_spam_assassin()
-    await sa.ping()
+def is_spam_assassin_responsive():
+    async def ping():
+        sa = get_spam_assassin()
+        await sa.ping()
+
+    asyncio.run(ping())
 
 
 if __name__ == "__main__":
-    is_spam_assassin_responsive()  # type: ignore
+    is_spam_assassin_responsive()
