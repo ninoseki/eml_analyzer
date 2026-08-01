@@ -651,7 +651,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "python-magic", specifier = ">=0.4.27,<0.5.0" },
     { name = "redis", specifier = ">=7.4.0" },
-    { name = "secweb", specifier = ">=1.30.10" },
+    { name = "secweb", specifier = ">=2.0.0" },
     { name = "stamina", specifier = ">=26.1.0" },
     { name = "uvicorn-worker", specifier = ">=0.4.0" },
     { name = "vt-py", specifier = ">=0.22.0" },
