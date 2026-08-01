@@ -9,7 +9,7 @@ class _EmptyNetloc(str):
 
 
 class DatabaseURL:
-    def __init__(self, url: typing.Union[str, "DatabaseURL"]):
+    def __init__(self, url: str | DatabaseURL):
         if isinstance(url, DatabaseURL):
             self._url: str = url._url
         elif isinstance(url, str):
@@ -89,7 +89,7 @@ class DatabaseURL:
             self._options = dict(parse_qsl(self.components.query))
         return self._options
 
-    def replace(self, **kwargs: typing.Any) -> "DatabaseURL":
+    def replace(self, **kwargs: typing.Any) -> DatabaseURL:
         if (
             "username" in kwargs
             or "password" in kwargs
