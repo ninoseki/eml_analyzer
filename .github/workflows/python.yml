@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       spamassassin:
-        image: instantlinux/spamassassin:4.0.1-5
+        image: instantlinux/spamassassin:4.0.2-3
         ports:
           - 7783:783
     steps:

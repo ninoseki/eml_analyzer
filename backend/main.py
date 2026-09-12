@@ -14,7 +14,9 @@ from backend.api.api import api_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.redis = (
-        Redis.from_url(str(settings.REDIS_URL)) if settings.REDIS_URL else None
+        Redis.from_url(str(settings.REDIS_URL), legacy_responses=False)
+        if settings.REDIS_URL
+        else None
     )
     try:
         yield

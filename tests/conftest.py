@@ -1,5 +1,6 @@
 import asyncio
 import os
+import shutil
 
 import aiospamc
 import ci
@@ -9,6 +10,21 @@ from pytest_docker.plugin import Services
 
 from backend import clients, factories, schemas
 from backend.main import create_app
+
+
+@pytest.fixture(scope="session")
+def docker_compose_command() -> str:
+    override = os.environ.get("COMPOSE_COMMAND")
+    if override:
+        return override
+
+    if shutil.which("docker"):
+        return "docker compose"
+
+    if shutil.which("podman-compose"):
+        return "podman-compose"
+
+    return "docker compose"
 
 
 @pytest.fixture(scope="session")
