@@ -1,6 +1,6 @@
 services:
   spamassassin:
-    image: instantlinux/spamassassin:4.0.1-5
+    image: instantlinux/spamassassin:4.0.2-3
     platform: linux/x86_64
     ports:
       - ${SPAMASSASSIN_PORT:-7783}:783
