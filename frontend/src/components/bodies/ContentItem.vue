@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core'
-import { codeToHtml } from 'shiki'
 import { type PropType } from 'vue'
 import { computed } from 'vue'
+
+import { codeToHtml } from '@/shiki'
 
 const props = defineProps({
   content: {

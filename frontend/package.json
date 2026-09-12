@@ -17,6 +17,8 @@
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/vue-fontawesome": "^3.3.2",
+    "@shikijs/langs": "^4.3.1",
+    "@shikijs/themes": "^4.3.1",
     "@vueuse/core": "^14.3.0",
     "@vueuse/router": "^14.3.0",
     "dayjs": "1.11.21",
