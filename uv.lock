@@ -698,7 +698,7 @@ requires-dist = [
     { name = "dkimpy", specifier = ">=1.1.8" },
     { name = "eml-parser", extras = ["filemagic"], specifier = ">=3.0.4" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.137.2" },
-    { name = "fastapi-csp-docs" },
+    { name = "fastapi-csp-docs", specifier = "==1.0.2" },
     { name = "gunicorn", specifier = ">=26.2.0" },
     { name = "html2text", specifier = ">=2025.4.15" },
     { name = "ioc-finder", specifier = ">=9.4.1" },

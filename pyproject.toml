@@ -18,7 +18,7 @@ dependencies = [
   "dateparser>=1.4.3",
   "dkimpy>=1.1.8",
   "eml_parser[filemagic]>=3.0.4",
-  "fastapi-csp-docs",
+  "fastapi-csp-docs==1.0.2",
   "fastapi[standard]>=0.137.2",
   "gunicorn>=26.2.0",
   "html2text>=2025.4.15",
