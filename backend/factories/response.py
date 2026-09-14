@@ -1,7 +1,5 @@
 import hashlib
-from collections.abc import Coroutine
 from functools import partial
-from typing import Any, Callable, Awaitable
 
 import aiometer
 from loguru import logger
