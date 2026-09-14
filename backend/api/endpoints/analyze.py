@@ -12,7 +12,7 @@ router = APIRouter()
 async def _analyze(
     file: bytes,
     *,
-    spam_assassin: clients.SpamAssassin,
+    optional_spam_assassin: clients.SpamAssassin | None = None,
     optional_email_rep: clients.EmailRep | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
@@ -28,7 +28,7 @@ async def _analyze(
     return await ResponseFactory.call(
         payload.file,
         optional_email_rep=optional_email_rep,
-        spam_assassin=spam_assassin,
+        optional_spam_assassin=optional_spam_assassin,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
     )
@@ -56,7 +56,7 @@ async def analyze(
     payload: schemas.Payload,
     *,
     background_tasks: BackgroundTasks,
-    spam_assassin: dependencies.SpamAssassin,
+    optional_spam_assassin: dependencies.OptionalSpamAssassin,
     optional_redis: dependencies.OptionalRedis,
     optional_email_rep: dependencies.OptionalEmailRep,
     optional_vt: dependencies.OptionalVirusTotal,
@@ -64,7 +64,7 @@ async def analyze(
 ) -> schemas.Response:
     response = await _analyze(
         payload.file.encode(),
-        spam_assassin=spam_assassin,
+        optional_spam_assassin=optional_spam_assassin,
         optional_email_rep=optional_email_rep,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
@@ -89,7 +89,7 @@ async def analyze_file(
     *,
     background_tasks: BackgroundTasks,
     optional_redis: dependencies.OptionalRedis,
-    spam_assassin: dependencies.SpamAssassin,
+    optional_spam_assassin: dependencies.OptionalSpamAssassin,
     optional_email_rep: dependencies.OptionalEmailRep,
     optional_vt: dependencies.OptionalVirusTotal,
     optional_urlscan: dependencies.OptionalUrlScan,
@@ -97,7 +97,7 @@ async def analyze_file(
     response = await _analyze(
         await file.read(),
         optional_email_rep=optional_email_rep,
-        spam_assassin=spam_assassin,
+        optional_spam_assassin=optional_spam_assassin,
         optional_urlscan=optional_urlscan,
         optional_vt=optional_vt,
     )

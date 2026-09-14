@@ -24,7 +24,7 @@ def get_required_redis(
     return optional_redis
 
 
-async def get_optional_vt():
+async def get_optional_vt() -> typing.AsyncIterator[clients.VirusTotal | None]:
     if settings.VIRUSTOTAL_API_KEY:
         async with clients.VirusTotal(
             apikey=str(settings.VIRUSTOTAL_API_KEY)
@@ -34,7 +34,7 @@ async def get_optional_vt():
         yield None
 
 
-async def get_optional_urlscan():
+async def get_optional_urlscan() -> typing.AsyncIterator[clients.UrlScan | None]:
     if settings.URLSCAN_API_KEY:
         async with clients.UrlScan(api_key=settings.URLSCAN_API_KEY) as client:
             yield client
@@ -42,7 +42,7 @@ async def get_optional_urlscan():
         yield None
 
 
-async def get_optional_email_rep():
+async def get_optional_email_rep() -> typing.AsyncIterator[clients.EmailRep | None]:
     if settings.EMAIL_REP_API_KEY:
         async with clients.EmailRep(api_key=settings.EMAIL_REP_API_KEY) as client:
             yield client
@@ -50,12 +50,14 @@ async def get_optional_email_rep():
         yield None
 
 
-def get_spam_assassin() -> clients.SpamAssassin:
-    return clients.SpamAssassin(
-        host=settings.SPAMASSASSIN_HOST,
-        port=settings.SPAMASSASSIN_PORT,
-        timeout=settings.SPAMASSASSIN_TIMEOUT,
-    )
+def get_spam_assassin() -> clients.SpamAssassin | None:
+    if settings.SPAMASSASSIN_HOST:
+        return clients.SpamAssassin(
+            host=settings.SPAMASSASSIN_HOST,
+            port=settings.SPAMASSASSIN_PORT,
+            timeout=settings.SPAMASSASSIN_TIMEOUT,
+        )
+    return None
 
 
 OptionalRedis = typing.Annotated[Redis | None, Depends(get_optional_redis)]
@@ -66,5 +68,9 @@ OptionalVirusTotal = typing.Annotated[
 OptionalUrlScan = typing.Annotated[
     clients.UrlScan | None, Depends(get_optional_urlscan)
 ]
-OptionalEmailRep = typing.Annotated[clients.EmailRep, Depends(get_optional_email_rep)]
-SpamAssassin = typing.Annotated[clients.SpamAssassin, Depends(get_spam_assassin)]
+OptionalEmailRep = typing.Annotated[
+    clients.EmailRep | None, Depends(get_optional_email_rep)
+]
+OptionalSpamAssassin = typing.Annotated[
+    clients.SpamAssassin | None, Depends(get_spam_assassin)
+]

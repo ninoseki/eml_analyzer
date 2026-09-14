@@ -1,7 +1,7 @@
 import hashlib
 from collections.abc import Coroutine
 from functools import partial
-from typing import Any
+from typing import Any, Callable, Awaitable
 
 import aiometer
 from loguru import logger
@@ -96,22 +96,30 @@ async def set_verdicts(
     response: schemas.Response,
     *,
     eml_file: bytes,
-    spam_assassin: clients.SpamAssassin,
+    optional_spam_assassin: clients.SpamAssassin | None = None,
     optional_email_rep: clients.EmailRep | None = None,
     optional_vt: clients.VirusTotal | None = None,
     optional_urlscan: clients.UrlScan | None = None,
 ) -> schemas.Response:
-    tasks: list[partial[Coroutine[Any, Any, schemas.Verdict | None]]] = [
-        partial(get_spam_assassin_verdict, eml_file, client=spam_assassin),
-        partial(get_oleid_verdict, response.eml.attachments),
+    tasks = [
+        partial(get_oleid_verdict, attachments=response.eml.attachments),
         partial(get_dkim_verdict, eml_file=eml_file, eml=response.eml),
     ]
+
+    if optional_spam_assassin:
+        tasks.append(
+            partial(
+                get_spam_assassin_verdict,
+                eml_file=eml_file,
+                client=optional_spam_assassin,
+            )
+        )
 
     if response.eml.header.from_ is not None and optional_email_rep is not None:
         tasks.append(
             partial(
                 get_email_rep_verdicts,
-                response.eml.header.from_,
+                from_=response.eml.header.from_,
                 client=optional_email_rep,
             )
         )
@@ -135,7 +143,7 @@ class ResponseFactory(AbstractAsyncFactory):
         cls,
         eml_file: bytes,
         *,
-        spam_assassin: clients.SpamAssassin,
+        optional_spam_assassin: clients.SpamAssassin | None,
         optional_email_rep: clients.EmailRep | None,
         optional_vt: clients.VirusTotal | None = None,
         optional_urlscan: clients.UrlScan | None = None,
@@ -144,7 +152,7 @@ class ResponseFactory(AbstractAsyncFactory):
         return await set_verdicts(
             parsed,
             eml_file=eml_file,
-            spam_assassin=spam_assassin,
+            optional_spam_assassin=optional_spam_assassin,
             optional_email_rep=optional_email_rep,
             optional_vt=optional_vt,
             optional_urlscan=optional_urlscan,
