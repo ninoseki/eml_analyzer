@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+import fastapi_csp_docs
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -34,9 +35,12 @@ def create_app():
         debug=settings.DEBUG,
         title=settings.PROJECT_NAME,
         lifespan=lifespan,
+        docs_url=None,
+        redoc_url=None,
     )
     # add middleware
     app.add_middleware(GZipMiddleware, minimum_size=1000)
+    fastapi_csp_docs.setup(app)
 
     Content_Security_Policy(
         app,
@@ -48,7 +52,12 @@ def create_app():
             "frame-ancestors": ["'self'"],
             "img-src": ["'self'", "data:", "t0.gstatic.com", "www.google.com"],
             "object-src": ["'none'"],
-            "script-src": ["'self'"],
+            "script-src": [
+                "'self'",
+                "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
+                "https://cdn.jsdelivr.net/npm/redoc@2/bundles/redoc.standalone.js",
+            ],
+            "worker-src": ["'self'", "blob:"],
             "script-src-attr": ["'none'"],
             "style-src": ["'self'", "https:", "'unsafe-inline'"],
             "upgrade-insecure-requests": [],
