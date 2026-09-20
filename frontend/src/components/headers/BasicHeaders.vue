@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { type PropType } from "vue";
 
-import IndicatorButton from '@/components/IndicatorButton.vue'
-import type { HeaderType } from '@/schemas'
-import { toUTC } from '@/utils'
+import IndicatorButton from "@/components/IndicatorButton.vue";
+import type { HeaderType } from "@/schemas";
+import { toUTC } from "@/utils";
 
 defineProps({
   header: {
     type: Object as PropType<HeaderType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -19,7 +19,7 @@ defineProps({
     <tbody>
       <tr>
         <th class="w-80">Message ID</th>
-        <td>{{ header.messageId || 'N/A' }}</td>
+        <td>{{ header.messageId || "N/A" }}</td>
       </tr>
       <tr>
         <th class="w-80">Subject</th>
@@ -40,13 +40,21 @@ defineProps({
       <tr v-if="header.to.length > 0">
         <th class="w-80">To</th>
         <td>
-          <IndicatorButton :value="email" v-for="email in header.to" :key="email" />
+          <IndicatorButton
+            :value="email"
+            v-for="email in header.to"
+            :key="email"
+          />
         </td>
       </tr>
       <tr v-if="(header.cc || []).length > 0">
         <th class="w-80">Cc</th>
         <td>
-          <IndicatorButton :value="email" v-for="email in header.cc" :key="email" />
+          <IndicatorButton
+            :value="email"
+            v-for="email in header.cc"
+            :key="email"
+          />
         </td>
       </tr>
     </tbody>

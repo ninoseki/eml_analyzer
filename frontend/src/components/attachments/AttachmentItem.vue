@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import fileSize from 'filesize.js'
-import { type PropType, ref } from 'vue'
+import fileSize from "filesize.js";
+import { type PropType, ref } from "vue";
 
-import AttachmentDownloadButton from '@/components/attachments/AttachmentDownloadButton.vue'
-import AttachmentSubmissionButton from '@/components/attachments/AttachmentSubmissionButton.vue'
-import AttachmentSubmissionNotification from '@/components/attachments/AttachmentSubmissionNotification.vue'
-import ErrorMessage from '@/components/ErrorMessage.vue'
-import IndicatorButton from '@/components/IndicatorButton.vue'
-import { useStatus } from '@/composables/useStatus'
-import type { AttachmentType } from '@/schemas'
-import { VirusTotal } from '@/submitters'
+import AttachmentDownloadButton from "@/components/attachments/AttachmentDownloadButton.vue";
+import AttachmentSubmissionButton from "@/components/attachments/AttachmentSubmissionButton.vue";
+import AttachmentSubmissionNotification from "@/components/attachments/AttachmentSubmissionNotification.vue";
+import ErrorMessage from "@/components/ErrorMessage.vue";
+import IndicatorButton from "@/components/IndicatorButton.vue";
+import { useStatus } from "@/composables/useStatus";
+import type { AttachmentType } from "@/schemas";
+import { VirusTotal } from "@/submitters";
 
 defineProps({
   attachment: {
     type: Object as PropType<AttachmentType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const { status } = useStatus()
-const error = ref<Error>()
-const referenceUrl = ref<string>()
+const { status } = useStatus();
+const error = ref<Error>();
+const referenceUrl = ref<string>();
 
 const onDisposeError = () => {
-  error.value = undefined
-}
+  error.value = undefined;
+};
 
 const onSetError = (newError: Error) => {
-  error.value = newError
-}
+  error.value = newError;
+};
 
 const onSetReferenceUrl = (newReferenceUrl: string) => {
-  referenceUrl.value = newReferenceUrl
-}
+  referenceUrl.value = newReferenceUrl;
+};
 
-const vt = new VirusTotal()
+const vt = new VirusTotal();
 </script>
 
 <template>
@@ -50,11 +50,11 @@ const vt = new VirusTotal()
       </tr>
       <tr>
         <th class="w-80">MIME type</th>
-        <td>{{ attachment.mimeType || 'N/A' }}</td>
+        <td>{{ attachment.mimeType || "N/A" }}</td>
       </tr>
       <tr>
         <th class="w-80">CID</th>
-        <td>{{ attachment.contentId || 'N/A' }}</td>
+        <td>{{ attachment.contentId || "N/A" }}</td>
       </tr>
       <tr>
         <th class="w-80">SHA256</th>
@@ -76,7 +76,11 @@ const vt = new VirusTotal()
       <AttachmentDownloadButton :attachment="attachment" />
     </div>
   </div>
-  <AttachmentSubmissionNotification class="mt-1" :referenceUrl="referenceUrl" v-if="referenceUrl" />
+  <AttachmentSubmissionNotification
+    class="mt-1"
+    :referenceUrl="referenceUrl"
+    v-if="referenceUrl"
+  />
   <ErrorMessage
     class="mt-1"
     :error="error"

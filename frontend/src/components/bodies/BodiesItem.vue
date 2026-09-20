@@ -1,48 +1,51 @@
 <script setup lang="ts">
-import { computed, onMounted, type PropType, ref } from 'vue'
+import { computed, onMounted, type PropType, ref } from "vue";
 
-import BodyComponent from '@/components/bodies/BodyItem.vue'
-import type { AttachmentType, BodyType } from '@/schemas'
-import { truncate } from '@/utils'
+import BodyComponent from "@/components/bodies/BodyItem.vue";
+import type { AttachmentType, BodyType } from "@/schemas";
+import { truncate } from "@/utils";
 
 const props = defineProps({
   bodies: {
     type: Array as PropType<BodyType[]>,
-    required: true
+    required: true,
   },
   attachments: {
     type: Array as PropType<AttachmentType[]>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const selectedBody = ref<BodyType>()
-const selectedTabIndex = ref(0)
+const selectedBody = ref<BodyType>();
+const selectedTabIndex = ref(0);
 const inlineAttachments = computed(() => {
   const mapped = props.attachments.map((attachment) => {
-    const contentId = attachment.contentId?.replace(/^<|>$/g, '')
-    const data = `data:image/png;base64, ${attachment.raw}`
+    const contentId = attachment.contentId?.replace(/^<|>$/g, "");
+    const data = `data:image/png;base64, ${attachment.raw}`;
     if (contentId) {
-      return [contentId, data]
+      return [contentId, data];
     }
-    return undefined
-  })
+    return undefined;
+  });
   return Object.fromEntries(
-    mapped.filter((entry) => entry !== undefined) as [string, string | undefined][]
-  )
-})
+    mapped.filter((entry) => entry !== undefined) as [
+      string,
+      string | undefined,
+    ][],
+  );
+});
 
 const select = (body: BodyType, index: number) => {
-  selectedBody.value = body
-  selectedTabIndex.value = index
-}
+  selectedBody.value = body;
+  selectedTabIndex.value = index;
+};
 
 onMounted(() => {
   if (props.bodies.length > 0) {
-    selectedBody.value = props.bodies[0]
-    selectedTabIndex.value = 0
+    selectedBody.value = props.bodies[0];
+    selectedTabIndex.value = 0;
   }
-})
+});
 </script>
 
 <template>
@@ -59,5 +62,9 @@ onMounted(() => {
       >{{ truncate(body.contentType || index.toString(), 16) }}</a
     >
   </div>
-  <BodyComponent :body="selectedBody" v-if="selectedBody" :inlineAttachments="inlineAttachments" />
+  <BodyComponent
+    :body="selectedBody"
+    v-if="selectedBody"
+    :inlineAttachments="inlineAttachments"
+  />
 </template>

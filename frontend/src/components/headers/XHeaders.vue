@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, type PropType } from "vue";
 
-import FlattenHeaders from '@/components/headers/FlattenHeaders.vue'
-import type { HeaderItemType, HeaderType } from '@/schemas'
+import FlattenHeaders from "@/components/headers/FlattenHeaders.vue";
+import type { HeaderItemType, HeaderType } from "@/schemas";
 
 const props = defineProps({
   header: {
     type: Object as PropType<HeaderType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const xHeaders = computed(() => {
-  const header = props.header.header
-  const keys = Object.keys(header)
-  const xKeys = keys.filter((key) => key.startsWith('x-'))
+  const header = props.header.header;
+  const keys = Object.keys(header);
+  const xKeys = keys.filter((key) => key.startsWith("x-"));
 
   const items = xKeys.map((key) => {
     if (key in header) {
-      return { key: key, values: header[key] }
+      return { key: key, values: header[key] };
     }
-  })
+  });
 
-  return items.filter((x): x is HeaderItemType => x !== undefined)
-})
+  return items.filter((x): x is HeaderItemType => x !== undefined);
+});
 </script>
 
 <template>

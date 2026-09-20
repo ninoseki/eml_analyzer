@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { type PropType } from "vue";
 
-import Verdict from '@/components/verdicts/VerdictItem.vue'
-import type { VerdictType } from '@/schemas'
+import Verdict from "@/components/verdicts/VerdictItem.vue";
+import type { VerdictType } from "@/schemas";
 
 defineProps({
   verdicts: {
     type: Array as PropType<VerdictType[]>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
 <template>

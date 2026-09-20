@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { type PropType } from "vue";
 
-import Eml from '@/components/EmlItem.vue'
-import Verdicts from '@/components/verdicts/VerdictsItem.vue'
-import { useStatus } from '@/composables/useStatus'
-import type { ResponseType } from '@/schemas'
+import Eml from "@/components/EmlItem.vue";
+import Verdicts from "@/components/verdicts/VerdictsItem.vue";
+import { useStatus } from "@/composables/useStatus";
+import type { ResponseType } from "@/schemas";
 
 defineProps({
   response: {
     type: Object as PropType<ResponseType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const { status } = useStatus()
+const { status } = useStatus();
 </script>
 
 <template>
@@ -29,7 +29,10 @@ const { status } = useStatus()
         </div>
       </div>
     </div>
-    <Verdicts :verdicts="response.verdicts" v-if="response.verdicts.length > 0" />
+    <Verdicts
+      :verdicts="response.verdicts"
+      v-if="response.verdicts.length > 0"
+    />
     <Eml :eml="response.eml" />
   </div>
 </template>

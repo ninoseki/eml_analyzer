@@ -2,18 +2,18 @@
 defineProps({
   referenceUrl: {
     type: String,
-    required: true
+    required: true,
   },
   disposable: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emits = defineEmits(['dispose'])
+const emits = defineEmits(["dispose"]);
 const dispose = () => {
-  emits('dispose')
-}
+  emits("dispose");
+};
 </script>
 
 <template>
@@ -26,8 +26,9 @@ const dispose = () => {
       ✕
     </button>
     <span
-      >The submission result will be available at <a :href="referenceUrl" target="_blank">here</a>.
-      Please wait for a while.</span
+      >The submission result will be available at
+      <a :href="referenceUrl" target="_blank">here</a>. Please wait for a
+      while.</span
     >
   </div>
 </template>
