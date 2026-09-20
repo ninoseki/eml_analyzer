@@ -55,10 +55,13 @@
     "oxlint-tsgolint": "^7.0.2002",
     "sass-embedded": "^1.104.1",
     "tailwindcss": "^4.3.3",
-    "typescript": "~5.9.3",
+    "typescript": "npm:typescript-native-bridge@6.0.3-bridge.17.tsgo.7.0.2",
     "vite": "^8.3.0",
     "vite-plugin-vue-devtools": "^8.2.1",
     "vitest": "^5.0.1",
     "vue-tsc": "3.3.11"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   }
 }
