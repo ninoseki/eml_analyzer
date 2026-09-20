@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import 'vue-json-pretty/lib/styles.css'
+import "vue-json-pretty/lib/styles.css";
+import { computed } from "vue";
+import VueJsonPretty from "vue-json-pretty";
 
-import { computed } from 'vue'
-import VueJsonPretty from 'vue-json-pretty'
-
-import { FetchError } from '@/api'
-import type { ErrorDataType } from '@/schemas'
+import { FetchError } from "@/api";
+import type { ErrorDataType } from "@/schemas";
 
 const props = defineProps({
   error: {
     type: Error,
-    required: true
+    required: true,
   },
   disposable: {
     type: Boolean,
-    default: false
-  }
-})
-const emits = defineEmits(['dispose'])
+    default: false,
+  },
+});
+const emits = defineEmits(["dispose"]);
 
 const data = computed<ErrorDataType | undefined>(() => {
   if (props.error instanceof FetchError && props.error.response) {
-    return props.error.response.data as ErrorDataType
+    return props.error.response.data as ErrorDataType;
   }
-  return undefined
-})
+  return undefined;
+});
 
 const dispose = () => {
-  emits('dispose')
-}
+  emits("dispose");
+};
 </script>
 
 <template>
@@ -43,7 +42,7 @@ const dispose = () => {
     <div v-if="typeof data?.detail === 'string'">
       {{ data.detail }}
     </div>
-    <p v-else>{{ error.message || error.name || 'Something went wrong' }}</p>
+    <p v-else>{{ error.message || error.name || "Something went wrong" }}</p>
   </div>
   <VueJsonPretty class="mt-2" :data="data.detail" v-if="data?.detail" />
 </template>

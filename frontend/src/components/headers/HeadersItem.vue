@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { type PropType } from "vue";
 
-import BasicHeaders from '@/components/headers/BasicHeaders.vue'
-import Hops from '@/components/headers/HopsItem.vue'
-import OtherHeaders from '@/components/headers/OtherHeaders.vue'
-import SecurityHeaders from '@/components/headers/SecurityHeaders.vue'
-import XHeaders from '@/components/headers/XHeaders.vue'
-import type { HeaderType } from '@/schemas'
+import BasicHeaders from "@/components/headers/BasicHeaders.vue";
+import Hops from "@/components/headers/HopsItem.vue";
+import OtherHeaders from "@/components/headers/OtherHeaders.vue";
+import SecurityHeaders from "@/components/headers/SecurityHeaders.vue";
+import XHeaders from "@/components/headers/XHeaders.vue";
+import type { HeaderType } from "@/schemas";
 
 defineProps({
   header: {
     type: Object as PropType<HeaderType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
 <template>

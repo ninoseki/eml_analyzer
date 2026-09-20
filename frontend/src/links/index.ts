@@ -1,20 +1,20 @@
-import type { LinkType } from '@/schemas'
+import type { LinkType } from "@/schemas";
 
-import { AnyRun } from './anyrun'
-import { Browserling } from './browserling'
-import { Crtsh } from './crtsh'
-import { DomainTools } from './domaintools'
-import { EmailRep } from './emailrep'
-import { HybridAnalysis } from './hybridanalysis'
-import { SecurityTrails } from './securitytrails'
-import { Shodan } from './shodan'
-import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from './urlscan'
+import { AnyRun } from "./anyrun";
+import { Browserling } from "./browserling";
+import { Crtsh } from "./crtsh";
+import { DomainTools } from "./domaintools";
+import { EmailRep } from "./emailrep";
+import { HybridAnalysis } from "./hybridanalysis";
+import { SecurityTrails } from "./securitytrails";
+import { Shodan } from "./shodan";
+import { UrlscanForDomain, UrlscanForIP, UrlscanForURL } from "./urlscan";
 import {
   VirusTotalForDomain,
   VirusTotalForIP,
   VirusTotalForSHA256,
-  VirusTotalForURL
-} from './virustotal'
+  VirusTotalForURL,
+} from "./virustotal";
 
 export const Links: LinkType[] = [
   new AnyRun(),
@@ -31,5 +31,5 @@ export const Links: LinkType[] = [
   new VirusTotalForDomain(),
   new VirusTotalForIP(),
   new VirusTotalForSHA256(),
-  new VirusTotalForURL()
-]
+  new VirusTotalForURL(),
+];

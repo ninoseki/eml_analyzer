@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, type PropType } from "vue";
 
-import type { HeaderItemType } from '@/schemas'
+import type { HeaderItemType } from "@/schemas";
 
 interface FlattenHeader {
-  id: string
-  key: string
-  value: string | number
+  id: string;
+  key: string;
+  value: string | number;
 }
 
 const props = defineProps({
   headers: {
     type: Array as PropType<HeaderItemType[]>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const flattenHeaders = computed(() => {
-  const headers: FlattenHeader[] = []
-  let index = 0
+  const headers: FlattenHeader[] = [];
+  let index = 0;
   for (const header of props.headers) {
-    const key = header.key
-    const values = header.values
+    const key = header.key;
+    const values = header.values;
     for (const value of values) {
-      index += 1
+      index += 1;
       headers.push({
         id: key + index.toString(),
         key: key,
-        value: value
-      })
+        value: value,
+      });
     }
   }
-  return headers
-})
+  return headers;
+});
 </script>
 
 <template>

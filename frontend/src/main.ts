@@ -1,7 +1,6 @@
-import 'font-awesome-animation/css/font-awesome-animation.min.css'
-import '@/style.css'
-
-import { library } from '@fortawesome/fontawesome-svg-core'
+import "font-awesome-animation/css/font-awesome-animation.min.css";
+import "@/style.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
   faCopy,
@@ -11,13 +10,13 @@ import {
   faLink,
   faSearch,
   faSpinner,
-  faUpload
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { createPinia } from 'pinia'
-import { createApp } from 'vue'
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { createPinia } from "pinia";
+import { createApp } from "vue";
 
-import router from '@/router'
+import router from "@/router";
 
 library.add(
   faAngleDown,
@@ -29,19 +28,19 @@ library.add(
   faUpload,
   faInfoCircle,
   faCopy,
-  faIdBadge
-)
-const pinia = createPinia()
+  faIdBadge,
+);
+const pinia = createPinia();
 
-import App from '@/App.vue'
-import { initializeStores } from '@/store'
+import App from "@/App.vue";
+import { initializeStores } from "@/store";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(router)
-app.use(pinia)
+app.component("font-awesome-icon", FontAwesomeIcon);
+app.use(router);
+app.use(pinia);
 
-initializeStores()
+void initializeStores();
 
-app.mount('#app')
+app.mount("#app");

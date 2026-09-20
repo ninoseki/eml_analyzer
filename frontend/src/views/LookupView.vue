@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Lookup from '@/components/LookupItem.vue'
+import Lookup from "@/components/LookupItem.vue";
 
 defineProps({
   id: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
 <template>

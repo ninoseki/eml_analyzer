@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { onMounted, type PropType, ref } from 'vue'
+import { onMounted, type PropType, ref } from "vue";
 
-import Attachment from '@/components/attachments/AttachmentItem.vue'
-import type { AttachmentType } from '@/schemas'
-import { truncate } from '@/utils'
+import Attachment from "@/components/attachments/AttachmentItem.vue";
+import type { AttachmentType } from "@/schemas";
+import { truncate } from "@/utils";
 
 const props = defineProps({
   attachments: {
     type: Array as PropType<AttachmentType[]>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const selectedAttachment = ref<AttachmentType>()
-const selectedTabIndex = ref(0)
+const selectedAttachment = ref<AttachmentType>();
+const selectedTabIndex = ref(0);
 
 const select = (attachment: AttachmentType, index: number) => {
-  selectedAttachment.value = attachment
-  selectedTabIndex.value = index
-}
+  selectedAttachment.value = attachment;
+  selectedTabIndex.value = index;
+};
 
 onMounted(() => {
   if (props.attachments.length > 0) {
-    selectedAttachment.value = props.attachments[0]
-    selectedTabIndex.value = 0
+    selectedAttachment.value = props.attachments[0];
+    selectedTabIndex.value = 0;
   }
-})
+});
 </script>
 
 <template>

@@ -1,44 +1,48 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
-import { useAsyncTask } from 'vue-concurrency'
+import { type PropType } from "vue";
+import { useAsyncTask } from "vue-concurrency";
 
-import type { AttachmentType, SubmissionResultType, SubmitterType } from '@/schemas'
+import type {
+  AttachmentType,
+  SubmissionResultType,
+  SubmitterType,
+} from "@/schemas";
 
 const props = defineProps({
   attachment: {
     type: Object as PropType<AttachmentType>,
-    required: true
+    required: true,
   },
   submitter: {
     type: Object as PropType<SubmitterType>,
-    required: true
-  }
-})
-const emits = defineEmits(['set-reference-url', 'set-error'])
+    required: true,
+  },
+});
+const emits = defineEmits(["set-reference-url", "set-error"]);
 
 const submitTask = useAsyncTask<SubmissionResultType, []>(async () => {
-  return await props.submitter.submit(props.attachment)
-})
+  return await props.submitter.submit(props.attachment);
+});
 
 const submit = async () => {
   try {
-    const result = await submitTask.perform()
-    emits('set-reference-url', result.referenceUrl)
+    const result = await submitTask.perform();
+    emits("set-reference-url", result.referenceUrl);
   } catch (err) {
     if (err instanceof Error) {
-      emits('set-error', err)
+      emits("set-error", err);
     }
   }
-}
+};
 
 const confirm = () => {
   const confirmed = window.confirm(
-    `Are you sure to submit this attachment to ${props.submitter.name}?`
-  )
+    `Are you sure to submit this attachment to ${props.submitter.name}?`,
+  );
   if (confirmed) {
-    submit()
+    submit();
   }
-}
+};
 </script>
 
 <template>

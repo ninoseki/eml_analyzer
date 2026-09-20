@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useAsyncTask } from 'vue-concurrency'
+import { onMounted } from "vue";
+import { useAsyncTask } from "vue-concurrency";
 
-import { API } from '@/api'
-import ErrorMessage from '@/components/ErrorMessage.vue'
-import Loading from '@/components/LoadingItem.vue'
-import Response from '@/components/ResponseItem.vue'
-import type { ResponseType } from '@/schemas'
+import { API } from "@/api";
+import ErrorMessage from "@/components/ErrorMessage.vue";
+import Loading from "@/components/LoadingItem.vue";
+import Response from "@/components/ResponseItem.vue";
+import type { ResponseType } from "@/schemas";
 
 const props = defineProps({
   id: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const lookupTask = useAsyncTask<ResponseType, []>(async () => {
-  return await API.lookup(props.id)
-})
+  return await API.lookup(props.id);
+});
 
 onMounted(async () => {
-  await lookupTask.perform()
-})
+  await lookupTask.perform();
+});
 </script>
 
 <template>

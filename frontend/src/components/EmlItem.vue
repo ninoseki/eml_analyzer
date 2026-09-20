@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { type PropType } from "vue";
 
-import Attachments from '@/components/attachments/AttachmentsItem.vue'
-import Bodies from '@/components/bodies/BodiesItem.vue'
-import Headers from '@/components/headers/HeadersItem.vue'
-import type { EmlType } from '@/schemas'
+import Attachments from "@/components/attachments/AttachmentsItem.vue";
+import Bodies from "@/components/bodies/BodiesItem.vue";
+import Headers from "@/components/headers/HeadersItem.vue";
+import type { EmlType } from "@/schemas";
 
 defineProps({
   eml: {
     type: Object as PropType<EmlType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
 <template>

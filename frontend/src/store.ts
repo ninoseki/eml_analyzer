@@ -1,20 +1,20 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-import { API } from '@/api'
-import type { StatusType } from '@/schemas'
+import { API } from "@/api";
+import type { StatusType } from "@/schemas";
 
-export const useStatusStore = defineStore('status', {
+export const useStatusStore = defineStore("status", {
   state: () => {
-    return { status: {} as StatusType }
+    return { status: {} as StatusType };
   },
   actions: {
     async initialize() {
-      this.status = await API.getStatus()
-    }
-  }
-})
+      this.status = await API.getStatus();
+    },
+  },
+});
 
 export const initializeStores = async () => {
-  const statusStore = useStatusStore()
-  await statusStore.initialize()
-}
+  const statusStore = useStatusStore();
+  await statusStore.initialize();
+};

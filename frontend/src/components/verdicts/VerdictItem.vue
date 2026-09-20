@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, type PropType } from "vue";
 
-import Detail from '@/components/verdicts/DetailItem.vue'
-import type { DetailType, VerdictType } from '@/schemas'
+import Detail from "@/components/verdicts/DetailItem.vue";
+import type { DetailType, VerdictType } from "@/schemas";
 
 const props = defineProps({
   verdict: {
     type: Object as PropType<VerdictType>,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const title = computed(() => {
-  return `${props.verdict.name}`
-})
+  return `${props.verdict.name}`;
+});
 
 const score = computed(() => {
-  return props.verdict.score ? props.verdict.score.toFixed(2) : 'N/A'
-})
+  return props.verdict.score ? props.verdict.score.toFixed(2) : "N/A";
+});
 
 const cardType = computed(() => {
-  return props.verdict.malicious ? 'border-warning' : 'border-success'
-})
+  return props.verdict.malicious ? "border-warning" : "border-success";
+});
 
 const details = computed((): DetailType[] => {
   if (props.verdict.details.length > 0) {
-    return props.verdict.details
+    return props.verdict.details;
   }
-  return [{ key: 'N/A', description: 'No details available', score: null }]
-})
+  return [{ key: "N/A", description: "No details available", score: null }];
+});
 </script>
 
 <template>
