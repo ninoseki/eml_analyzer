@@ -26,7 +26,7 @@ def normalize_urls(urls: Iterable[str]) -> set[str]:
 
 def get_href_links(html: str) -> set[str]:
     soup = BeautifulSoup(html, "html.parser")
-    links: set[str] = {str(link.get("href")) for link in soup.findAll("a")}
+    links: set[str] = {str(link.get("href")) for link in soup.find_all("a")}
     return {
         link
         for link in links
