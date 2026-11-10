@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import fileSize from "filesize.js";
+import { filesize } from "filesize";
 import { type PropType, ref } from "vue";
 
 import AttachmentDownloadButton from "@/components/attachments/AttachmentDownloadButton.vue";
@@ -46,7 +46,7 @@ const vt = new VirusTotal();
       </tr>
       <tr>
         <th class="w-80">Size</th>
-        <td>{{ fileSize(attachment.size) }}</td>
+        <td>{{ filesize(attachment.size) }}</td>
       </tr>
       <tr>
         <th class="w-80">MIME type</th>
