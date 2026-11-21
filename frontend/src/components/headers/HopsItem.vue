@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, type PropType } from "vue";
+import { computed, type PropType } from 'vue'
 
-import type { HeaderType, ReceivedType } from "@/schemas";
-import { humanizeSeconds, toCSV, toUTC } from "@/utils";
+import type { HeaderType, ReceivedType } from '@/schemas'
+import { humanizeSeconds, toCSV, toUTC } from '@/utils'
 
 interface ReceivedWithIndex {
-  index: number;
-  received: ReceivedType;
+  index: number
+  received: ReceivedType
 }
 
 const props = defineProps({
@@ -14,16 +14,14 @@ const props = defineProps({
     type: Object as PropType<HeaderType>,
     required: true,
   },
-});
+})
 const receivedWithIndexes = computed(() => {
-  const received = props.header.received || [];
-  const receivedWithIndex: ReceivedWithIndex[] = received.map(
-    (received_, index) => {
-      return { index: index + 1, received: received_ };
-    },
-  );
-  return receivedWithIndex;
-});
+  const received = props.header.received || []
+  const receivedWithIndex: ReceivedWithIndex[] = received.map((received_, index) => {
+    return { index: index + 1, received: received_ }
+  })
+  return receivedWithIndex
+})
 </script>
 
 <template>

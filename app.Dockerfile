@@ -1,5 +1,5 @@
 # frontend
-FROM node:24-bookworm-slim AS frontend
+FROM node:26-bookworm-slim AS frontend
 
 WORKDIR /usr/src/app
 
